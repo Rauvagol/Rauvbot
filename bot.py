@@ -13,23 +13,24 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.command(name='test', help='reports when this file was updated if I remember')
 async def testcommand(ctx):
-    await ctx.send("May 10th version.")
+    await ctx.send("May 11th version.")
 	
 @bot.command(name='rslookup')
 async def RSlookup(ctx, *name):
 	columns = ["Skill Name", "Level", "Experience"]
 	skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
-	username = ' '.join([str(word) for word in name]) 
 	skillLevel = ["Level"]
 	skillExperience = ["Experience"]
+	output = ""
+	exptotal = 0
+
+	username = ' '.join([str(word) for word in name]) 
 	await ctx.send("Looking up " + username + ", please be patient, the API is very slow sometimes.")
 	try:
 		data=urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player="+username.replace(" ", "%20"))
 	except:
 		await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
 	split_rle = data.read().decode(data.headers.get_content_charset("utf-8")).split("-1,-1")[0].split("\n")
-	output = ""
-	exptotal = 0
 	for index in range (len(split_rle)-1):
 		holder = split_rle[index].split(",")
 		skillLevel.append(holder[1])

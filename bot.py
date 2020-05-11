@@ -29,9 +29,9 @@ async def RSlookup(ctx, *name):
 		await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
 	split_rle = data.read().decode(data.headers.get_content_charset("utf-8")).split("-1,-1")[0].split("\n")
 	split_rle.insert(0, "shouldntbeseen,Level,Experience")
-	spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
-	spacer_two = "═".ljust(len(split_rle[0].split(",")[1]), "═")
-	spacer_three = "═".ljust(len(split_rle[0].split(",")[2]), "═")
+	# spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
+	# spacer_two = "═".ljust(len(split_rle[0].split(",")[1]), "═")
+	# spacer_three = "═".ljust(len(split_rle[0].split(",")[2]), "═")
 	output = ""
 	inner_width = len(output)
 	exptotal = 0
@@ -42,6 +42,9 @@ async def RSlookup(ctx, *name):
 			skillExperience.append(holder[2])
 		if(index>1):
 			exptotal += min(13034431, int(holder[2]))
+	spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
+	spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")
+	spacer_three = "═".ljust(len(max(skillExperience, key = len)), "═")
 	exptotal = int(exptotal)
 	percent_to_99s = round(100*exptotal/299791913, 2)
 	tableWidth=len(" ╔═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╗\n")

@@ -28,19 +28,13 @@ async def RSlookup(ctx, *name):
 	except:
 		await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
 	split_rle = data.read().decode(data.headers.get_content_charset("utf-8")).split("-1,-1")[0].split("\n")
-	split_rle.insert(0, "shouldntbeseen,Level,Experience")
-	# spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
-	# spacer_two = "═".ljust(len(split_rle[0].split(",")[1]), "═")
-	# spacer_three = "═".ljust(len(split_rle[0].split(",")[2]), "═")
 	output = ""
-	inner_width = len(output)
 	exptotal = 0
 	for index in range (len(split_rle)-1):
 		holder = split_rle[index].split(",")
-		if (index>0):
-			skillLevel.append(holder[1])
-			skillExperience.append(holder[2])
-		if(index>1):
+		skillLevel.append(holder[1])
+		skillExperience.append(holder[2])
+		if(index>0):
 			exptotal += min(13034431, int(holder[2]))
 	spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
 	spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")

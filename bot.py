@@ -17,6 +17,7 @@ async def testcommand(ctx):
 	
 @bot.command(name='rslookup')
 async def RSlookup(ctx, *name):
+	username = ' '.join([str(word) for word in name]) 
 	columns = ["Skill Name", "Level", "Experience"]
 	skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 	skillLevel = ["Level"]
@@ -24,7 +25,6 @@ async def RSlookup(ctx, *name):
 	output = ""
 	exptotal = 0
 
-	username = ' '.join([str(word) for word in name]) 
 	await ctx.send("Looking up " + username + ", please be patient, the API is very slow sometimes.")
 	try:
 		data=urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player="+username.replace(" ", "%20"))
@@ -45,9 +45,10 @@ async def RSlookup(ctx, *name):
 	tableWidth=len(" ╔═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╗\n")
 	header = " ╔═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╗\n" + " ║ "+"Stats for " + username + "║".rjust(tableWidth-len(" ║ "+"Stats for " + username)-1)+"\n" +  " ╠═"+spacer_one+"═╦═"+spacer_two+"═╦═"+spacer_three+"═╣\n" +  " ║ " + skillName[0].ljust(len(spacer_one)) + " ║ " + skillLevel[0].rjust(len(spacer_two)) + " ║ " + skillExperience[0].rjust(len(spacer_three)) + " ║\n" + " ╠═"+spacer_one+"═╬═"+spacer_two+"═╬═"+spacer_three+"═╣\n"
 	footer = " ╠═"+spacer_one+"═╩═"+spacer_two+"═╩═"+spacer_three+"═╣\n" + " ║ Adjusted total EXP = " + str(exptotal) + "║".rjust(tableWidth-len(" ║ Adjusted total EXP = " + str(exptotal))-1)+"\n" + " ║ " + str(percent_to_99s) + "% of the way to all skills 99" + "║".rjust(tableWidth-len(" ║ " + str(percent_to_99s) + "X of the way to all skills 99")-1)+"\n" + " ╚═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╝\n"
+	outputList = []
 	for index in range(len(skillName)-1):
 		if(index>0):
-			output += " ║ " + skillName[index].ljust(len(spacer_one)) + " ║ " + skillLevel[index].rjust(len(spacer_two)) + " ║ " + skillExperience[index].rjust(len(spacer_three)) + " ║\n"
-	await ctx.send("```" + header+output+footer + "```")
+			outputList.append(" ║ " + skillName[index].ljust(len(spacer_one)) + " ║ " + skillLevel[index].rjust(len(spacer_two)) + " ║ " + skillExperience[index].rjust(len(spacer_three)) + " ║\n")
+	await ctx.send("```" + header+"".join(outputList)+footer + "```")
 
 bot.run(TOKEN)

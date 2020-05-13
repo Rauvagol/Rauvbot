@@ -13,7 +13,7 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.command(name='test', help='reports when this file was updated if I remember')
 async def testcommand(ctx):
-    await ctx.send("May 12th version.")
+    await ctx.send("May 13th version.")
 	
 @bot.command(name='rslookup')
 async def RSlookup(ctx, *name):
@@ -48,8 +48,8 @@ async def RSlookup(ctx, *name):
 	exptotal = int(exptotal)
 	#Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
 	percent_to_99s = round(100*exptotal/299791913, 2)
-	#figures out the width of the entire table, probably a better way to do this, but I dont know it
-	tableWidth=len(" ╔═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╗\n")
+	#figures out the width of the entire table by adding length of the border stuff to len(spacers)
+	tableWidth=12 + len(spacer_one+spacer_two+spacer_three)
 	#Assembling the header and footer, could be done programatically, but immutable strings
 	header = " ╔═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╗\n" + " ║ "+"Stats for " + username + "║".rjust(tableWidth-len(" ║ "+"Stats for " + username)-1)+"\n" +  " ╠═"+spacer_one+"═╦═"+spacer_two+"═╦═"+spacer_three+"═╣\n" +  " ║ " + skillName[0].ljust(len(spacer_one)) + " ║ " + skillLevel[0].rjust(len(spacer_two)) + " ║ " + skillExperience[0].rjust(len(spacer_three)) + " ║\n" + " ╠═"+spacer_one+"═╬═"+spacer_two+"═╬═"+spacer_three+"═╣\n"
 	footer = " ╠═"+spacer_one+"═╩═"+spacer_two+"═╩═"+spacer_three+"═╣\n" + " ║ Adjusted total EXP = " + str(exptotal) + "║".rjust(tableWidth-len(" ║ Adjusted total EXP = " + str(exptotal))-1)+"\n" + " ║ " + str(percent_to_99s) + "% of the way to all skills 99" + "║".rjust(tableWidth-len(" ║ " + str(percent_to_99s) + "X of the way to all skills 99")-1)+"\n" + " ╚═"+spacer_one+"═══"+spacer_two+"═══"+spacer_three+"═╝\n"

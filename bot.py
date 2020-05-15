@@ -67,13 +67,35 @@ async def MazeGenerator(ctx, width, height):
 	midCells = "═║╝╚╗╔╩╠╦╣╬"
 	topCells = "═╗╔╦"
 	bottomCells = "═╝╚╩"
+	l_to_rd = "╦╗═"
+	lr_to_d = "╦═"
+	urd = "╠╚║╔"
+	uld = "╣╝║╗"
+	rul = "╩╝═╚"
+	rdl = "╦╗═╔"
 	width = int(width)
 	height = int(height)
-	outputArray = [[0 for i in range(width)] for j in range(height)]
+	outputArray = []
 	for row in range(height):
 		holderArray = []
 		for column in range(width):
-			holderArray.append(column)
-		outputArray[row] = holderArray
-	await ctx.send(outputArray)
+			holderArray.append(str(column))
+		if(row == 0):
+			holderArray[0] = cornerCells[0]
+			holderArray[width-1] = cornerCells[1]
+			for entry in range(1, width-1):
+				holderArray[entry] = "0"
+				if(holderArray[entry-1] == "╔" or holderArray[entry-1] == "═" or holderArray[entry-1] == "╦"):
+					holderArray[entry] = random.choice(l_to_rd)
+					if(holderArray[entry+1] == "╗"):
+						holderArray[entry] = random.choice(lr_to_d)
+				else:
+					holderArray[entry] = "╔"
+		if(row == height-1):
+			holderArray[0] = cornerCells[2]
+			holderArray[width-1] = cornerCells[3]
+		print("".join(holderArray))
+		outputArray.append("".join(holderArray))
+		outputArray.append("\n")
+	await ctx.send("```" + "".join(outputArray)+ "```")
 bot.run(TOKEN)

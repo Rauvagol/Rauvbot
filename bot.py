@@ -2,6 +2,7 @@
 import os
 import discord
 import urllib
+import random
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -60,4 +61,19 @@ async def RSlookup(ctx, *name):
 			outputList.append(" ║ " + skillName[index].ljust(len(spacer_one)) + " ║ " + skillLevel[index].rjust(len(spacer_two)) + " ║ " + skillExperience[index].rjust(len(spacer_three)) + " ║\n")
 	await ctx.send("```" + header+"".join(outputList)+footer + "```")
 
+@bot.command(name='maze')
+async def MazeGenerator(ctx, width, height):
+	cornerCells = "╔╗╚╝"
+	midCells = "═║╝╚╗╔╩╠╦╣╬"
+	topCells = "═╗╔╦"
+	bottomCells = "═╝╚╩"
+	width = int(width)
+	height = int(height)
+	outputArray = [[0 for i in range(width)] for j in range(height)]
+	for row in range(height):
+		holderArray = []
+		for column in range(width):
+			holderArray.append(column)
+		outputArray[row] = holderArray
+	await ctx.send(outputArray)
 bot.run(TOKEN)

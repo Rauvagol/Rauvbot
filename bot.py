@@ -85,10 +85,10 @@ async def MazeGenerator(ctx, width, height):
 					else:
 						outputArray[row][column] = "╗"
 				#and left closed
-				elif(outputArray[row][column-1] in "╗╣╝║"):
+				elif(outputArray[row][column-1] in " ╗╣╝║"):
 					#if not right side
 					if(column < width-1):
-						outputArray[row][column] = random.choice("╔")
+						outputArray[row][column] = random.choice(" ╔")
 					#if right side
 					else:
 						outputArray[row][column-1] = "╦"

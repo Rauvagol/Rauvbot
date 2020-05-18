@@ -67,7 +67,7 @@ async def MazeGenerator(ctx, width, height):
 	charset = "╔╦╗╠╬╣╚╩╝═║"
 	width = int(width)
 	height = int(height)
-	outputArray = outputArray = [[" " for column in range(width)] for row in range(height)]
+	outputArray = outputArray = [["X" for column in range(width)] for row in range(height)]
 
 	for row in range(height):
 		for column in range(width):
@@ -94,7 +94,7 @@ async def MazeGenerator(ctx, width, height):
 						outputArray[row][column-1] = "╦"
 						outputArray[row][column] = "╗"
 			#middle rows
-			elif(row>0 and row<width-1):
+			elif(row>0 and row<height-1):
 				#left side
 				if(column == 0):
 					outputArray[row][column] = random.choice("╠║")
@@ -107,13 +107,57 @@ async def MazeGenerator(ctx, width, height):
 					elif(outputArray[row][column-1] in "╗╣╝║ "):
 						outputArray[row][column] = random.choice("╠╚║")
 				#top closed
-				elif(outputArray[row][column-1] in "╚╩╝═ "):
+				elif(outputArray[row-1][column] in "╚╩╝═ "):
 					#left open
 					if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
 						outputArray[row][column] = random.choice("╦╗═")
 					#left closed
 					elif(outputArray[row][column-1] in "╗╣╝║ "):
 						outputArray[row][column] = random.choice("╔")
+				if(column == width-1):
+					#top open
+					if(outputArray[row-1][column] in "╔╦╗╠╬╣║"):
+						#left open
+						if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
+							outputArray[row][column] = random.choice("╣╝")
+						#left closed
+						elif(outputArray[row][column-1] in "╗╣╝║ "):
+							outputArray[row][column] = random.choice("║")
+					#top closed
+					elif(outputArray[row-1][column] in "╚╩╝═ "):
+						#left open
+						if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
+							outputArray[row][column] = random.choice("╗")
+						#left closed
+						elif(outputArray[row][column-1] in "╗╣╝║ "):
+							outputArray[row][column] = random.choice(" ")
+			#top row
+			if(row == height-1):
+				#left side
+				if(column == 0):
+					outputArray[row][column] = "╚"
+				#top open
+				if(outputArray[row-1][column] in "╔╦╗╠╬╣║"):
+					#and left open
+					if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
+						outputArray[row][column] = random.choice("╝╩")
+					#and left closed 
+					elif(outputArray[row][column-1] in "╗╣╝║ "):
+						outputArray[row][column] = random.choice("╚")
+				#top closed
+				elif(outputArray[row-1][column] in "╚╩╝═ "):
+					#and left open
+					if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
+						outputArray[row][column] = random.choice("═")
+					#and left closed 
+					elif(outputArray[row][column-1] in "╗╣╝║ "):
+						outputArray[row][column] = random.choice(" ")
+				#right side
+				if(column == width-1):
+					if(outputArray[row][column-1] in "╔╦╠╬╚╩═"):
+						outputArray[row][column] = "╝"
+					else:
+						outputArray[row][column] = " "
 	outputHolder = []
 	for row in outputArray:
 		outputHolder.append("".join(map(str, row)))

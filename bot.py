@@ -68,6 +68,12 @@ async def MazeGenerator(ctx, width, height):
 	width = int(width)
 	height = int(height)
 	success = 0
+	if(width<2 or height<2):
+		success = 1
+		await ctx.send("Too small, bet you hear that a lot.")
+	if(width*height>1994)
+		success = 1
+		await ctx.send("Message length limit says no.")
 	while(success == 0):
 		outputArray = [["X" for column in range(width)] for row in range(height)]
 		for row in range(height):

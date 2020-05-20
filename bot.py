@@ -71,7 +71,7 @@ async def MazeGenerator(ctx, width, height):
 	if(width<2 or height<2):
 		success = 1
 		await ctx.send("Too small, bet you hear that a lot.")
-	if(width*height>1994)
+	if(width*height>1994):
 		success = 1
 		await ctx.send("Message length limit says no.")
 	while(success == 0):

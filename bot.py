@@ -14,7 +14,7 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.command(name='test', help='reports when this file was updated if I remember')
 async def testcommand(ctx):
-    await ctx.send("May 18th version.")
+    await ctx.send("May 20th version.")
 	
 @bot.command(name='rslookup')
 async def RSlookup(ctx, *name):

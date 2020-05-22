@@ -69,8 +69,8 @@ async def rskc(ctx, *name):
 	username = ' '.join([str(word) for word in name]) 
 	kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
 				"Unknown4","Abyssal Sire","Hydra","Barrows","Unknown7","Unknown8","Cerberus","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13",
-				"Unknown14","Unknown15","Unknown16","Dagganoth Rex","Unknown17","Unknown18","Unknown19","Unknown20","Unknown21","Hespori","Kalphite Queen",
-				"Unknown23","Kraken","Unknown24","K'ril","Unknown25","Unknown26","Unknown27","Unknown28","Unknown29","Skotizo","Unknown30","Unknown31",
+				"Unknown14","Unknown15","Unknown16","Dagganoth Rex","Dagganoth Supreme","Unknown18","Graardor","Unknown20","Unknown21","Hespori","Kalphite Queen",
+				"Unknown23","Kraken","Unknown24","K'ril","Mimic","Unknown26","Unknown27","Sarachnis","Unknown29","Skotizo","Unknown30","Unknown31",
 				"Unknown32","Thermonuclear","Unknown33","Unknown34","Unknown35","Unknown36","Vorkath","Wintertodt","Zalcano","Zulrah"]
 	kcCount = ["Kills"]
 	numSkills = 23

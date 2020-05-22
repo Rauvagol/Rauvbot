@@ -14,17 +14,13 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.command(name='test', help='reports when this file was updated if I remember')
 async def testcommand(ctx):
-    await ctx.send("May 20th version.")
+    await ctx.send("May 21 version.")
 
-@bot.command(name='10seconds')
+@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
 async def tenSeconds(ctx):
 	await ctx.send("https://i.imgur.com/tnJtepM.jpg")
-
-@bot.command(name='commands')
-async def commands(ctx):
-	await ctx.send("Current commands are !test, !10seconds, !commands, !rslevels, !rskc")
 	
-@bot.command(name='rslevels')
+@bot.command(name='rslevels', help = 'takes osrs username as a parameter and gives stats on levels')
 async def rslevels(ctx, *name):
 	#Variables used in the code, each list is for a column of information.
 	username = ' '.join([str(word) for word in name]) 
@@ -68,7 +64,7 @@ async def rslevels(ctx, *name):
 			outputList.append(" ║ " + skillName[index].ljust(len(spacer_one)) + " ║ " + skillLevel[index].rjust(len(spacer_two)) + " ║ " + skillExperience[index].rjust(len(spacer_three)) + " ║\n")
 	await ctx.send("```" + header+"".join(outputList)+footer + "```")
 
-@bot.command(name="rskc")
+@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 async def rskc(ctx, *name):
 	username = ' '.join([str(word) for word in name]) 
 	kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
@@ -100,8 +96,8 @@ async def rskc(ctx, *name):
 			outputList.append(" ║ " + kcName[index].ljust(len(spacer_one)) + " ║ " + kcCount[index].rjust(len(spacer_two)) + " ║\n")
 	await ctx.send("```" + header + "".join(outputList) + footer + "```")
 
-@bot.command(name='maze')
-async def MazeGenerator(ctx, width, height):
+@bot.command(name='generate', help="takes a width and height parameter and generates a neat random thing")
+async def Generator(ctx, width, height):
 	# random.seed(1)
 	charset = "╔╦╗╠╬╣╚╩╝═║"
 	width = int(width)

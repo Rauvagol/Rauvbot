@@ -21,7 +21,7 @@ async def tenSeconds(ctx):
 	await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
 @bot.command(name='commands')
-async def commands(ctx)
+async def commands(ctx):
 	await ctx.send("Current commands are !test, !10seconds, !commands, !rslevels, !rskc")
 	
 @bot.command(name='rslevels')

@@ -50,7 +50,6 @@ class RunescapeCommands:
 		#Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column (discarding rank)
 		for index in range (len(dataHolder)-1):
 			holder = dataHolder[index].split(",")
-			print(holder)
 			if(index>0 and index<len(skillName)-1):
 				#Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
 				exptotal += min(13034431, int(holder[2]))
@@ -70,17 +69,15 @@ class RunescapeCommands:
 		level_tableWidth=12 + len(level_spacer_one+level_spacer_two+level_spacer_three)
 		#Assembling the header and footer, could be done programatically, but immutable strings
 		level_header = " ╔═"+level_spacer_one+"═══"+level_spacer_two+"═══"+level_spacer_three+"═╗\n" + " ║ "+"Stats for " + username + "║".rjust(level_tableWidth-len(" ║ "+"Stats for " + username)-1)+"\n" +  " ╠═"+level_spacer_one+"═╦═"+level_spacer_two+"═╦═"+level_spacer_three+"═╣\n" +  " ║ " + skillName[0].ljust(len(level_spacer_one)) + " ║ " + skillLevel[0].rjust(len(level_spacer_two)) + " ║ " + skillExperience[0].rjust(len(level_spacer_three)) + " ║\n" + " ╠═"+level_spacer_one+"═╬═"+level_spacer_two+"═╬═"+level_spacer_three+"═╣\n"
-		level_footer = " ╠═"+level_spacer_one+"═╩═"+level_spacer_two+"═╩═"+level_spacer_three+"═╣\n" + " ║ Adjusted total EXP = " + str(exptotal) + "║".rjust(level_tableWidth-len(" ║ Adjusted total EXP = " + str(exptotal))-1)+"\n" + " ║ " + str(percent_to_99s) + "% of the way to all skills 99" + "║".rjust(level_tableWidth-len(" ║ " + str(percent_to_99s) + "X of the way to all skills 99")-1)+"\n" + " ╚═"+level_spacer_one+"═══"+level_spacer_two+"═══"+level_spacer_three+"═╝\n"
+		level_footer = " ╚═"+level_spacer_one+"═╩═"+level_spacer_two+"═╩═"+level_spacer_three+"═╝\n"
 		for index in range(len(skillName)):
 			if(index>0):
 				#loops through adding one formatted row at a time to the output list
 				levels_outputList.append(" ║ " + skillName[index].ljust(len(level_spacer_one)) + " ║ " + skillLevel[index].rjust(len(level_spacer_two)) + " ║ " + skillExperience[index].rjust(len(level_spacer_three)) + " ║\n")
-		await ctx.send("```" + level_header+"".join(levels_outputList)+level_footer + "```")
 		killcount_dataHolder = data.read().decode().split("\n")
 		for index in range (len(skillName)+1, len(killcount_dataHolder)-1):
 			holder = killcount_dataHolder[index].split(",")
 			kcCount.append(holder[1])
-		print(kcCount)
 		killcount_spacer_one = "═".ljust(len(max(kcName, key = len)), "═")
 		killcount_spacer_two = "═".ljust(len(max(kcCount, key = len)), "═")
 		killcount_tableWidth=9 + len(killcount_spacer_one+killcount_spacer_two)
@@ -89,13 +86,14 @@ class RunescapeCommands:
 		for index in range (len(kcName)):
 			if(index>0 and int(kcCount[index])>0):
 				killcount_outputList.append(" ║ " + kcName[index].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[index].rjust(len(killcount_spacer_two)) + " ║\n")
-		await ctx.send("```" + killcount_header + "".join(killcount_outputList) + killcount_footer + "```")
+		await ctx.send("```" + level_header+"".join(levels_outputList)+level_footer + killcount_header + "".join(killcount_outputList) + killcount_footer + "```")
 		
 	@bot.command(name='rslevels', help = 'takes osrs username as a parameter and gives stats on levels')
 	async def rslevels(ctx, *name):
 		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 		skillLevel = ["Level"]
 		skillExperience = ["Experience"]
+		skillMissingExperience = ["Missing Experience", "Irrelevantlol"]
 		output = ""
 		exptotal = 0
 		outputList = []
@@ -117,6 +115,7 @@ class RunescapeCommands:
 			if(index>0):
 				#Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
 				exptotal += min(13034431, int(holder[2]))
+				skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
 		#Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
 		level_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
 		level_spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")
@@ -134,6 +133,14 @@ class RunescapeCommands:
 				#loops through adding one formatted row at a time to the output list
 				outputList.append(" ║ " + skillName[index].ljust(len(level_spacer_one)) + " ║ " + skillLevel[index].rjust(len(level_spacer_two)) + " ║ " + skillExperience[index].rjust(len(level_spacer_three)) + " ║\n")
 		await ctx.send("```" + header+"".join(outputList)+footer + "```")
+		outputTEMP = ""
+		for index in range(len(skillName)):
+			if(index == 2 or index == 3 or index == 4):
+				skillMissingExperience[index] = str(skillMissingExperience[index]/400) + " ammonite crab kills"
+			elif(index == 5):
+				skillMissingExperience[index] = str(skillMissingExperience[index]/133.33) + " ammonite crab kills"
+			outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
+		await ctx.send(outputTEMP)
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):

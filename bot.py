@@ -3,6 +3,7 @@ import os
 import discord
 import urllib
 import random
+import math
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -136,9 +137,9 @@ class RunescapeCommands:
 		outputTEMP = ""
 		for index in range(len(skillName)):
 			if(index == 2 or index == 3 or index == 4):
-				skillMissingExperience[index] = str(skillMissingExperience[index]/400) + " ammonite crab kills"
+				skillMissingExperience[index] = str(round(skillMissingExperience[index]/400, 2)) + " ammonite crab kills"
 			elif(index == 5):
-				skillMissingExperience[index] = str(skillMissingExperience[index]/133.33) + " ammonite crab kills"
+				skillMissingExperience[index] = str(round(skillMissingExperience[index]/133.33, 2)) + " ammonite crab kills"
 			outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 

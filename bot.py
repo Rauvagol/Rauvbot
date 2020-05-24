@@ -136,11 +136,12 @@ class RunescapeCommands:
 		await ctx.send("```" + header+"".join(outputList)+footer + "```")
 		outputTEMP = ""
 		for index in range(len(skillName)):
-			if(index == 2 or index == 3 or index == 4):
-				skillMissingExperience[index] = str(round(skillMissingExperience[index]/400, 2)) + " ammonite crab kills"
-			elif(index == 5):
-				skillMissingExperience[index] = str(round(skillMissingExperience[index]/133.33, 2)) + " ammonite crab kills"
-			outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
+			if(index > 1):
+				if(index == 2 or index == 3 or index == 4):
+					skillMissingExperience[index] = str(round(skillMissingExperience[index]/400, 2)) + " ammonite crab kills"
+				elif(index == 5):
+					skillMissingExperience[index] = str(round(skillMissingExperience[index]/133.33, 2)) + " ammonite crab kills"
+				outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')

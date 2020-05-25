@@ -136,7 +136,7 @@ class RunescapeCommands:
 		await ctx.send("```" + header+"".join(outputList)+footer + "```")
 		outputTEMP = ""
 		for index in range(len(skillName)):
-			if(index > 1):
+			if(index > 1 and skillMissingExperience[index]>0):
 				if(index == 2 or index == 3 or index == 4):
 					skillMissingExperience[index] = str(round(skillMissingExperience[index]/400, 2)) + " ammonite crab kills"
 				elif(index == 5):

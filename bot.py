@@ -147,7 +147,16 @@ class RunescapeCommands:
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/65)) + " casts of high alch, taking " +  str(round((skillMissingExperience[index]/65)/1200, 2)) + " hours."
 				elif(index == 9):
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
-				outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
+				elif(index == 10):
+					if(skillMissingExperience[index]>22406):
+						skillMissingExperience[index] = str(round((skillMissingExperience[index]/90000), 2)) + " hours of unmanipulated teaks."
+					elif(skillMissingExperience[index]>13363):
+						skillMissingExperience[index] = str(round(((22406-skillMissingExperience[index])/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
+					elif(skillMissingExperience[index]>2411):
+						skillMissingExperience[index] = str(round(((13363-skillMissingExperience[index])/40000), 2)) + " hours of oaks; followed by " + str(round(((22406-13363)/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
+					else:
+						skillMissingExperience[index] = str(round(((2411-skillMissingExperience[index])/40000), 2)) + "hours of normal trees; followed by" + str(round(((13363-2411)/40000), 2)) + " hours of oaks; followed by " + str(round(((22406-13363)/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
+				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')

@@ -143,6 +143,10 @@ class RunescapeCommands:
 					skillMissingExperience[index] = str(round(skillMissingExperience[index]/133.33, 2)) + " ammonite crab kills"
 				elif(index == 7):
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/52.5)) + " big bones at gilded altar for " +  str(round((skillMissingExperience[index]/52.5)/2550, 2)) + " hours."
+				elif(index == 8):
+					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/65)) + " casts of high alch, taking " +  str(round((skillMissingExperience[index]/65)/1200, 2)) + " hours."
+				elif(index == 9):
+					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
 				outputTEMP += skillName[index] + " "  + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 

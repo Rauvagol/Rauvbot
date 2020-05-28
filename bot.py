@@ -91,6 +91,7 @@ class RunescapeCommands:
 		
 	@bot.command(name='rslevels', help = 'takes osrs username as a parameter and gives stats on levels')
 	async def rslevels(ctx, *name):
+		experienceForLevel = [-1, 0]
 		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 		skillLevel = ["Level"]
 		skillExperience = ["Experience"]
@@ -98,6 +99,9 @@ class RunescapeCommands:
 		output = ""
 		exptotal = 0
 		outputList = []
+		for index in range(2, 100):
+			experienceForLevel.append(math.floor(experienceForLevel[index-1] + ((index-1+300*2**((index-1)/7))/4)))
+		print(experienceForLevel)
 		#Variables used in the code, each list is for a column of information.
 		username = ' '.join([str(word) for word in name]) 
 		#Combines and parses the url to access the OSRS highscores api page for given character name

@@ -100,8 +100,9 @@ class RunescapeCommands:
 		exptotal = 0
 		outputList = []
 		for index in range(2, 100):
-			experienceForLevel.append(math.floor(experienceForLevel[index-1] + ((index-1+300*2**((index-1)/7))/4)))
-		print(experienceForLevel)
+			experienceForLevel.append(experienceForLevel[index-1] + (math.floor(index-1+300*2**((index-1)/7))/4))
+		for index in range(len(experienceForLevel)):
+			experienceForLevel[index] = math.floor(experienceForLevel[index])
 		#Variables used in the code, each list is for a column of information.
 		username = ' '.join([str(word) for word in name]) 
 		#Combines and parses the url to access the OSRS highscores api page for given character name
@@ -152,14 +153,14 @@ class RunescapeCommands:
 				elif(index == 9):
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
 				elif(index == 10):
-					if(skillMissingExperience[index]>22406):
+					if(skillMissingExperience[index]>experienceForLevel[35]):
 						skillMissingExperience[index] = str(round((skillMissingExperience[index]/90000), 2)) + " hours of unmanipulated teaks."
-					elif(skillMissingExperience[index]>13363):
-						skillMissingExperience[index] = str(round(((22406-skillMissingExperience[index])/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
-					elif(skillMissingExperience[index]>2411):
-						skillMissingExperience[index] = str(round(((13363-skillMissingExperience[index])/40000), 2)) + " hours of oaks; followed by " + str(round(((22406-13363)/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
+					elif(skillMissingExperience[index]>experienceForLevel[30]):
+						skillMissingExperience[index] = str(round(((experienceForLevel[35]-skillMissingExperience[index])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
+					elif(skillMissingExperience[index]>experienceForLevel[15]):
+						skillMissingExperience[index] = str(round(((experienceForLevel[30]-skillMissingExperience[index])/40000), 2)) + " hours of oaks; followed by " + str(round(((experienceForLevel[35]-experienceForLevel[30])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
 					else:
-						skillMissingExperience[index] = str(round(((2411-skillMissingExperience[index])/40000), 2)) + "hours of normal trees; followed by" + str(round(((13363-2411)/40000), 2)) + " hours of oaks; followed by " + str(round(((22406-13363)/40000), 2)) + " hours of willows; followed by " + str(round(((299791913-22406)/90000), 2)) + " hours of unmanipulated teaks."
+						skillMissingExperience[index] = str(round(((experienceForLevel[15]-skillMissingExperience[index])/40000), 2)) + "hours of normal trees; followed by" + str(round(((experienceForLevel[30]-experienceForLevel[15])/40000), 2)) + " hours of oaks; followed by " + str(round(((experienceForLevel[35]-experienceForLevel[30])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
 				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 

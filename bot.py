@@ -139,6 +139,50 @@ class RunescapeCommands:
 				#loops through adding one formatted row at a time to the output list
 				outputList.append(" ║ " + skillName[index].ljust(len(level_spacer_one)) + " ║ " + skillLevel[index].rjust(len(level_spacer_two)) + " ║ " + skillExperience[index].rjust(len(level_spacer_three)) + " ║\n")
 		await ctx.send("```" + header+"".join(outputList)+footer + "```")
+
+	@bot.command(name='rs99', help = 'takes osrs username as a parameter and gives stats on levels')
+	async def rs99(ctx, *name):
+		experienceForLevel = [-1, 0]
+		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
+		skillLevel = ["Level"]
+		skillExperience = ["Experience"]
+		skillMissingExperience = ["Missing Experience", "Irrelevantlol"]
+		output = ""
+		exptotal = 0
+		outputList = []
+		for index in range(2, 100):
+			experienceForLevel.append(experienceForLevel[index-1] + (math.floor(index-1+300*2**((index-1)/7))/4))
+		for index in range(len(experienceForLevel)):
+			experienceForLevel[index] = math.floor(experienceForLevel[index])
+		#Variables used in the code, each list is for a column of information.
+		username = ' '.join([str(word) for word in name]) 
+		#Combines and parses the url to access the OSRS highscores api page for given character name
+		await ctx.send("Looking up " + username + ", please be patient, the API is very slow sometimes.")
+		try:
+			data=urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player="+username.replace(" ", "%20"))
+		except:
+			await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
+		#Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
+		dataHolder = data.read().decode().split("\n")
+		#Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column (discarding rank)
+		for index in range (len(skillName)-1):
+			holder = dataHolder[index].split(",")
+			skillLevel.append(holder[1])
+			skillExperience.append(holder[2])
+			if(index>0):
+				#Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
+				exptotal += min(13034431, int(holder[2]))
+				skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
+		#Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
+		level_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
+		level_spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")
+		level_spacer_three = "═".ljust(len(max(skillExperience, key = len)), "═")
+		exptotal = int(exptotal)
+		#Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
+		percent_to_99s = round(100*exptotal/299791913, 2)
+		#figures out the width of the entire table by adding length of the border stuff to len(spacers)
+		tableWidth=12 + len(level_spacer_one+level_spacer_two+level_spacer_three)
+		#Assembling the header and footer, could be done programatically, but immutable strings
 		outputTEMP = ""
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):

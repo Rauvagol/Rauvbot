@@ -149,18 +149,20 @@ class RunescapeCommands:
 	async def rs99(ctx, *name):
 		def expcalc(missingExperience, skillID):
 			def recursivecalc(experienceBrackets, experienceRateBrackets, loops, remainingTime):
-				if(loops>0):
+				while(loops>0):
 					print(experienceBrackets[len(experienceBrackets)-loops])
 					print(experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])
 					print(experienceRateBrackets[len(experienceRateBrackets)-loops])
 					print((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops])
 					print(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2))
-					print()
 					remainingTime = remainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
+					print(remainingTime)
+					print()
 					loops = loops-1
 					recursivecalc(experienceBrackets, experienceRateBrackets, loops, remainingTime)
-				else:
-					return remainingTime
+				print("got here")
+				print(remainingTime)
+				return remainingTime
 			skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 			for index in range(2, 100):
 				experienceForLevel.append(experienceForLevel[index-1] + (math.floor(index-1+300*2**((index-1)/7))/4))
@@ -248,7 +250,7 @@ class RunescapeCommands:
 					else:
 						skillMissingExperience[index] = str(round(((experienceForLevel[15]-skillMissingExperience[index])/40000), 2)) + "hours of normal trees; followed by" + str(round(((experienceForLevel[30]-experienceForLevel[15])/40000), 2)) + " hours of oaks; followed by " + str(round(((experienceForLevel[35]-experienceForLevel[30])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
 				else:
-					skillMissingExperience[index] = expcalc(skillMissingExperience[index], index)
+					skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index)) + " hours."
 				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n"
 		await ctx.send(outputTEMP)
 

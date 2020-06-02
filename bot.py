@@ -154,7 +154,7 @@ class RunescapeCommands:
 					totalRemainingTime = totalRemainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
 					loops = loops-1
 					recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime)
-				remainingTime = remainingTime + " for a total of " + str(totalRemainingTime) + " hours."
+				remainingTime = remainingTime + " For a total of " + str(totalRemainingTime) + " hours."
 				return remainingTime
 			skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 			for index in range(2, 100):
@@ -168,17 +168,24 @@ class RunescapeCommands:
 					currentLevel = index
 					break
 			if(skillID == 11):
-				fletchingActivityBracketsLazy = (" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows")
-				fletchingLevelBracketsLazy = (1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99)
-				fletchingExperienceBracketsLazy = []
-				for index in range(len(fletchingLevelBracketsLazy)):
-					fletchingExperienceBracketsLazy.append(experienceForLevel[fletchingLevelBracketsLazy[index]])
-				fletchingExperienceRateBracketsLazy = (9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550)
-				for index in range(len(fletchingLevelBracketsLazy)):
-					if(currentLevel<fletchingLevelBracketsLazy[index+1]):
-						remainingBrackets = len(fletchingLevelBracketsLazy)-(index+1)
+				activityBracketsLazy = (" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows")
+				levelBracketsLazy = (1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99)
+				experienceRateBracketsLazy = (9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550)
+				experienceBracketsLazy = []
+				for index in range(len(levelBracketsLazy)):
+					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
+			if(skillID == 12):
+				activityBracketsLazy = (" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing.")
+				levelBracketsLazy = (1, 20, 47, 99)
+				experienceRateBracketsLazy = (1500, 25000, 75000)
+				experienceBracketsLazy = []
+				for index in range(len(levelBracketsLazy)):
+					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
+				for index in range(len(levelBracketsLazy)):
+					if(currentLevel<levelBracketsLazy[index+1]):
+						remainingBrackets = len(levelBracketsLazy)-(index+1)
 						break
-				return(recursivecalc(fletchingActivityBracketsLazy, fletchingExperienceBracketsLazy, fletchingExperienceRateBracketsLazy, remainingBrackets, " ", 0))
+				return(recursivecalc(activityBracketsLazy, experienceBracketsLazy, experienceRateBracketsLazy, remainingBrackets, " ", 0))
 			return(str(missingExperience))
 		experienceForLevel = [-1, 0]
 		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]

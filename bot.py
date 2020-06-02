@@ -167,18 +167,20 @@ class RunescapeCommands:
 				if(experienceForLevel[index+1] > experienceForLevel[99]-missingExperience):
 					currentLevel = index
 					break
-			if(skillID == 11):
+			experienceBracketsLazy = []
+			if(skillID == 10):
+				activityBracketsLazy = [" ", " hours of normal trees and ", " hours of oaks and ", " hours of willows", " hours of unmanipulated teaks."]
+				levelBracketsLazy = [1,  15, 30, 35, 99]
+				experienceRateBracketsLazy = [10000, 40000, 40000, 90000]
+			elif(skillID == 11):
 				activityBracketsLazy = (" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows")
 				levelBracketsLazy = (1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99)
 				experienceRateBracketsLazy = (9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550)
-				experienceBracketsLazy = []
-				for index in range(len(levelBracketsLazy)):
-					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
-			if(skillID == 12):
+			elif(skillID == 12):
 				activityBracketsLazy = (" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing.")
 				levelBracketsLazy = (1, 20, 47, 99)
 				experienceRateBracketsLazy = (1500, 25000, 75000)
-				experienceBracketsLazy = []
+			if(skillID == 10 or skillID == 11 or skillID == 12):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):
@@ -241,15 +243,6 @@ class RunescapeCommands:
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/65)) + " casts of high alch, taking " +  str(round((skillMissingExperience[index]/65)/1200, 2)) + " hours."
 				elif(index == 9):
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
-				elif(index == 10):
-					if(skillMissingExperience[index]>experienceForLevel[35]):
-						skillMissingExperience[index] = str(round((skillMissingExperience[index]/90000), 2)) + " hours of unmanipulated teaks."
-					elif(skillMissingExperience[index]>experienceForLevel[30]):
-						skillMissingExperience[index] = str(round(((experienceForLevel[35]-skillMissingExperience[index])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
-					elif(skillMissingExperience[index]>experienceForLevel[15]):
-						skillMissingExperience[index] = str(round(((experienceForLevel[30]-skillMissingExperience[index])/40000), 2)) + " hours of oaks; followed by " + str(round(((experienceForLevel[35]-experienceForLevel[30])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
-					else:
-						skillMissingExperience[index] = str(round(((experienceForLevel[15]-skillMissingExperience[index])/40000), 2)) + "hours of normal trees; followed by" + str(round(((experienceForLevel[30]-experienceForLevel[15])/40000), 2)) + " hours of oaks; followed by " + str(round(((experienceForLevel[35]-experienceForLevel[30])/40000), 2)) + " hours of willows; followed by " + str(round(((experienceForLevel[99]-experienceForLevel[35])/90000), 2)) + " hours of unmanipulated teaks."
 				else:
 					skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index)) + " hours."
 				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"

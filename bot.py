@@ -168,8 +168,12 @@ class RunescapeCommands:
 					currentLevel = index
 					break
 			experienceBracketsLazy = []
+			if(skillID == 9):
+				activityBracketsLazy = [" ", " hours of cooking shrimp and ", " hours of cooking trout and ", " hours of cooking salmon ", " hours of cooking karambwan."]
+				levelBracketsLazy = [1, 15, 25, 35, 99]
+				experienceRateBracketsLazy = [35000, 85000, 110000, 250000]
 			if(skillID == 10):
-				activityBracketsLazy = [" ", " hours of normal trees and ", " hours of oaks and ", " hours of willows", " hours of unmanipulated teaks."]
+				activityBracketsLazy = [" ", " hours of normal trees and ", " hours of oaks and ", " hours of willows and ", " hours of unmanipulated teaks."]
 				levelBracketsLazy = [1,  15, 30, 35, 99]
 				experienceRateBracketsLazy = [10000, 40000, 40000, 90000]
 			elif(skillID == 11):
@@ -180,7 +184,7 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing.")
 				levelBracketsLazy = (1, 20, 47, 99)
 				experienceRateBracketsLazy = (1500, 25000, 75000)
-			if(skillID == 10 or skillID == 11 or skillID == 12):
+			if(skillID == 9 or skillID == 10 or skillID == 11 or skillID == 12):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):
@@ -241,8 +245,8 @@ class RunescapeCommands:
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/52.5)) + " big bones at gilded altar for " +  str(round((skillMissingExperience[index]/52.5)/2550, 2)) + " hours."
 				elif(index == 8):
 					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/65)) + " casts of high alch, taking " +  str(round((skillMissingExperience[index]/65)/1200, 2)) + " hours."
-				elif(index == 9):
-					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
+				# elif(index == 9):
+				# 	skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/200)) + " jugs of wine, taking " +  str(round((skillMissingExperience[index]/65)/2350, 2)) + " hours."
 				else:
 					skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index)) + " hours."
 				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"

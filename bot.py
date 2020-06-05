@@ -154,7 +154,7 @@ class RunescapeCommands:
 					totalRemainingTime = totalRemainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
 					loops = loops-1
 					recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime)
-				remainingTime = remainingTime + " For a total of " + str(totalRemainingTime) + " hours."
+				# remainingTime = remainingTime + " For a total of " + str(totalRemainingTime) + " hours."
 				return remainingTime
 			skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 			for index in range(2, 100):

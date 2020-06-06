@@ -17,7 +17,8 @@ bot = commands.Bot(command_prefix='!')
 
 @bot.command(name='test', help='for testing')
 async def testcommand(ctx):
-    await ctx.send("Running")
+	print("running")
+	await ctx.send("Running")
 
 @bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
 async def tenSeconds(ctx):
@@ -150,8 +151,6 @@ class RunescapeCommands:
 		def expcalc(missingExperience, skillID):
 			def recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime):
 				while(loops>0):
-					if(remainingTime == " "):
-						print(experienceBrackets[len(experienceBrackets)-loops])
 					remainingTime = remainingTime + str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops]
 					totalRemainingTime = totalRemainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
 					loops = loops-1
@@ -252,12 +251,13 @@ class RunescapeCommands:
 		#figures out the width of the entire table by adding length of the border stuff to len(spacers)
 		tableWidth=12 + len(level_spacer_one+level_spacer_two+level_spacer_three)
 		#Assembling the header and footer, could be done programatically, but immutable strings
-		outputTEMP = ""
+		outputTEMP = []
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
-				skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index)) + " hours."
-				outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"
-		await ctx.send(outputTEMP)
+				# skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index))
+				# outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"
+				outputTEMP.append(skillName[index] + " " + str(expcalc(skillMissingExperience[index], index)) +"\n\n")
+		await ctx.send("".join(outputTEMP))
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):

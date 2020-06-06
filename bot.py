@@ -168,6 +168,10 @@ class RunescapeCommands:
 					currentLevel = index
 					break
 			experienceBracketsLazy = []
+			if(skillID == 7):
+				activityBracketsLazy = [" ", " hours of offering Big Bones at the Gilded Altar."]
+				levelBracketsLazy = [1, 99]
+				experienceRateBracketsLazy = [133875]
 			if(skillID == 8):
 				activityBracketsLazy = [" ", " hours of Lvl-1 enchanting and ", " hours of Lvl-2 enchanting and ", " hours of Lvl-3 enchanting and ", " hours of High Alching."]
 				levelBracketsLazy = [1, 27, 49, 55, 99]
@@ -188,7 +192,7 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing.")
 				levelBracketsLazy = (1, 20, 47, 99)
 				experienceRateBracketsLazy = (1500, 25000, 75000)
-			if(skillID == 8 or skillID == 9 or skillID == 10 or skillID == 11 or skillID == 12):
+			if(skillID == 7 or skillID == 8 or skillID == 9 or skillID == 10 or skillID == 11 or skillID == 12):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):
@@ -245,8 +249,8 @@ class RunescapeCommands:
 					skillMissingExperience[index] = str(round(skillMissingExperience[index]/400, 2)) + " ammonite crab kills"
 				elif(index == 5):
 					skillMissingExperience[index] = str(round(skillMissingExperience[index]/133.33, 2)) + " ammonite crab kills"
-				elif(index == 7):
-					skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/52.5)) + " big bones at gilded altar for " +  str(round((skillMissingExperience[index]/52.5)/2550, 2)) + " hours."
+				# elif(index == 7):
+					# skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/52.5)) + " big bones at gilded altar for " +  str(round((skillMissingExperience[index]/52.5)/2550, 2)) + " hours."
 				# elif(index == 8):
 				# 	skillMissingExperience[index] = str(math.ceil(skillMissingExperience[index]/65)) + " casts of high alch, taking " +  str(round((skillMissingExperience[index]/65)/1200, 2)) + " hours."
 				# elif(index == 9):

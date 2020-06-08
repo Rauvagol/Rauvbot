@@ -203,7 +203,7 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of burning normal logs and ", " hours of burning oak logs and ", " hours of burning willow logs and ", " hours of burning maple logs.")
 				levelBracketsLazy = (1, 15, 30, 45, 99)
 				experienceRateBracketsLazy = (59400, 89100, 133650, 200475)
-			if(skillID < 14):
+			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):

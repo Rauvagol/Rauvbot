@@ -211,6 +211,10 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of forging bronze daggers and ", " hours of forging bronze scimitars and ", " hours of forging bronze warhammers and ", " hours of forging bronze platebodies and ", " hours of forging iron warhammers and ", " hours of forging iron platebodies and ", " hours of forging steel warhammers and ", " hours of making gold bars in the blast furnace." )
 				levelBracketsLazy = (1, 5, 9, 18, 24, 33, 39, 40, 99)
 				experienceRateBracketsLazy = (13900, 25700, 36200, 52100, 72300, 104200, 108500, 300000)
+			elif(skillID == 16):
+				activityBracketsLazy = (" ", " hours of mining copper or tin ore and ", " hours of mining iron ore and ", " hours of Motherlode Mine.")
+				levelBracketsLazy = (1, 15, 30, 99)
+				experienceRateBracketsLazy = (5000, 45000, 40000)
 			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])

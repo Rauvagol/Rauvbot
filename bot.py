@@ -215,6 +215,10 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of mining copper or tin ore and ", " hours of mining iron ore and ", " hours of Motherlode Mine.")
 				levelBracketsLazy = (1, 15, 30, 99)
 				experienceRateBracketsLazy = (5000, 45000, 40000)
+			elif(skillID == 17):
+				activityBracketsLazy = (" ", " hours of making attack potions and ", " hours of making guam tar and ", " hours of making marrentill tar and ", " hours of making tarromin tar and ", " hours of making harralander tar.")
+				levelBracketsLazy = (1, 19, 31, 39, 44, 99)
+				experienceRateBracketsLazy = (62500, 61000, 86000, 110000, 145000)
 			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])

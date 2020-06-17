@@ -335,7 +335,7 @@ async def Generator(ctx, width, height):
 		await ctx.send("Too small, lol.")
 	if(((height-1)+width*height)>1994):
 		success = 1
-		await ctx.send("Message length limit says no. ((height-1)+width*height) must be less than 2000.")
+		await ctx.send("Message length limit says no. ((height-1)+width*height) must be less than 1994.")
 	while(success == 0):
 		outputArray = [["X" for column in range(width)] for row in range(height)]
 		for row in range(height):

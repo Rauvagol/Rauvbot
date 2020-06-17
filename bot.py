@@ -333,7 +333,7 @@ async def Generator(ctx, width, height):
 	if(width<2 or height<2):
 		success = 1
 		await ctx.send("Too small, lol.")
-	if(width*height>1994):
+	if(((height-1)+width*height)>1994):
 		success = 1
 		await ctx.send("Message length limit says no.")
 	while(success == 0):

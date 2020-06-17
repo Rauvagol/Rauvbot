@@ -227,7 +227,7 @@ class RunescapeCommands:
 				activityBracketsLazy = (" ", " hours of pickpocketing normies and ", " hours of stealing from baker's stalls and ", " hours of stealing from fruit stalls and ", " hours of ~~suffering~~ blackjacking bearded bandits and ", " hours of stealing artefacts.")
 				levelBracketsLazy = (1, 5, 25, 45, 49, 99)
 				experienceRateBracketsLazy = (5000, 19200, 33000, 60000, 160000)	
-			elif(skillID == 19):
+			elif(skillID == 20):
 				activityBracketsLazy = (" ", " hours of violence.")
 				levelBracketsLazy = (1, 99)
 				experienceRateBracketsLazy = (60000)				

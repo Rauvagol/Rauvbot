@@ -192,45 +192,45 @@ class RunescapeCommands:
 				levelBracketsLazy = [1,  15, 30, 35, 99]
 				experienceRateBracketsLazy = [10000, 40000, 40000, 90000]
 			elif(skillID == 11):
-				activityBracketsLazy = (" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows")
-				levelBracketsLazy = (1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99)
-				experienceRateBracketsLazy = (9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550)
+				activityBracketsLazy = [" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows"]
+				levelBracketsLazy = [1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99]
+				experienceRateBracketsLazy = [9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550]
 			elif(skillID == 12):
-				activityBracketsLazy = (" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing.")
-				levelBracketsLazy = (1, 20, 47, 99)
-				experienceRateBracketsLazy = (1500, 25000, 75000)
+				activityBracketsLazy = [" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ", " hours of Drift Net fishing."]
+				levelBracketsLazy = [1, 20, 47, 99]
+				experienceRateBracketsLazy = [1500, 25000, 75000]
 			elif(skillID == 13):
-				activityBracketsLazy = (" ", " hours of burning normal logs and ", " hours of burning oak logs and ", " hours of burning willow logs and ", " hours of burning maple logs.")
-				levelBracketsLazy = (1, 15, 30, 45, 99)
-				experienceRateBracketsLazy = (59400, 89100, 133650, 200475)
+				activityBracketsLazy = [" ", " hours of burning normal logs and ", " hours of burning oak logs and ", " hours of burning willow logs and ", " hours of burning maple logs."]
+				levelBracketsLazy = [1, 15, 30, 45, 99]
+				experienceRateBracketsLazy = [59400, 89100, 133650, 200475]
 			elif(skillID == 14):
-				activityBracketsLazy = (" ", " hours of making leather gloves and ", " hours of making leather chaps and ", " hours of cutting sapphires and ", " hours of cutting emeralds and ", " hours of cutting rubies and ", " hours of cutting diamonds and ", " hours of making fire battlestaffs and ", " hours of making air battlestaffs and ", " hours of making red d'hide bodies and ", " hours of making black d'hide bodies.")
-				levelBracketsLazy = (1, 18, 20, 27, 34, 43, 62, 66, 77, 84, 99)
-				experienceRateBracketsLazy = (26000, 50000, 145000, 175000, 230000, 290000, 306000, 336000, 386000, 425000)
+				activityBracketsLazy = [" ", " hours of making leather gloves and ", " hours of making leather chaps and ", " hours of cutting sapphires and ", " hours of cutting emeralds and ", " hours of cutting rubies and ", " hours of cutting diamonds and ", " hours of making fire battlestaffs and ", " hours of making air battlestaffs and ", " hours of making red d'hide bodies and ", " hours of making black d'hide bodies."]
+				levelBracketsLazy = [1, 18, 20, 27, 34, 43, 62, 66, 77, 84, 99]
+				experienceRateBracketsLazy = [26000, 50000, 145000, 175000, 230000, 290000, 306000, 336000, 386000, 425000]
 			elif(skillID == 15):
-				activityBracketsLazy = (" ", " hours of forging bronze daggers and ", " hours of forging bronze scimitars and ", " hours of forging bronze warhammers and ", " hours of forging bronze platebodies and ", " hours of forging iron warhammers and ", " hours of forging iron platebodies and ", " hours of forging steel warhammers and ", " hours of making gold bars in the blast furnace." )
-				levelBracketsLazy = (1, 5, 9, 18, 24, 33, 39, 40, 99)
-				experienceRateBracketsLazy = (13900, 25700, 36200, 52100, 72300, 104200, 108500, 300000)
+				activityBracketsLazy = [" ", " hours of forging bronze daggers and ", " hours of forging bronze scimitars and ", " hours of forging bronze warhammers and ", " hours of forging bronze platebodies and ", " hours of forging iron warhammers and ", " hours of forging iron platebodies and ", " hours of forging steel warhammers and ", " hours of making gold bars in the blast furnace." ]
+				levelBracketsLazy = [1, 5, 9, 18, 24, 33, 39, 40, 99]
+				experienceRateBracketsLazy = [13900, 25700, 36200, 52100, 72300, 104200, 108500, 300000]
 			elif(skillID == 16):
-				activityBracketsLazy = (" ", " hours of mining copper or tin ore and ", " hours of mining iron ore and ", " hours of Motherlode Mine.")
-				levelBracketsLazy = (1, 15, 30, 99)
-				experienceRateBracketsLazy = (5000, 45000, 40000)
+				activityBracketsLazy = [" ", " hours of mining copper or tin ore and ", " hours of mining iron ore and ", " hours of Motherlode Mine."]
+				levelBracketsLazy = [1, 15, 30, 99]
+				experienceRateBracketsLazy = [5000, 45000, 40000]
 			elif(skillID == 17):
-				activityBracketsLazy = (" ", " hours of making attack potions and ", " hours of making guam tar and ", " hours of making marrentill tar and ", " hours of making tarromin tar and ", " hours of making harralander tar.")
-				levelBracketsLazy = (1, 19, 31, 39, 44, 99)
-				experienceRateBracketsLazy = (62500, 61000, 86000, 110000, 145000)
+				activityBracketsLazy = [" ", " hours of making attack potions and ", " hours of making guam tar and ", " hours of making marrentill tar and ", " hours of making tarromin tar and ", " hours of making harralander tar."]
+				levelBracketsLazy = [1, 19, 31, 39, 44, 99]
+				experienceRateBracketsLazy = [62500, 61000, 86000, 110000, 145000]
 			elif(skillID == 18):
-				activityBracketsLazy = (" ", " hours of gnome stronghold agility course and ", " hours of Draynor Village rooftop course and ", " hours of Varrock rooftop course and ", " hours of Canifis rooftop course and ", " hours of Seers' Village rooftop course and ", " hours of Rellekka village rooftop course and ", " hours of Ardougne rooftop course.")
-				levelBracketsLazy = (1, 10, 30, 40, 60, 80, 90, 99)
-				experienceRateBracketsLazy = (8000, 9000, 13200, 19500, 52000, 54000, 61000)
+				activityBracketsLazy = [" ", " hours of gnome stronghold agility course and ", " hours of Draynor Village rooftop course and ", " hours of Varrock rooftop course and ", " hours of Canifis rooftop course and ", " hours of Seers' Village rooftop course and ", " hours of Rellekka village rooftop course and ", " hours of Ardougne rooftop course."]
+				levelBracketsLazy = [1, 10, 30, 40, 60, 80, 90, 99]
+				experienceRateBracketsLazy = [8000, 9000, 13200, 19500, 52000, 54000, 61000]
 			elif(skillID == 19):
-				activityBracketsLazy = (" ", " hours of pickpocketing normies and ", " hours of stealing from baker's stalls and ", " hours of stealing from fruit stalls and ", " hours of ~~suffering~~ blackjacking bearded bandits and ", " hours of stealing artefacts.")
-				levelBracketsLazy = (1, 5, 25, 45, 49, 99)
-				experienceRateBracketsLazy = (5000, 19200, 33000, 60000, 160000)	
+				activityBracketsLazy = [" ", " hours of pickpocketing normies and ", " hours of stealing from baker's stalls and ", " hours of stealing from fruit stalls and ", " hours of ~~suffering~~ blackjacking bearded bandits and ", " hours of stealing artefacts."]
+				levelBracketsLazy = [1, 5, 25, 45, 49, 99]
+				experienceRateBracketsLazy = [5000, 19200, 33000, 60000, 160000]
 			elif(skillID == 20):
-				activityBracketsLazy = (" ", " hours of violence.")
-				levelBracketsLazy = (1, 99)
-				experienceRateBracketsLazy = (60000)				
+				activityBracketsLazy = [" ", " hours of violence."]
+				levelBracketsLazy = [1, 99]
+				experienceRateBracketsLazy = [60000]				
 			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])

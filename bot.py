@@ -151,10 +151,13 @@ class RunescapeCommands:
 		def expcalc(missingExperience, skillID):
 			def recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime):
 				while(loops>0):
-					remainingTime = remainingTime + str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops]
+					print(loops)
+					print(str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops])
+					print()
+					remainingTime.append(str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops])
 					totalRemainingTime = totalRemainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
 					loops = loops-1
-					recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime)
+					# recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime)
 				# remainingTime = remainingTime + " For a total of " + str(totalRemainingTime) + " hours."
 				return remainingTime
 			skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
@@ -247,6 +250,7 @@ class RunescapeCommands:
 				activityBracketsLazy = [" ", " regular planks and ", " oak planks."]
 				levelBracketsLazy = [1, 15, 99]
 				experienceRateBracketsLazy = [29, 60]
+			remainingTime = []
 			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
@@ -256,7 +260,8 @@ class RunescapeCommands:
 						experienceBracketsLazy.insert(index, experienceForLevel[99]-missingExperience)
 						remainingBrackets = len(levelBracketsLazy)-(index+1)
 						break
-				return(recursivecalc(activityBracketsLazy, experienceBracketsLazy, experienceRateBracketsLazy, remainingBrackets, " ", 0))
+				print("brackets = " +str(remainingBrackets))
+				return(recursivecalc(activityBracketsLazy, experienceBracketsLazy, experienceRateBracketsLazy, remainingBrackets, remainingTime, 0))
 			return(str(missingExperience))
 		experienceForLevel = [-1, 0]
 		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
@@ -304,7 +309,11 @@ class RunescapeCommands:
 			if(index > 1 and skillMissingExperience[index]>0):
 				# skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index))
 				# outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"
-				outputTEMP.append(skillName[index] + " " + str(expcalc(skillMissingExperience[index], index)) +"\n\n")
+				holder = "".join(expcalc(skillMissingExperience[index], index))
+				# print(expcalc(skillMissingExperience[index], index))
+				# print(holder)
+				outputTEMP.append(skillName[index] + " " + holder +"\n\n")
+		# print("".join(outputTEMP))
 		await ctx.send("".join(outputTEMP))
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')

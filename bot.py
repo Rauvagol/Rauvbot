@@ -243,6 +243,10 @@ class RunescapeCommands:
 				activityBracketsLazy = [" ", " regular birdhouses and ", " oak birdhouses and ", " willow birdhouses and ", " teak birdhouses and ", " maple birdhouses and ", " mahogany birdhouses and ", " yew birdhouses and ", " magic birdhouses and ", " redwood birdhouses."]
 				levelBracketsLazy = [5, 14, 24, 34, 44, 49, 59, 74, 89]
 				experienceRateBracketsLazy = [280, 420, 560, 700, 820, 960, 1020, 1140, 1200]
+			elif(skillID == 24):
+				activityBracketsLazy = [" ", " regular planks and ", " oak planks."]
+				levelBracketsLazy = [1, 15, 99]
+				experienceRateBracketsLazy = [29, 60]
 			if("activityBracketsLazy" in locals()):
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])

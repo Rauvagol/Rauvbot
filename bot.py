@@ -151,14 +151,9 @@ class RunescapeCommands:
 		def expcalc(missingExperience, skillID):
 			def recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime):
 				while(loops>0):
-					print(loops)
-					print(str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops])
-					print()
 					remainingTime.append(str(round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)) + activityBrackets[len(experienceBrackets)-loops])
 					totalRemainingTime = totalRemainingTime + round((experienceBrackets[len(experienceBrackets)-loops] - experienceBrackets[len(experienceBrackets)-(loops+1)])/experienceRateBrackets[len(experienceRateBrackets)-loops],2)
 					loops = loops-1
-					# recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime, totalRemainingTime)
-				# remainingTime = remainingTime + " For a total of " + str(totalRemainingTime) + " hours."
 				return remainingTime
 			skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 			for index in range(2, 100):
@@ -291,29 +286,12 @@ class RunescapeCommands:
 			skillLevel.append(holder[1])
 			skillExperience.append(holder[2])
 			if(index>0):
-				#Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
-				exptotal += min(13034431, int(holder[2]))
 				skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
-		#Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
-		level_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
-		level_spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")
-		level_spacer_three = "═".ljust(len(max(skillExperience, key = len)), "═")
-		exptotal = int(exptotal)
-		#Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
-		percent_to_99s = round(100*exptotal/299791913, 2)
-		#figures out the width of the entire table by adding length of the border stuff to len(spacers)
-		tableWidth=12 + len(level_spacer_one+level_spacer_two+level_spacer_three)
-		#Assembling the header and footer, could be done programatically, but immutable strings
 		outputTEMP = []
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
-				# skillMissingExperience[index] = str(expcalc(skillMissingExperience[index], index))
-				# outputTEMP += skillName[index] + " " + str(skillMissingExperience[index]) +"\n\n"
 				holder = "".join(expcalc(skillMissingExperience[index], index))
-				# print(expcalc(skillMissingExperience[index], index))
-				# print(holder)
 				outputTEMP.append(skillName[index] + " " + holder +"\n\n")
-		# print("".join(outputTEMP))
 		await ctx.send("".join(outputTEMP))
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')

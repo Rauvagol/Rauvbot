@@ -235,7 +235,7 @@ class RunescapeCommands:
 				levelBracketsLazy = [1, 99]
 				experienceRateBracketsLazy = [60000]
 			elif(skillID == 21):
-				activityBracketsLazy = [" ", " hours of raking weeds (don't do this) and ", " hours of tithe farming Golovanova and ", " hours of tithe farming Bologano and ", " hours of tithe farming Logavano"]
+				activityBracketsLazy = [" ", " hours of raking weeds (don't do this) and ", " hours of tithe farming Golovanova and ", " hours of tithe farming Bologano and ", " hours of tithe farming Logavano."]
 				levelBracketsLazy = [1, 34, 54, 74, 99]
 				experienceRateBracketsLazy = [8000, 28273, 65970, 108380]
 			elif(skillID == 22):

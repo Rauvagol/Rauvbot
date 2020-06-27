@@ -239,7 +239,7 @@ class RunescapeCommands:
 				experienceRateBracketsLazy = [40000, 50000]
 			elif(skillID == 23):
 				activityBracketsLazy = [" ", " regular birdhouses and ", " oak birdhouses and ", " willow birdhouses and ", " teak birdhouses and ", " maple birdhouses and ", " mahogany birdhouses and ", " yew birdhouses and ", " magic birdhouses and ", " redwood birdhouses."]
-				levelBracketsLazy = [5, 14, 24, 34, 44, 49, 59, 74, 89]
+				levelBracketsLazy = [5, 14, 24, 34, 44, 49, 59, 74, 89, 99]
 				experienceRateBracketsLazy = [280, 420, 560, 700, 820, 960, 1020, 1140, 1200]
 			elif(skillID == 24):
 				activityBracketsLazy = [" ", " regular planks and ", " oak planks."]
@@ -250,12 +250,12 @@ class RunescapeCommands:
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):
+					print(currentLevel + skillID)
 					if(currentLevel<levelBracketsLazy[index+1]):
 						experienceBracketsLazy.pop(0)
 						experienceBracketsLazy.insert(index, experienceForLevel[99]-missingExperience)
 						remainingBrackets = len(levelBracketsLazy)-(index+1)
 						break
-				print("brackets = " +str(remainingBrackets))
 				return(recursivecalc(activityBracketsLazy, experienceBracketsLazy, experienceRateBracketsLazy, remainingBrackets, remainingTime, 0))
 			return(str(missingExperience))
 		experienceForLevel = [-1, 0]

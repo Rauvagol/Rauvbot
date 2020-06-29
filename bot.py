@@ -250,7 +250,6 @@ class RunescapeCommands:
 				for index in range(len(levelBracketsLazy)):
 					experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
 				for index in range(len(levelBracketsLazy)):
-					print(currentLevel + skillID)
 					if(currentLevel<levelBracketsLazy[index+1]):
 						experienceBracketsLazy.pop(0)
 						experienceBracketsLazy.insert(index, experienceForLevel[99]-missingExperience)
@@ -291,8 +290,8 @@ class RunescapeCommands:
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
 				holder = "".join(expcalc(skillMissingExperience[index], index))
-				outputTEMP.append(skillName[index] + " " + holder +"\n\n")
-		await ctx.send("".join(outputTEMP))
+				outputTEMP.append(" ║ " + skillName[index] + " ║ " + holder +" ║\n")
+		await ctx.send("```"+"".join(outputTEMP)+"```")
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):

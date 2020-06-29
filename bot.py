@@ -280,6 +280,8 @@ class RunescapeCommands:
 		#Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
 		dataHolder = data.read().decode().split("\n")
 		#Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column (discarding rank)
+		
+		rs99_spacer_two_length = 0
 		for index in range (len(skillName)-1):
 			holder = dataHolder[index].split(",")
 			skillLevel.append(holder[1])
@@ -290,7 +292,12 @@ class RunescapeCommands:
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
 				holder = "".join(expcalc(skillMissingExperience[index], index))
+				rs99_spacer_two_length = max(rs99_spacer_two_length, len(holder))
 				outputTEMP.append(" ║ " + skillName[index] + " ║ " + holder +" ║\n")
+		rs99_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
+		rs99_spacer_two = "═".ljust(rs99_spacer_two_length, "═")
+		print(rs99_spacer_one)
+		print(rs99_spacer_two)
 		await ctx.send("```"+"".join(outputTEMP)+"```")
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')

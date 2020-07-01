@@ -298,7 +298,8 @@ class RunescapeCommands:
 		rs99_spacer_two = "═".ljust(rs99_spacer_two_length, "═")
 		print(rs99_spacer_one)
 		print(rs99_spacer_two)
-		await ctx.send("```"+"".join(outputTEMP)+"```")
+		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"
+		await ctx.send("```"+ header + "".join(outputTEMP)+"```")
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):

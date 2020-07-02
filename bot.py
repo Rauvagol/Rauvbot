@@ -289,13 +289,16 @@ class RunescapeCommands:
 			if(index>0):
 				skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
 		outputTEMP = []
+		calculated_holder = []
+		for index in range(len(skillName)):
+			if(index > 1 and skillMissingExperience[index]>0):
+				calculated_holder.append("".join(expcalc(skillMissingExperience[index], index)))
+		rs99_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
+		rs99_spacer_two = "═".ljust(len(max(calculated_holder, key = len)), "═")
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
 				holder = "".join(expcalc(skillMissingExperience[index], index))
-				rs99_spacer_two_length = max(rs99_spacer_two_length, len(holder))
-				outputTEMP.append(" ║ " + skillName[index] + " ║ " + holder +" ║\n")
-		rs99_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
-		rs99_spacer_two = "═".ljust(rs99_spacer_two_length, "═")
+				outputTEMP.append(" ║ " + skillName[index].ljust(len(rs99_spacer_one)) + " ║ " + holder +" ║\n")
 		print(rs99_spacer_one)
 		print(rs99_spacer_two)
 		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"

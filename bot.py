@@ -190,7 +190,7 @@ class RunescapeCommands:
 				levelBracketsLazy = [1,  15, 30, 35, 99]
 				experienceRateBracketsLazy = [10000, 40000, 40000, 90000]
 			elif(skillID == 11):
-				activityBracketsLazy = [" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows"]
+				activityBracketsLazy = [" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ", " hours of Unstrung Oak Shortbows and ", " hours of Unstrung Oak Longbows and ", " hours of Unstrung Willow Shortbows and ", " hours of Unstrung Willow Longbows and ", " hours of Unstrung Maple Shortbows and ", " hours of Unstrung Maple Longbows and ", " hours of Unstrung Yew Shortbows and ", " hours of Unstrung Yew Longbows and ", " hours of Unstrung Magic Shortbows and ", " hours of Unstrung Magic Longbows."]
 				levelBracketsLazy = [1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99]
 				experienceRateBracketsLazy = [9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500, 141100, 155550]
 			elif(skillID == 12):
@@ -306,7 +306,7 @@ class RunescapeCommands:
 				outputTEMP.append(" ║ " + skillName[index].ljust(len(rs99_spacer_one)) + " ║ " + holder.rjust(len(rs99_spacer_two)) +" ║\n")
 		print(rs99_spacer_one)
 		print(rs99_spacer_two)
-		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"
+		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"+" ║ " + "Skill Name".ljust(len(rs99_spacer_one)) + " ║ " + "To Do:".ljust(len(rs99_spacer_two)) + " ║\n"+" ╠═" + rs99_spacer_one + "═╬═" + rs99_spacer_two + "═╣\n"
 		footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
 		try:
 			await ctx.send("```"+ header + "".join(outputTEMP)+footer+"```")

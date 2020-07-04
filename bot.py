@@ -307,8 +307,9 @@ class RunescapeCommands:
 		print(rs99_spacer_one)
 		print(rs99_spacer_two)
 		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"
+		footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
 		try:
-			await ctx.send("```"+ header + "".join(outputTEMP)+"```")
+			await ctx.send("```"+ header + "".join(outputTEMP)+footer+"```")
 		except:
 			await ctx.send("Error, to-do list too long, work on " + skillName[longest_skill][:-1] + ", requiring " + calculated_holder[longest_skill-2])
 

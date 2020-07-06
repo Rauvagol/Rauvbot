@@ -297,21 +297,23 @@ class RunescapeCommands:
 		longest_skill = -1
 		for index in range (len(calculated_holder)):
 			if(len(calculated_holder[index])==len(longest_skill_todo)):
-				longest_skill = index+2
+				longest_skill = index
 		rs99_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
 		rs99_spacer_two = "═".ljust(len(max(calculated_holder, key = len)), "═")
+		associatedSkill = []
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
 				holder = "".join(expcalc(skillMissingExperience[index], index))
+				associatedSkill.append(skillName[index])
 				outputTEMP.append(" ║ " + skillName[index].ljust(len(rs99_spacer_one)) + " ║ " + holder.rjust(len(rs99_spacer_two)) +" ║\n")
-		print(rs99_spacer_one)
-		print(rs99_spacer_two)
+		print(associatedSkill)
+		print(calculated_holder)
 		header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n"+" ║ " + "Skill Name".ljust(len(rs99_spacer_one)) + " ║ " + "To Do:".ljust(len(rs99_spacer_two)) + " ║\n"+" ╠═" + rs99_spacer_one + "═╬═" + rs99_spacer_two + "═╣\n"
 		footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
 		try:
 			await ctx.send("```"+ header + "".join(outputTEMP)+footer+"```")
 		except:
-			await ctx.send("Error, to-do list too long, work on " + skillName[longest_skill][:-1] + ", requiring " + calculated_holder[longest_skill-2])
+			await ctx.send("Error, to-do list too long, work on " + associatedSkill[longest_skill][:-1] + ", requiring " + calculated_holder[longest_skill])
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):

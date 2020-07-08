@@ -293,7 +293,11 @@ class RunescapeCommands:
 		for index in range(len(skillName)):
 			if(index > 1 and skillMissingExperience[index]>0):
 				calculated_holder.append("".join(expcalc(skillMissingExperience[index], index)))
-		longest_skill_todo = max(calculated_holder, key=len)
+		try:
+			longest_skill_todo = max(calculated_holder, key=len)
+		except:
+			if(username=="himtheguy"):
+				await ctx.send("https://youtu.be/LDU_Txk06tM?t=75")
 		longest_skill = -1
 		for index in range (len(calculated_holder)):
 			if(len(calculated_holder[index])==len(longest_skill_todo)):

@@ -11,9 +11,52 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
+intents = discord.Intents.all()
+# bot = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+@bot.event
+async def on_ready():
+	print("logged in")
+
+@bot.event
+async def on_raw_reaction_add(payload):
+	message_id=payload.message_id
+	if(message_id == 773416052796555264):
+		guild = bot.get_guild(payload.guild_id)
+		if(payload.emoji.name == "nice"):
+			role = discord.utils.get(guild.roles, name='test role')
+		if(role is not None):
+			member = payload.member
+			if(member is not None):
+				await member.add_roles(role)
+				print(str(member) + " assigned role \"" + role.name + "\"")
 
 
-bot = commands.Bot(command_prefix='!')
+@bot.event
+async def on_raw_reaction_remove(payload):
+	message_id=payload.message_id
+	if(message_id == 773416052796555264):
+		print(" ")
+		print(payload)
+		guild = bot.get_guild(payload.guild_id)
+		print(guild)
+		print(payload.user_id)
+		print(str(guild.get_member(106205285760135168)))
+		member = guild.get_member(payload.user_id)
+		print(member)
+		if(payload.emoji.name == "nice"):
+			print("yes")
+			role = discord.utils.get(guild.roles, name='test role')
+			print(role.name)
+		if(role is not None):
+			print(payload)
+			print(member)
+			print(guild.get_member(payload.user_id))
+			if(member is not None):
+				print("here")
+				await member.remove_roles(role)
+
 
 @bot.command(name='test', help='for testing')
 async def testcommand(ctx):

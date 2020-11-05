@@ -4,6 +4,7 @@ import discord
 import urllib
 import random
 import math
+import time
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -57,6 +58,17 @@ async def on_raw_reaction_remove(payload):
 				print("here")
 				await member.remove_roles(role)
 
+last_niced = 0
+@bot.event
+async def on_message(message):
+	global last_niced
+	if(time.time() > last_niced+5):
+		print (str(time.time()) + ">" + str(last_niced+5))
+		if(not message.author.bot):
+			if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
+				last_niced = time.time()
+				await message.channel.send('Nice.')
+
 
 @bot.command(name='test', help='for testing')
 async def testcommand(ctx):
@@ -66,9 +78,6 @@ async def testcommand(ctx):
 @bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
 async def tenSeconds(ctx):
 	await ctx.send("https://i.imgur.com/tnJtepM.jpg")
-
-
-
 
 class RunescapeCommands:
 

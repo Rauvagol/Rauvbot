@@ -14,11 +14,16 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 # bot = discord.Client(intents=intents)
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!')
 
 @bot.event
 async def on_ready():
 	print("logged in")
+
+@bot.command(name='test', help='for testing')
+async def testcommand(ctx):
+	print("running")
+	await ctx.send("Running")
 
 @bot.event
 async def on_raw_reaction_add(payload):
@@ -61,23 +66,25 @@ async def on_raw_reaction_remove(payload):
 last_niced = 0
 @bot.event
 async def on_message(message):
-	global last_niced
-	if(time.time() > last_niced+5):
-		print (str(time.time()) + ">" + str(last_niced+5))
-		if(not message.author.bot):
-			if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
-				last_niced = time.time()
-				await message.channel.send('Nice.')
+	if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
+		global last_niced
+		if(time.time() > last_niced+5):
+			print (str(time.time()) + ">" + str(last_niced+5))
+			if(not message.author.bot):
+					last_niced = time.time()
+					await message.channel.send('Nice.')
+	else:
+		await bot.process_commands(message)
 
+class ChatCommands:
 
-@bot.command(name='test', help='for testing')
-async def testcommand(ctx):
-	print("running")
-	await ctx.send("Running")
+	@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
+	async def tenSeconds(ctx):
+		await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
-@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
-async def tenSeconds(ctx):
-	await ctx.send("https://i.imgur.com/tnJtepM.jpg")
+	@bot.command(name='christmas', help='for the holiday spirit')
+	async def christmas(ctx):
+		await ctx.send("Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")
 
 class RunescapeCommands:
 

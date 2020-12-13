@@ -86,6 +86,10 @@ class ChatCommands:
 	async def christmas(ctx):
 		await ctx.send("Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")
 
+	@bot.command(name='breakup', help = 'for serious conversations')
+	async def breakup(ctx):
+		await ctx.send("Babe :baby::sob:, i'm :cupid: breaking :hammer: up :arrow_up: with you :point_left_tone2:. it's not you :point_left::no_entry_sign:, you :point_left: were poggers :sunglasses::nail_care:. it's me, i'm :cupid: omegalul :crying_cat_face::person_frowning:. im :cupid: sorry :person_bowing: if this is pepehands :palms_up_together: but :thinking: it has to be done :hammer:, i've :person_raising_hand_tone1: just been feeling :grin: pepega and our relationship :couple: has been weirdchamp :scream_cat: for months :calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa :stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
+
 class RunescapeCommands:
 
 	@bot.command(name='rslookup', help = 'takes osrs username as a parameter and gives stats on levels and kill count')

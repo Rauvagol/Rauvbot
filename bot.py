@@ -68,7 +68,7 @@ last_niced = 0
 async def on_message(message):
 	if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
 		global last_niced
-		if(time.time() > last_niced+600):
+		if(time.time() > last_niced+120):
 			print (str(time.time()) + ">" + str(last_niced+5))
 			if(not message.author.bot):
 					last_niced = time.time()

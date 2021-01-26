@@ -191,6 +191,10 @@ class RunescapeCommands:
 				#Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
 				exptotal += min(13034431, int(holder[2]))
 				skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
+		for index in range(len(skillLevel)):
+			print(skillLevel[index])
+			if skillLevel[index] == "69":
+				skillLevel[index] = "Nice."
 		#Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
 		level_spacer_one = "═".ljust(len(max(skillName, key = len)), "═")
 		level_spacer_two = "═".ljust(len(max(skillLevel, key = len)), "═")

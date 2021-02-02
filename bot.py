@@ -76,6 +76,13 @@ async def on_message(message):
 	else:
 		await bot.process_commands(message)
 
+@bot.event
+async def on_message(message):
+	if("lmao" in message.content.lower()):
+		await message.channel.send("You mean lamo.")
+	else:
+		await bot.process_commands(message)
+
 class ChatCommands:
 
 	@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')

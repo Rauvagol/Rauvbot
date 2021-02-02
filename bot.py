@@ -66,6 +66,8 @@ async def on_raw_reaction_remove(payload):
 last_niced = 0
 @bot.event
 async def on_message(message):
+	if("lmao" in message.content.lower()):
+		await message.channel.send("You mean lamo.")
 	if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
 		global last_niced
 		if(time.time() > last_niced+120):
@@ -73,13 +75,6 @@ async def on_message(message):
 			if(not message.author.bot):
 					last_niced = time.time()
 					await message.channel.send('Nice.')
-	else:
-		await bot.process_commands(message)
-
-@bot.event
-async def on_message(message):
-	if("lmao" in message.content.lower()):
-		await message.channel.send("You mean lamo.")
 	else:
 		await bot.process_commands(message)
 

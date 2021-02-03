@@ -76,7 +76,7 @@ async def on_message(message):
 			if(not message.author.bot):
 					last_niced = time.time()
 					await message.channel.send('Nice.')
-	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "shut up"):
+	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
 			await message.channel.send('lamo')
 	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "test"):
 		print("yes")

@@ -5,6 +5,7 @@ import urllib
 import random
 import math
 import time
+import string
 
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -68,13 +69,17 @@ last_niced = 0
 async def on_message(message):
 	if("lmao" in message.content.lower()):
 		await message.channel.send("You mean lamo.")
-	if(message.content.lower() == 'nice' or message.content.lower() == 'nice.' or message.content.lower() == 'nice!' or message.content.lower() == 'nice?'):
+	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "nice"):
 		global last_niced
 		if(time.time() > last_niced+120):
 			print (str(time.time()) + ">" + str(last_niced+5))
 			if(not message.author.bot):
 					last_niced = time.time()
 					await message.channel.send('Nice.')
+	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "shut up"):
+			await message.channel.send('lamo')
+	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "test"):
+		print("yes")
 	else:
 		await bot.process_commands(message)
 

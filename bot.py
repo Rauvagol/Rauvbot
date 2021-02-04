@@ -97,6 +97,14 @@ class ChatCommands:
 	async def breakup(ctx):
 		await ctx.send("Babe :baby::sob:, i'm :cupid: breaking :hammer: up :arrow_up: with you :point_left_tone2:. it's not you :point_left::no_entry_sign:, you :point_left: were poggers :sunglasses::nail_care:. it's me, i'm :cupid: omegalul :crying_cat_face::person_frowning:. im :cupid: sorry :person_bowing: if this is pepehands :palms_up_together: but :thinking: it has to be done :hammer:, i've :person_raising_hand_tone1: just been feeling :grin: pepega and our relationship :couple: has been weirdchamp :scream_cat: for months :calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa :stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
 
+	@bot.command(name = 'modabuse',  help = "change user's nickname given id and new nickname")
+	async def modabuse(ctx, id: int, newname):
+		if(id == 106205285760135168):
+			await ctx.send("No can do boss. Discord doesn't let me opress the server owner.")
+		victim = await ctx.guild.fetch_member(id)
+		await victim.edit(nick = newname)
+		await ctx.send("Done")
+
 class RunescapeCommands:
 
 	@bot.command(name='rslookup', help = 'takes osrs username as a parameter and gives stats on levels and kill count')

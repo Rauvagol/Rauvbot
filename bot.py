@@ -415,24 +415,24 @@ class RunescapeCommands:
 		killcount_output = ""
 		killcount_outputList = []
 		async with ctx.typing():
-		try:
-			data=urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player="+username.replace(" ", "%20"))
-		except:
-			await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
-		#Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
-		killcount_dataHolder = data.read().decode().split("\n")
-		for index in range (numSkills+1, len(killcount_dataHolder)-1):
-			holder = killcount_dataHolder[index].split(",")
-			kcCount.append(holder[1])
-		killcount_spacer_one = "═".ljust(len(max(kcName, key = len)), "═")
-		killcount_spacer_two = "═".ljust(len(max(kcCount, key = len)), "═")
-		killcount_tableWidth=9 + len(killcount_spacer_one+killcount_spacer_two)
-		killcount_header = " ╔═"+killcount_spacer_one+"═══"+killcount_spacer_two+"═╗\n" + " ║ "+"KC for " + username + "║".rjust(killcount_tableWidth-len(" ║ "+"KC for " + username)-1)+"\n" +  " ╠═"+killcount_spacer_one+"═╦═"+killcount_spacer_two+"═╣\n" +  " ║ " + kcName[0].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[0].rjust(len(killcount_spacer_two)) + " ║\n" + " ╠═"+killcount_spacer_one+"═╬═"+killcount_spacer_two+"═╣\n"
-		killcount_footer = " ╚═"+killcount_spacer_one+"═╩═"+killcount_spacer_two+"═╝\n"
-		for index in range (len(kcName)):
-			if(index>0 and int(kcCount[index])>0):
-				killcount_outputList.append(" ║ " + kcName[index].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[index].rjust(len(killcount_spacer_two)) + " ║\n")
-	await ctx.send("```" + killcount_header + "".join(killcount_outputList) + killcount_footer + "```")
+			try:
+				data=urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player="+username.replace(" ", "%20"))
+			except:
+				await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
+			#Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
+			killcount_dataHolder = data.read().decode().split("\n")
+			for index in range (numSkills+1, len(killcount_dataHolder)-1):
+				holder = killcount_dataHolder[index].split(",")
+				kcCount.append(holder[1])
+			killcount_spacer_one = "═".ljust(len(max(kcName, key = len)), "═")
+			killcount_spacer_two = "═".ljust(len(max(kcCount, key = len)), "═")
+			killcount_tableWidth=9 + len(killcount_spacer_one+killcount_spacer_two)
+			killcount_header = " ╔═"+killcount_spacer_one+"═══"+killcount_spacer_two+"═╗\n" + " ║ "+"KC for " + username + "║".rjust(killcount_tableWidth-len(" ║ "+"KC for " + username)-1)+"\n" +  " ╠═"+killcount_spacer_one+"═╦═"+killcount_spacer_two+"═╣\n" +  " ║ " + kcName[0].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[0].rjust(len(killcount_spacer_two)) + " ║\n" + " ╠═"+killcount_spacer_one+"═╬═"+killcount_spacer_two+"═╣\n"
+			killcount_footer = " ╚═"+killcount_spacer_one+"═╩═"+killcount_spacer_two+"═╝\n"
+			for index in range (len(kcName)):
+				if(index>0 and int(kcCount[index])>0):
+					killcount_outputList.append(" ║ " + kcName[index].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[index].rjust(len(killcount_spacer_two)) + " ║\n")
+		await ctx.send("```" + killcount_header + "".join(killcount_outputList) + killcount_footer + "```")
 
 @bot.command(name='generate', help="takes a width and height parameter and generates a neat random thing")
 async def Generator(ctx, width, height):

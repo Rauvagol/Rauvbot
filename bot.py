@@ -89,6 +89,10 @@ class ChatCommands:
 	async def tenSeconds(ctx):
 		await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
+	@bot.command(name='cunt', help='for when you need to express yourself in song')
+	async def tenSeconds(ctx):
+		await ctx.send("https://www.youtube.com/watch?v=VFh8WubLzYY")
+
 	@bot.command(name='christmas', help='for the holiday spirit')
 	async def christmas(ctx):
 		await ctx.send("Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")

@@ -408,11 +408,11 @@ class RunescapeCommands:
 
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):
-		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"ERROR!", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+		kcName = ["Name","Unknown1","Bounty Hunter - Hunter","Bounty Hunter - Rogue","Clue Scrolls (Total)","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
+					"LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
 					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
-					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]
+					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah"]
 		kcCount = ["Kills"]
 		username = ' '.join([str(word) for word in name]) 
 		numSkills = 23
@@ -425,6 +425,7 @@ class RunescapeCommands:
 				await ctx.send("An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
 			#Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
 			killcount_dataHolder = data.read().decode().split("\n")
+			print(killcount_dataHolder)
 			for index in range (numSkills+1, len(killcount_dataHolder)-1):
 				holder = killcount_dataHolder[index].split(",")
 				kcCount.append(holder[1])

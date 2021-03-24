@@ -117,10 +117,10 @@ class RunescapeCommands:
 		skillLevel = ["Level"]
 		skillExperience = ["Experience"]
 		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"Unknown4","Abyssal Sire","Hydra","Barrows","Unknown7","Unknown8","Cerberus","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13",
-					"Unknown14","Unknown15","Unknown16","Dagganoth Rex","Dagganoth Supreme","Unknown18","Graardor","Unknown20","Unknown21","Hespori","Kalphite Queen",
-					"Unknown23","Kraken","Unknown24","K'ril","Mimic","Unknown26","Unknown27","Sarachnis","Unknown29","Skotizo","Unknown30","Unknown31",
-					"Unknown32","Thermonuclear","Unknown33","Unknown34","Unknown35","Unknown36","Vorkath","Wintertodt","Zalcano","Zulrah"]
+					"Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
+					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
+					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]
 		kcCount = ["Kills"]
 		output = ""
 		exptotal = 0
@@ -409,10 +409,10 @@ class RunescapeCommands:
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):
 		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"Unknown4","Abyssal Sire","Hydra","Barrows","Unknown7","Unknown8","Cerberus","Unknown9","Unknown10","Unknown11","Unknown12","Unknown13",
-					"Unknown14","Unknown15","Unknown16","Dagganoth Rex","Dagganoth Supreme","Unknown18","Graardor","Unknown20","Unknown21","Hespori","Kalphite Queen",
-					"Unknown23","Kraken","Unknown24","K'ril","Mimic","Unknown26","Unknown27","Sarachnis","Unknown29","Skotizo","Unknown30","Unknown31",
-					"Unknown32","Thermonuclear","Unknown33","Unknown34","Unknown35","Unknown36","Vorkath","Wintertodt","Zalcano","Zulrah"]
+					"Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
+					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
+					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]
 		kcCount = ["Kills"]
 		username = ' '.join([str(word) for word in name]) 
 		numSkills = 23

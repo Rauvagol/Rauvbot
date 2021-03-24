@@ -119,7 +119,7 @@ class RunescapeCommands:
 		kcName = ["Name","Unknown1","Bounty Hunter - Hunter","Bounty Hunter - Rogue","Clue Scrolls (Total)","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
 					"LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
-					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
+					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo", "Tempoross", "The Gauntlet","The Corrupted Gauntlet",
 					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah"]
 		kcCount = ["Kills"]
 		output = ""
@@ -411,7 +411,7 @@ class RunescapeCommands:
 		kcName = ["Name","Unknown1","Bounty Hunter - Hunter","Bounty Hunter - Rogue","Clue Scrolls (Total)","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
 					"LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
-					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
+					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo", "Tempoross", "The Gauntlet","The Corrupted Gauntlet",
 					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah"]
 		kcCount = ["Kills"]
 		username = ' '.join([str(word) for word in name]) 

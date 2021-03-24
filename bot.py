@@ -116,11 +116,11 @@ class RunescapeCommands:
 		skillName= ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
 		skillLevel = ["Level"]
 		skillExperience = ["Experience"]
-		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"ERROR!", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+		kcName = ["Name","Unknown1","Bounty Hunter - Hunter","Bounty Hunter - Rogue","Clue Scrolls (Total)","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
+					"LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
 					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
-					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]
+					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah"]
 		kcCount = ["Kills"]
 		output = ""
 		exptotal = 0
@@ -429,6 +429,7 @@ class RunescapeCommands:
 			for index in range (numSkills+1, len(killcount_dataHolder)-1):
 				holder = killcount_dataHolder[index].split(",")
 				kcCount.append(holder[1])
+			print(kcCount)
 			killcount_spacer_one = "═".ljust(len(max(kcName, key = len)), "═")
 			killcount_spacer_two = "═".ljust(len(max(kcCount, key = len)), "═")
 			killcount_tableWidth=9 + len(killcount_spacer_one+killcount_spacer_two)

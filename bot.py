@@ -117,7 +117,7 @@ class RunescapeCommands:
 		skillLevel = ["Level"]
 		skillExperience = ["Experience"]
 		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+					"ERROR!", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
 					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
 					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]
@@ -409,7 +409,7 @@ class RunescapeCommands:
 	@bot.command(name="rskc", help = 'takes osrs username as a parameter and gives stats on kill counts')
 	async def rskc(ctx, *name):
 		kcName = ["Name","Unknown1","Unknown2","Unknown3","Clue Scrolls","Beginner Clues","Easy Clues","Medium Clues","Hard Clues","Elite Clues","Master Clues",
-					"Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
+					"ERROR!", "Abyssal Sire","Hydra","Barrows","Bryophyta","Callisto","Cerberus","CoX","CoX CM","Chaos Elemental","Chaos Fanatic","Zilyana",
 					"Corporeal Beast","Crazy Archaeologist","Dagganoth Prime","Dagganoth Rex","Dagganoth Supreme","Deranged Archaeologist","Graardor","Giant Mole","Grotesque Guardians","Hespori","Kalphite Queen",
 					"King Black Dragon","Kraken","Kree'Arra","K'ril","Mimic","Nightmare","Obor","Sarachnis","Scorpia","Skotizo","The Gauntlet","The Corrupted Gauntlet",
 					"ToB","Thermonuclear","Zuk","Jad","Venenatis","Vet'ion","Vorkath","Wintertodt","Zalcano","Zulrah","ERROR"]

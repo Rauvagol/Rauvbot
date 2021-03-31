@@ -83,6 +83,11 @@ async def on_message(message):
 	else:
 		await bot.process_commands(message)
 
+@bot.event
+async def on_message(message):
+	if("kate beckinsale" in message.content.lower()):
+		await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
+
 class ChatCommands:
 
 	@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')

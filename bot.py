@@ -87,6 +87,8 @@ async def on_message(message):
 async def on_message(message):
 	if("kate beckinsale" in message.content.lower()):
 		await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
+	else:
+		await bot.process_commands(message)
 
 class ChatCommands:
 

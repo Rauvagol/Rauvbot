@@ -80,11 +80,6 @@ async def on_message(message):
 			await message.channel.send('lamo')
 	if(message.content.lower().translate(str.maketrans('','',string.punctuation)) == "test"):
 		print("yes")
-	else:
-		await bot.process_commands(message)
-
-@bot.event
-async def on_message(message):
 	if("kate beckinsale" in message.content.lower()):
 		await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
 	else:

@@ -113,6 +113,19 @@ class ChatCommands:
 
 class RunescapeCommands:
 
+	@bot.command(name='rockgolem', help = 'makes htg sad')
+	async def rockgolem(ctx):
+		amethystDroprate=(1/(46350-(99*25)))
+		htgexp=math.floor(int(urllib.request.urlopen("https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=himtheguy").read().decode().split("\n")[15].split(",")[2])/240)
+		percentile = str(round((1-((1-amethystDroprate)**htgexp))*100,9))
+		barpercent = int(math.floor((1-((1-amethystDroprate)**htgexp))*100))
+		sadness = ["░"]*100
+		for num in range(barpercent):
+			sadness[num] = "█"
+
+		await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)"))
+
+
 	@bot.command(name='rslevels', help = 'takes osrs username as a parameter and gives stats on levels')
 	async def rslevels(ctx, *name):
 		def getHiScores(username):

@@ -122,8 +122,20 @@ class RunescapeCommands:
 		sadness = ["░"]*100
 		for num in range(barpercent):
 			sadness[num] = "█"
-
-		await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)"))
+		percentileColor = "Not spooned yet."
+		if barpercent >= 100: 
+			percentileColor = "Literally maximum unlucky wtf bruh."
+		elif barpercent >= 99:
+			percentileColor = "Pink parsing! \n The universe is trying to tell you something."
+		elif barpercent >= 95:
+			percentileColor = "Orange Parse! \n Help is available!\n Speak with someone today\n National Suicide Prevention Lifeline Hours: Available 24 hours. Languages: English, Spanish. Learn more 800-273-8255"
+		elif barpercent >= 75:
+			percentileColor = "Nice purple parse! Have you tried just getting the drop?"
+		elif barpercent >= 50:
+			percentileColor = "Blue parse! You can officialy be sad!"
+		elif barpercent >= 25:
+			percentileColor = "Green parse, dont complain"
+		await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)\n" + percentileColor))
 
 
 	@bot.command(name='rslevels', help = 'takes osrs username as a parameter and gives stats on levels')

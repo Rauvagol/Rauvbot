@@ -26,7 +26,7 @@ async def on_ready():
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.send("Running")
+    await ctx.send("Running2")
 
 
 @bot.event

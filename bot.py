@@ -32,32 +32,14 @@ async def test_command(ctx):
 @bot.event
 async def on_raw_reaction_add(payload):
     if payload.message_id == 773416052796555264 and payload.emoji.name == "nice":
-        await payload.member.add_roles(discord.utils.get(bot.get_guild(payload.guild_id).roles, name='test role'))
-
-
-@bot.event
-async def on_raw_reaction_remove(payload):
-    message_id = payload.message_id
-    if (message_id == 773416052796555264):
-        print(" ")
-        print(payload)
-        guild = bot.get_guild(payload.guild_id)
-        print(guild)
-        print(payload.user_id)
-        print(str(guild.get_member(106205285760135168)))
-        member = guild.get_member(payload.user_id)
-        print(member)
-        if (payload.emoji.name == "nice"):
-            print("yes")
-            role = discord.utils.get(guild.roles, name='test role')
-            print(role.name)
-        if (role is not None):
-            print(payload)
-            print(member)
-            print(guild.get_member(payload.user_id))
-            if (member is not None):
-                print("here")
-                await member.remove_roles(role)
+        message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+        role = discord.utils.get(bot.get_guild(payload.guild_id).roles, name='test role')
+        await message.remove_reaction(payload.emoji, payload.member)
+        await message.add_reaction(payload.emoji)
+        if role in payload.member.roles:
+            await payload.member.remove_roles(role)
+        else:
+            await payload.member.add_roles(role)
 
 
 last_niced = 0

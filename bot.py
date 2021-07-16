@@ -63,635 +63,654 @@ async def on_message(message):
         print("yes")
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
-    if ("cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower()):
+    if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
         await message.channel.send("This is a christian server, please call it a \"mister boopsy\"")
     else:
         await bot.process_commands(message)
 
 
-class ChatCommands:
-
-    @bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
-    async def ten_seconds(ctx):
-        await ctx.send("https://i.imgur.com/tnJtepM.jpg")
-
-    @bot.command(name='cunt', help='for when you need to express yourself in song')
-    async def cunt_song(ctx):
-        await ctx.send("https://www.youtube.com/watch?v=VFh8WubLzYY")
-
-    @bot.command(name='christmas', help='for the holiday spirit')
-    async def christmas(ctx):
-        await ctx.send(
-            "Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")
-
-    @bot.command(name='breakup', help='for serious conversations')
-    async def breakup(ctx):
-        await ctx.send(
-            "Babe :baby::sob:, i'm :cupid: breaking :hammer: up :arrow_up: with you :point_left_tone2:. it's not you :point_left::no_entry_sign:, you :point_left: were poggers :sunglasses::nail_care:. it's me, i'm :cupid: omegalul :crying_cat_face::person_frowning:. im :cupid: sorry :person_bowing: if this is pepehands :palms_up_together: but :thinking: it has to be done :hammer:, i've :person_raising_hand_tone1: just been feeling :grin: pepega and our relationship :couple: has been weirdchamp :scream_cat: for months :calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa :stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
-
-    @bot.command(name='modabuse', help="change user's nickname given id and new nickname")
-    async def modabuse(ctx, id: int, newname):
-        if (id == 106205285760135168):
-            await ctx.send("No can do boss. Discord doesn't let me opress the server owner.")
-        victim = await ctx.guild.fetch_member(id)
-        await victim.edit(nick=newname)
-        await ctx.send("Done")
+@bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
+async def ten_seconds(ctx):
+    await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
 
-class RunescapeCommands:
+@bot.command(name='cunt', help='for when you need to express yourself in song')
+async def cunt_song(ctx):
+    await ctx.send("https://www.youtube.com/watch?v=VFh8WubLzYY")
 
-    @bot.command(name='rockgolem', help='makes htg sad')
-    async def rockgolem(ctx):
-        amethystDroprate = (1 / (46350 - (99 * 25)))
-        htgexp = math.floor(int(urllib.request.urlopen(
-            "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=himtheguy").read().decode().split(
-            "\n")[15].split(",")[2]) / 240)
-        percentile = str(round((1 - ((1 - amethystDroprate) ** htgexp)) * 100, 9))
-        barpercent = int(math.floor((1 - ((1 - amethystDroprate) ** htgexp)) * 100))
-        sadness = ["░"] * 100
-        for num in range(barpercent):
-            sadness[num] = "█"
-        percentileColor = "Not spooned yet."
-        if barpercent >= 100:
-            percentileColor = "Literally maximum unlucky wtf bruh."
-        elif barpercent >= 99:
-            percentileColor = "Pink parsing! \n The universe is trying to tell you something."
-        elif barpercent >= 95:
-            percentileColor = "Orange Parse! \n Help is available!\n Speak with someone today\n National Suicide Prevention Lifeline Hours: Available 24 hours. Languages: English, Spanish. Learn more 800-273-8255"
-        elif barpercent >= 75:
-            percentileColor = "Nice purple parse! Have you tried just getting the drop?"
-        elif barpercent >= 50:
-            percentileColor = "Blue parse! You can officialy be sad!"
-        elif barpercent >= 25:
-            percentileColor = "Green parse, dont complain"
-        await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(
-            htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)\n" + percentileColor))
 
-    @bot.command(name='rslevels', help='takes osrs username as a parameter and gives stats on levels')
-    async def rslevels(ctx, *name):
-        def getHiScores(username):
-            totalExperience = [0, 0, 0, 0]
-            try:
-                totalExperience[0] = int(urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
-                                                                                                                "%20")).read().decode().split(
-                    "\n")[0].split(",")[2])
-            except:
-                pass
-            try:
-                totalExperience[1] = int(urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")[0].split(",")[2])
-            except:
-                pass
-            try:
-                totalExperience[2] = int(urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")[0].split(",")[2])
-            except:
-                pass
-            try:
-                totalExperience[3] = int(urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")[0].split(",")[2])
-            except:
-                pass
-            print(totalExperience)
-            print(max(totalExperience))
-            if (totalExperience[3] == max(totalExperience)):
-                print("uim")
-                return urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")
-            elif (totalExperience[2] == max(totalExperience)):
-                print("hcim")
-                return urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")
-            elif (totalExperience[1] == max(totalExperience)):
-                print("im")
-                return urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" + username.replace(
-                        " ", "%20")).read().decode().split("\n")
-            else:
-                print("normie")
-                return urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
-                                                                                                                "%20")).read().decode().split(
-                    "\n")
+@bot.command(name='christmas', help='for the holiday spirit')
+async def christmas(ctx):
+    await ctx.send(
+        "Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows"
+        " me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you "
+        "know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were "
+        "expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me "
+        "explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you "
+        "have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced "
+        "on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")
 
-        experienceForLevel = [-1, 0]
-        skillName = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
-                     "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
-                     "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:",
-                     "Hunter:", "Construction:"]
-        skillLevel = ["Level"]
-        skillExperience = ["Experience"]
-        skillMissingExperience = ["Missing Experience", "Irrelevantlol"]
-        output = ""
-        exptotal = 0
-        outputList = []
-        async with ctx.typing():
-            for index in range(2, 100):
-                experienceForLevel.append(
-                    experienceForLevel[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
-            for index in range(len(experienceForLevel)):
-                experienceForLevel[index] = math.floor(experienceForLevel[index])
-            # Variables used in the code, each list is for a column of information.
-            username = ' '.join([str(word) for word in name])
-            # Combines and parses the url to access the OSRS highscores api page for given character name
-            try:
-                dataHolder = getHiScores(username)
-            except:
-                await ctx.send(
-                    "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
-                return
-            # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column (discarding rank)
-            for index in range(len(skillName) - 1):
-                holder = dataHolder[index].split(",")
-                skillLevel.append(holder[1])
-                skillExperience.append(holder[2])
-                if (index > 0):
-                    # Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
-                    exptotal += min(13034431, int(holder[2]))
-                    skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
-            for index in range(len(skillLevel)):
-                if skillLevel[index] == "69":
-                    skillLevel[index] = "Nice."
-            # Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
-            level_spacer_one = "═".ljust(len(max(skillName, key=len)), "═")
-            level_spacer_two = "═".ljust(len(max(skillLevel, key=len)), "═")
-            level_spacer_three = "═".ljust(len(max(skillExperience, key=len)), "═")
-            exptotal = int(exptotal)
-            # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
-            percent_to_99s = round(100 * exptotal / 299791913, 2)
-            # figures out the width of the entire table by adding length of the border stuff to len(spacers)
-            tableWidth = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
-            # Assembling the header and footer, could be done programatically, but immutable strings
-            header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(
-                tableWidth - len(
-                    " ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + \
-                     skillName[0].ljust(len(level_spacer_one)) + " ║ " + skillLevel[0].rjust(
-                len(level_spacer_two)) + " ║ " + skillExperience[0].rjust(
-                len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
-            footer = " ╠═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╣\n" + " ║ Adjusted total EXP = " + str(
-                exptotal) + "║".rjust(
-                tableWidth - len(" ║ Adjusted total EXP = " + str(exptotal)) - 1) + "\n" + " ║ " + str(
-                percent_to_99s) + "% of the way to all skills 99" + "║".rjust(tableWidth - len(" ║ " + str(
-                percent_to_99s) + "X of the way to all skills 99") - 1) + "\n" + " ╚═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╝\n"
-            for index in range(len(skillName)):
-                if (index > 0):
-                    # loops through adding one formatted row at a time to the output list
-                    outputList.append(
-                        " ║ " + skillName[index].ljust(len(level_spacer_one)) + " ║ " + skillLevel[index].rjust(
-                            len(level_spacer_two)) + " ║ " + skillExperience[index].rjust(
-                            len(level_spacer_three)) + " ║\n")
-        await ctx.send("```" + header + "".join(outputList) + footer + "```")
 
-    @bot.command(name='rs99', help='takes osrs username as a parameter and gives stats on levels')
-    async def rs99(ctx, *name):
-        async with ctx.typing():
-            def expcalc(missingExperience, skillID):
-                def recursivecalc(activityBrackets, experienceBrackets, experienceRateBrackets, loops, remainingTime,
-                                  totalRemainingTime):
-                    while (loops > 0):
-                        remainingTime.append(str(round((experienceBrackets[len(experienceBrackets) - loops] -
-                                                        experienceBrackets[len(experienceBrackets) - (loops + 1)]) /
-                                                       experienceRateBrackets[len(experienceRateBrackets) - loops],
-                                                       2)) + activityBrackets[len(experienceBrackets) - loops])
-                        totalRemainingTime = totalRemainingTime + round((experienceBrackets[
-                                                                             len(experienceBrackets) - loops] -
-                                                                         experienceBrackets[
-                                                                             len(experienceBrackets) - (loops + 1)]) /
-                                                                        experienceRateBrackets[
-                                                                            len(experienceRateBrackets) - loops], 2)
-                        loops = loops - 1
-                    return remainingTime
+@bot.command(name='breakup', help='for serious conversations')
+async def breakup(ctx):
+    await ctx.send(
+        "Babe :baby::sob:, i'm :cupid: breaking :hammer: up :arrow_up: with you :point_left_tone2:. it's not you "
+        ":point_left::no_entry_sign:, you :point_left: were poggers :sunglasses::nail_care:. it's me, i'm :cupid: "
+        "omegalul :crying_cat_face::person_frowning:. im :cupid: sorry :person_bowing: if this is pepehands "
+        ":palms_up_together: but :thinking: it has to be done :hammer:, i've :person_raising_hand_tone1: just been "
+        "feeling :grin: pepega and our relationship :couple: has been weirdchamp :scream_cat: for months "
+        ":calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa "
+        ":stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
 
-                skillName = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:",
-                             "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:",
-                             "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:",
-                             "Farming:", "Runecraft:", "Hunter:", "Construction:"]
-                for index in range(2, 100):
-                    experienceForLevel.append(
-                        experienceForLevel[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
-                for index in range(len(experienceForLevel)):
-                    experienceForLevel[index] = math.floor(experienceForLevel[index])
-                currentLevel = 0
-                remainingBrackets = 0
-                for index in range(len(experienceForLevel)):
-                    if (experienceForLevel[index + 1] > experienceForLevel[99] - missingExperience):
-                        currentLevel = index
-                        break
-                experienceBracketsLazy = []
-                if (skillID < 7):
-                    activityBracketsLazy = [" ", " ammonite crab kills."]
-                    levelBracketsLazy = [1, 99]
-                    experienceRateBracketsLazy = [400]
-                    if (skillID == 5):
-                        experienceRateBracketsLazy = [133.33]
-                elif (skillID == 7):
-                    activityBracketsLazy = [" ", " hours of offering Big Bones at the Gilded Altar."]
-                    levelBracketsLazy = [1, 99]
-                    experienceRateBracketsLazy = [133875]
-                elif (skillID == 8):
-                    activityBracketsLazy = [" ", " hours of Lvl-1 enchanting and ", " hours of Lvl-2 enchanting and ",
-                                            " hours of Lvl-3 enchanting and ", " hours of High Alching."]
-                    levelBracketsLazy = [1, 27, 49, 55, 99]
-                    experienceRateBracketsLazy = [28000, 59200, 94400, 78000]
-                elif (skillID == 9):
-                    activityBracketsLazy = [" ", " hours of cooking shrimp and ", " hours of cooking trout and ",
-                                            " hours of cooking salmon and ", " hours of cooking karambwan."]
-                    levelBracketsLazy = [1, 15, 25, 35, 99]
-                    experienceRateBracketsLazy = [35000, 85000, 110000, 250000]
-                elif (skillID == 10):
-                    activityBracketsLazy = [" ", " hours of normal trees and ", " hours of oaks and ",
-                                            " hours of willows and ", " hours of unmanipulated teaks."]
-                    levelBracketsLazy = [1, 15, 30, 35, 99]
-                    experienceRateBracketsLazy = [10000, 40000, 40000, 90000]
-                elif (skillID == 11):
-                    activityBracketsLazy = [" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ",
-                                            " hours of Unstrung Oak Shortbows and ",
-                                            " hours of Unstrung Oak Longbows and ",
-                                            " hours of Unstrung Willow Shortbows and ",
-                                            " hours of Unstrung Willow Longbows and ",
-                                            " hours of Unstrung Maple Shortbows and ",
-                                            " hours of Unstrung Maple Longbows and ",
-                                            " hours of Unstrung Yew Shortbows and ",
-                                            " hours of Unstrung Yew Longbows and ",
-                                            " hours of Unstrung Magic Shortbows and ",
-                                            " hours of Unstrung Magic Longbows."]
-                    levelBracketsLazy = [1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99]
-                    experienceRateBracketsLazy = [9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500,
-                                                  141100, 155550]
-                elif (skillID == 12):
-                    activityBracketsLazy = [" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ",
-                                            " hours of Drift Net fishing."]
-                    levelBracketsLazy = [1, 20, 47, 99]
-                    experienceRateBracketsLazy = [1500, 25000, 75000]
-                elif (skillID == 13):
-                    activityBracketsLazy = [" ", " hours of burning normal logs and ",
-                                            " hours of burning oak logs and ", " hours of burning willow logs and ",
-                                            " hours of burning maple logs."]
-                    levelBracketsLazy = [1, 15, 30, 45, 99]
-                    experienceRateBracketsLazy = [59400, 89100, 133650, 200475]
-                elif (skillID == 14):
-                    activityBracketsLazy = [" ", " hours of making leather gloves and ",
-                                            " hours of making leather chaps and ", " hours of cutting sapphires and ",
-                                            " hours of cutting emeralds and ", " hours of cutting rubies and ",
-                                            " hours of cutting diamonds and ",
-                                            " hours of making fire battlestaffs and ",
-                                            " hours of making air battlestaffs and ",
-                                            " hours of making red d'hide bodies and ",
-                                            " hours of making black d'hide bodies."]
-                    levelBracketsLazy = [1, 18, 20, 27, 34, 43, 62, 66, 77, 84, 99]
-                    experienceRateBracketsLazy = [26000, 50000, 145000, 175000, 230000, 290000, 306000, 336000, 386000,
-                                                  425000]
-                elif (skillID == 15):
-                    activityBracketsLazy = [" ", " hours of forging bronze daggers and ",
-                                            " hours of forging bronze scimitars and ",
-                                            " hours of forging bronze warhammers and ",
-                                            " hours of forging bronze platebodies and ",
-                                            " hours of forging iron warhammers and ",
-                                            " hours of forging iron platebodies and ",
-                                            " hours of forging steel warhammers and ",
-                                            " hours of making gold bars in the blast furnace."]
-                    levelBracketsLazy = [1, 5, 9, 18, 24, 33, 39, 40, 99]
-                    experienceRateBracketsLazy = [13900, 25700, 36200, 52100, 72300, 104200, 108500, 300000]
-                elif (skillID == 16):
-                    activityBracketsLazy = [" ", " hours of mining copper or tin ore and ",
-                                            " hours of mining iron ore and ", " hours of Motherlode Mine."]
-                    levelBracketsLazy = [1, 15, 30, 99]
-                    experienceRateBracketsLazy = [5000, 45000, 40000]
-                elif (skillID == 17):
-                    activityBracketsLazy = [" ", " hours of making attack potions and ",
-                                            " hours of making guam tar and ", " hours of making marrentill tar and ",
-                                            " hours of making tarromin tar and ", " hours of making harralander tar."]
-                    levelBracketsLazy = [1, 19, 31, 39, 44, 99]
-                    experienceRateBracketsLazy = [62500, 61000, 86000, 110000, 145000]
-                elif (skillID == 18):
-                    activityBracketsLazy = [" ", " hours of gnome stronghold agility course and ",
-                                            " hours of Draynor Village rooftop course and ",
-                                            " hours of Varrock rooftop course and ",
-                                            " hours of Canifis rooftop course and ",
-                                            " hours of Seers' Village rooftop course and ",
-                                            " hours of Rellekka village rooftop course and ",
-                                            " hours of Ardougne rooftop course."]
-                    levelBracketsLazy = [1, 10, 30, 40, 60, 80, 90, 99]
-                    experienceRateBracketsLazy = [8000, 9000, 13200, 19500, 52000, 54000, 61000]
-                elif (skillID == 19):
-                    activityBracketsLazy = [" ", " hours of pickpocketing normies and ",
-                                            " hours of stealing from baker's stalls and ",
-                                            " hours of stealing from fruit stalls and ",
-                                            " hours of ~~suffering~~ blackjacking bearded bandits and ",
-                                            " hours of stealing artefacts."]
-                    levelBracketsLazy = [1, 5, 25, 45, 49, 99]
-                    experienceRateBracketsLazy = [5000, 19200, 33000, 60000, 160000]
-                elif (skillID == 20):
-                    activityBracketsLazy = [" ", " hours of violence."]
-                    levelBracketsLazy = [1, 99]
-                    experienceRateBracketsLazy = [60000]
-                elif (skillID == 21):
-                    activityBracketsLazy = [" ", " hours of raking weeds (don't do this) and ",
-                                            " hours of tithe farming Golovanova and ",
-                                            " hours of tithe farming Bologano and ",
-                                            " hours of tithe farming Logavano."]
-                    levelBracketsLazy = [1, 34, 54, 74, 99]
-                    experienceRateBracketsLazy = [8000, 28273, 65970, 108380]
-                elif (skillID == 22):
-                    activityBracketsLazy = [" ", " hours of crafting tiaras and ", " hours of crafting smoke runes."]
-                    levelBracketsLazy = [1, 15, 99]
-                    experienceRateBracketsLazy = [40000, 50000]
-                elif (skillID == 23):
-                    activityBracketsLazy = [" ", " regular birdhouses and ", " oak birdhouses and ",
-                                            " willow birdhouses and ", " teak birdhouses and ",
-                                            " maple birdhouses and ", " mahogany birdhouses and ",
-                                            " yew birdhouses and ", " magic birdhouses and ", " redwood birdhouses."]
-                    levelBracketsLazy = [5, 14, 24, 34, 44, 49, 59, 74, 89, 99]
-                    experienceRateBracketsLazy = [280, 420, 560, 700, 820, 960, 1020, 1140, 1200]
-                elif (skillID == 24):
-                    activityBracketsLazy = [" ", " regular planks and ", " oak planks."]
-                    levelBracketsLazy = [1, 15, 99]
-                    experienceRateBracketsLazy = [29, 60]
-                remainingTime = []
-                if ("activityBracketsLazy" in locals()):
-                    for index in range(len(levelBracketsLazy)):
-                        experienceBracketsLazy.append(experienceForLevel[levelBracketsLazy[index]])
-                    for index in range(len(levelBracketsLazy)):
-                        if (currentLevel < levelBracketsLazy[index + 1]):
-                            experienceBracketsLazy.pop(0)
-                            experienceBracketsLazy.insert(index, experienceForLevel[99] - missingExperience)
-                            remainingBrackets = len(levelBracketsLazy) - (index + 1)
-                            break
-                    return (recursivecalc(activityBracketsLazy, experienceBracketsLazy, experienceRateBracketsLazy,
-                                          remainingBrackets, remainingTime, 0))
-                return (str(missingExperience))
 
-            experienceForLevel = [-1, 0]
-            skillName = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
-                         "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
-                         "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:",
-                         "Runecraft:", "Hunter:", "Construction:"]
-            skillLevel = ["Level"]
-            skillExperience = ["Experience"]
-            skillMissingExperience = ["Missing Experience", "Irrelevantlol"]
-            output = ""
-            exptotal = 0
-            outputList = []
-            for index in range(2, 100):
-                experienceForLevel.append(
-                    experienceForLevel[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
-            for index in range(len(experienceForLevel)):
-                experienceForLevel[index] = math.floor(experienceForLevel[index])
-            # Variables used in the code, each list is for a column of information.
-            username = ' '.join([str(word) for word in name])
-            # Combines and parses the url to access the OSRS highscores api page for given character name
-            try:
-                data = urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
-                                                                                                                "%20"))
-            except:
-                await ctx.send(
-                    "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
-            # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
-            dataHolder = data.read().decode().split("\n")
-            # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column (discarding rank)
+@bot.command(name='modabuse', help="change user's nickname given id and new nickname")
+async def modabuse(ctx, victim_id: int, newname):
+    if victim_id == 106205285760135168:
+        await ctx.send("No can do boss. Discord doesn't let me opress the server owner.")
+    victim = await ctx.guild.fetch_member(victim_id)
+    await victim.edit(nick=newname)
+    await ctx.send("Done")
 
-            rs99_spacer_two_length = 0
-            for index in range(len(skillName) - 1):
-                holder = dataHolder[index].split(",")
-                skillLevel.append(holder[1])
-                skillExperience.append(holder[2])
-                if (index > 0):
-                    skillMissingExperience.append(13034431 - min(13034431, int(holder[2])))
-            outputTEMP = []
-            calculated_holder = []
-            for index in range(len(skillName)):
-                if (index > 1 and skillMissingExperience[index] > 0):
-                    calculated_holder.append("".join(expcalc(skillMissingExperience[index], index)))
-            try:
-                longest_skill_todo = max(calculated_holder, key=len)
-            except:
-                if (username == "himtheguy"):
-                    await ctx.send("https://youtu.be/LDU_Txk06tM?t=75")
-            longest_skill = -1
-            for index in range(len(calculated_holder)):
-                if (len(calculated_holder[index]) == len(longest_skill_todo)):
-                    longest_skill = index
-            rs99_spacer_one = "═".ljust(len(max(skillName, key=len)), "═")
-            rs99_spacer_two = "═".ljust(len(max(calculated_holder, key=len)), "═")
-            associatedSkill = []
-            for index in range(len(skillName)):
-                if (index > 1 and skillMissingExperience[index] > 0):
-                    holder = "".join(expcalc(skillMissingExperience[index], index))
-                    associatedSkill.append(skillName[index])
-                    outputTEMP.append(" ║ " + skillName[index].ljust(len(rs99_spacer_one)) + " ║ " + holder.rjust(
-                        len(rs99_spacer_two)) + " ║\n")
-            print(associatedSkill)
-            print(calculated_holder)
-            header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n" + " ║ " + "Skill Name".ljust(
-                len(rs99_spacer_one)) + " ║ " + "To Do:".ljust(
-                len(rs99_spacer_two)) + " ║\n" + " ╠═" + rs99_spacer_one + "═╬═" + rs99_spacer_two + "═╣\n"
-            footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
+
+@bot.command(name='rockgolem', help='makes htg sad')
+async def rockgolem(ctx):
+    amethyst_droprate = (1 / (46350 - (99 * 25)))
+    htgexp = math.floor(int(urllib.request.urlopen(
+        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=himtheguy").read().decode().split(
+        "\n")[15].split(",")[2]) / 240)
+    percentile = str(round((1 - ((1 - amethyst_droprate) ** htgexp)) * 100, 9))
+    barpercent = int(math.floor((1 - ((1 - amethyst_droprate) ** htgexp)) * 100))
+    sadness = ["░"] * 100
+    for num in range(barpercent):
+        sadness[num] = "█"
+    percentile_color = "Not spooned yet."
+    if barpercent >= 100:
+        percentile_color = "Literally maximum unlucky wtf bruh."
+    elif barpercent >= 99:
+        percentile_color = "Pink parsing! \n The universe is trying to tell you something."
+    elif barpercent >= 95:
+        percentile_color = "Orange Parse! \n Help is available!\n Speak with someone today\n National Suicide " \
+                           "Prevention Lifeline Hours: Available 24 hours. Languages: English, Spanish. Learn more " \
+                           "800-273-8255 "
+    elif barpercent >= 75:
+        percentile_color = "Nice purple parse! Have you tried just getting the drop?"
+    elif barpercent >= 50:
+        percentile_color = "Blue parse! You can officialy be sad!"
+    elif barpercent >= 25:
+        percentile_color = "Green parse, dont complain"
+    await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(
+        htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)\n" + percentile_color))
+
+
+@bot.command(name='rslevels', help='takes osrs username as a parameter and gives stats on levels')
+async def rslevels(ctx, *name):
+    def get_hiscores(runescape_username):
+        total_experience = [0, 0, 0, 0]
         try:
-            await ctx.send("```" + header + "".join(outputTEMP) + footer + "```")
+            total_experience[0] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except:
+            pass
+        try:
+            total_experience[1] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except:
+            pass
+        try:
+            total_experience[2] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except:
+            pass
+        try:
+            total_experience[3] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except:
+            pass
+        print(total_experience)
+        print(max(total_experience))
+        if total_experience[3] == max(total_experience):
+            print("uim")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" + runescape_username.replace(
+                    " ", "%20")).read().decode().split("\n")
+        elif total_experience[2] == max(total_experience):
+            print("hcim")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" + runescape_username.replace(
+                    " ", "%20")).read().decode().split("\n")
+        elif total_experience[1] == max(total_experience):
+            print("im")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" + runescape_username.replace(
+                    " ", "%20")).read().decode().split("\n")
+        else:
+            print("normie")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + runescape_username.replace(
+                    " ",
+                    "%20")).read().decode().split(
+                "\n")
+
+    experience_for_level = [-1, 0]
+    skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
+                  "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
+                  "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:",
+                  "Hunter:", "Construction:"]
+    skill_level = ["Level"]
+    skill_experience = ["Experience"]
+    skill_missing_experience = ["Missing Experience", "Irrelevantlol"]
+    exptotal = 0
+    output_list = []
+    async with ctx.typing():
+        for index in range(2, 100):
+            experience_for_level.append(
+                experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
+        for index in range(len(experience_for_level)):
+            experience_for_level[index] = math.floor(experience_for_level[index])
+        # Variables used in the code, each list is for a column of information.
+        username = ' '.join([str(word) for word in name])
+        # Combines and parses the url to access the OSRS highscores api page for given character name
+        try:
+            data_holder = get_hiscores(username)
         except:
             await ctx.send(
-                "Error, to-do list too long, work on " + associatedSkill[longest_skill][:-1] + ", requiring " +
-                calculated_holder[longest_skill])
+                "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your "
+                "username btw.")
+            return
+        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
+        for index in range(len(skill_name) - 1):
+            holder = data_holder[index].split(",")
+            skill_level.append(holder[1])
+            skill_experience.append(holder[2])
+            if index > 0:
+                # Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
+                exptotal += min(13034431, int(holder[2]))
+                skill_missing_experience.append(13034431 - min(13034431, int(holder[2])))
+        for index in range(len(skill_level)):
+            if skill_level[index] == "69":
+                skill_level[index] = "Nice."
+        # Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
+        level_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
+        level_spacer_two = "═".ljust(len(max(skill_level, key=len)), "═")
+        level_spacer_three = "═".ljust(len(max(skill_experience, key=len)), "═")
+        exptotal = int(exptotal)
+        # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
+        percent_to_99s = round(100 * exptotal / 299791913, 2)
+        # figures out the width of the entire table by adding length of the border stuff to len(spacers)
+        table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
+        # Assembling the header and footer, could be done programatically, but immutable strings
+        header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(
+            table_width - len(
+                " ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + \
+                 skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(
+            len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(
+            len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
+        footer = " ╠═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╣\n" + " ║ Adjusted total EXP = " + str(
+            exptotal) + "║".rjust(
+            table_width - len(" ║ Adjusted total EXP = " + str(exptotal)) - 1) + "\n" + " ║ " + str(
+            percent_to_99s) + "% of the way to all skills 99" + "║".rjust(table_width - len(" ║ " + str(
+            percent_to_99s) + "X of the way to all skills 99") - 1) + "\n" + " ╚═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╝\n"
+        for index in range(len(skill_name)):
+            if index > 0:
+                # loops through adding one formatted row at a time to the output list
+                output_list.append(
+                    " ║ " + skill_name[index].ljust(len(level_spacer_one)) + " ║ " + skill_level[index].rjust(
+                        len(level_spacer_two)) + " ║ " + skill_experience[index].rjust(
+                        len(level_spacer_three)) + " ║\n")
+    await ctx.send("```" + header + "".join(output_list) + footer + "```")
 
-    @bot.command(name="rskc", help='takes osrs username as a parameter and gives stats on kill counts')
-    async def rskc(ctx, *name):
-        kcName = ["Name", "Unknown1", "Bounty Hunter - Hunter", "Bounty Hunter - Rogue", "Clue Scrolls (Total)",
-                  "Beginner Clues", "Easy Clues", "Medium Clues", "Hard Clues", "Elite Clues", "Master Clues",
-                  "LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire", "Hydra", "Barrows", "Bryophyta",
-                  "Callisto", "Cerberus", "CoX", "CoX CM", "Chaos Elemental", "Chaos Fanatic", "Zilyana",
-                  "Corporeal Beast", "Crazy Archaeologist", "Dagganoth Prime", "Dagganoth Rex", "Dagganoth Supreme",
-                  "Deranged Archaeologist", "Graardor", "Giant Mole", "Grotesque Guardians", "Hespori",
-                  "Kalphite Queen",
-                  "King Black Dragon", "Kraken", "Kree'Arra", "K'ril", "Mimic", "Nightmare", "Obor", "Sarachnis",
-                  "Scorpia", "Skotizo", "Tempoross", "The Gauntlet", "The Corrupted Gauntlet",
-                  "ToB", "Thermonuclear", "Zuk", "Jad", "Venenatis", "Vet'ion", "Vorkath", "Wintertodt", "Zalcano",
-                  "Zulrah"]
-        kcCount = ["Kills"]
+
+@bot.command(name='rs99', help='takes osrs username as a parameter and gives stats on levels')
+async def rs99(ctx, *name):
+    async with ctx.typing():
+        def expcalc(missing_experience, skill_id):
+            def recursivecalc(activity_brackets, experience_brackets, experience_rate_brackets, loops, remaining_time,
+                              total_remaining_time):
+                while loops > 0:
+                    remaining_time.append(str(round((experience_brackets[len(experience_brackets) - loops] -
+                                                     experience_brackets[len(experience_brackets) - (loops + 1)]) /
+                                                    experience_rate_brackets[len(experience_rate_brackets) - loops],
+                                                    2)) + activity_brackets[len(experience_brackets) - loops])
+                    total_remaining_time = total_remaining_time + round((experience_brackets[
+                                                                             len(experience_brackets) - loops] -
+                                                                         experience_brackets[
+                                                                             len(experience_brackets) - (loops + 1)]) /
+                                                                        experience_rate_brackets[
+                                                                            len(experience_rate_brackets) - loops], 2)
+                    loops = loops - 1
+                return remaining_time
+
+            skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:",
+                          "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:",
+                          "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:",
+                          "Farming:", "Runecraft:", "Hunter:", "Construction:"]
+            for index in range(2, 100):
+                experience_for_level.append(
+                    experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
+            for index in range(len(experience_for_level)):
+                experience_for_level[index] = math.floor(experience_for_level[index])
+            current_level = 0
+            remaining_brackets = 0
+            for index in range(len(experience_for_level)):
+                if experience_for_level[index + 1] > experience_for_level[99] - missing_experience:
+                    current_level = index
+                    break
+            experience_brackets_lazy = []
+            if skill_id < 7:
+                activity_brackets_lazy = [" ", " ammonite crab kills."]
+                level_brackets_lazy = [1, 99]
+                experience_rate_brackets_lazy = [400]
+                if skill_id == 5:
+                    experience_rate_brackets_lazy = [133.33]
+            elif skill_id == 7:
+                activity_brackets_lazy = [" ", " hours of offering Big Bones at the Gilded Altar."]
+                level_brackets_lazy = [1, 99]
+                experience_rate_brackets_lazy = [133875]
+            elif skill_id == 8:
+                activity_brackets_lazy = [" ", " hours of Lvl-1 enchanting and ", " hours of Lvl-2 enchanting and ",
+                                          " hours of Lvl-3 enchanting and ", " hours of High Alching."]
+                level_brackets_lazy = [1, 27, 49, 55, 99]
+                experience_rate_brackets_lazy = [28000, 59200, 94400, 78000]
+            elif skill_id == 9:
+                activity_brackets_lazy = [" ", " hours of cooking shrimp and ", " hours of cooking trout and ",
+                                          " hours of cooking salmon and ", " hours of cooking karambwan."]
+                level_brackets_lazy = [1, 15, 25, 35, 99]
+                experience_rate_brackets_lazy = [35000, 85000, 110000, 250000]
+            elif skill_id == 10:
+                activity_brackets_lazy = [" ", " hours of normal trees and ", " hours of oaks and ",
+                                          " hours of willows and ", " hours of unmanipulated teaks."]
+                level_brackets_lazy = [1, 15, 30, 35, 99]
+                experience_rate_brackets_lazy = [10000, 40000, 40000, 90000]
+            elif skill_id == 11:
+                activity_brackets_lazy = [" ", " hours of Arrow Shafts and ", " hours of Unstrung Longbows and ",
+                                          " hours of Unstrung Oak Shortbows and ",
+                                          " hours of Unstrung Oak Longbows and ",
+                                          " hours of Unstrung Willow Shortbows and ",
+                                          " hours of Unstrung Willow Longbows and ",
+                                          " hours of Unstrung Maple Shortbows and ",
+                                          " hours of Unstrung Maple Longbows and ",
+                                          " hours of Unstrung Yew Shortbows and ",
+                                          " hours of Unstrung Yew Longbows and ",
+                                          " hours of Unstrung Magic Shortbows and ",
+                                          " hours of Unstrung Magic Longbows."]
+                level_brackets_lazy = [1, 10, 20, 25, 35, 40, 50, 55, 65, 70, 80, 85, 99]
+                experience_rate_brackets_lazy = [9000, 17000, 28050, 42500, 56525, 70550, 85000, 99025, 114750, 127500,
+                                                 141100, 155550]
+            elif skill_id == 12:
+                activity_brackets_lazy = [" ", " hours of Shrimp fishing, and ", " hours of Trout fly fishing, and ",
+                                          " hours of Drift Net fishing."]
+                level_brackets_lazy = [1, 20, 47, 99]
+                experience_rate_brackets_lazy = [1500, 25000, 75000]
+            elif skill_id == 13:
+                activity_brackets_lazy = [" ", " hours of burning normal logs and ",
+                                          " hours of burning oak logs and ", " hours of burning willow logs and ",
+                                          " hours of burning maple logs."]
+                level_brackets_lazy = [1, 15, 30, 45, 99]
+                experience_rate_brackets_lazy = [59400, 89100, 133650, 200475]
+            elif skill_id == 14:
+                activity_brackets_lazy = [" ", " hours of making leather gloves and ",
+                                          " hours of making leather chaps and ", " hours of cutting sapphires and ",
+                                          " hours of cutting emeralds and ", " hours of cutting rubies and ",
+                                          " hours of cutting diamonds and ",
+                                          " hours of making fire battlestaffs and ",
+                                          " hours of making air battlestaffs and ",
+                                          " hours of making red d'hide bodies and ",
+                                          " hours of making black d'hide bodies."]
+                level_brackets_lazy = [1, 18, 20, 27, 34, 43, 62, 66, 77, 84, 99]
+                experience_rate_brackets_lazy = [26000, 50000, 145000, 175000, 230000, 290000, 306000, 336000, 386000,
+                                                 425000]
+            elif skill_id == 15:
+                activity_brackets_lazy = [" ", " hours of forging bronze daggers and ",
+                                          " hours of forging bronze scimitars and ",
+                                          " hours of forging bronze warhammers and ",
+                                          " hours of forging bronze platebodies and ",
+                                          " hours of forging iron warhammers and ",
+                                          " hours of forging iron platebodies and ",
+                                          " hours of forging steel warhammers and ",
+                                          " hours of making gold bars in the blast furnace."]
+                level_brackets_lazy = [1, 5, 9, 18, 24, 33, 39, 40, 99]
+                experience_rate_brackets_lazy = [13900, 25700, 36200, 52100, 72300, 104200, 108500, 300000]
+            elif skill_id == 16:
+                activity_brackets_lazy = [" ", " hours of mining copper or tin ore and ",
+                                          " hours of mining iron ore and ", " hours of Motherlode Mine."]
+                level_brackets_lazy = [1, 15, 30, 99]
+                experience_rate_brackets_lazy = [5000, 45000, 40000]
+            elif skill_id == 17:
+                activity_brackets_lazy = [" ", " hours of making attack potions and ",
+                                          " hours of making guam tar and ", " hours of making marrentill tar and ",
+                                          " hours of making tarromin tar and ", " hours of making harralander tar."]
+                level_brackets_lazy = [1, 19, 31, 39, 44, 99]
+                experience_rate_brackets_lazy = [62500, 61000, 86000, 110000, 145000]
+            elif skill_id == 18:
+                activity_brackets_lazy = [" ", " hours of gnome stronghold agility course and ",
+                                          " hours of Draynor Village rooftop course and ",
+                                          " hours of Varrock rooftop course and ",
+                                          " hours of Canifis rooftop course and ",
+                                          " hours of Seers' Village rooftop course and ",
+                                          " hours of Rellekka village rooftop course and ",
+                                          " hours of Ardougne rooftop course."]
+                level_brackets_lazy = [1, 10, 30, 40, 60, 80, 90, 99]
+                experience_rate_brackets_lazy = [8000, 9000, 13200, 19500, 52000, 54000, 61000]
+            elif skill_id == 19:
+                activity_brackets_lazy = [" ", " hours of pickpocketing normies and ",
+                                          " hours of stealing from baker's stalls and ",
+                                          " hours of stealing from fruit stalls and ",
+                                          " hours of ~~suffering~~ blackjacking bearded bandits and ",
+                                          " hours of stealing artefacts."]
+                level_brackets_lazy = [1, 5, 25, 45, 49, 99]
+                experience_rate_brackets_lazy = [5000, 19200, 33000, 60000, 160000]
+            elif skill_id == 20:
+                activity_brackets_lazy = [" ", " hours of violence."]
+                level_brackets_lazy = [1, 99]
+                experience_rate_brackets_lazy = [60000]
+            elif skill_id == 21:
+                activity_brackets_lazy = [" ", " hours of raking weeds (don't do this) and ",
+                                          " hours of tithe farming Golovanova and ",
+                                          " hours of tithe farming Bologano and ",
+                                          " hours of tithe farming Logavano."]
+                level_brackets_lazy = [1, 34, 54, 74, 99]
+                experience_rate_brackets_lazy = [8000, 28273, 65970, 108380]
+            elif skill_id == 22:
+                activity_brackets_lazy = [" ", " hours of crafting tiaras and ", " hours of crafting smoke runes."]
+                level_brackets_lazy = [1, 15, 99]
+                experience_rate_brackets_lazy = [40000, 50000]
+            elif skill_id == 23:
+                activity_brackets_lazy = [" ", " regular birdhouses and ", " oak birdhouses and ",
+                                          " willow birdhouses and ", " teak birdhouses and ",
+                                          " maple birdhouses and ", " mahogany birdhouses and ",
+                                          " yew birdhouses and ", " magic birdhouses and ", " redwood birdhouses."]
+                level_brackets_lazy = [5, 14, 24, 34, 44, 49, 59, 74, 89, 99]
+                experience_rate_brackets_lazy = [280, 420, 560, 700, 820, 960, 1020, 1140, 1200]
+            elif skill_id == 24:
+                activity_brackets_lazy = [" ", " regular planks and ", " oak planks."]
+                level_brackets_lazy = [1, 15, 99]
+                experience_rate_brackets_lazy = [29, 60]
+            remaining_time = []
+            if "activity_brackets_lazy" in locals():
+                for index in range(len(level_brackets_lazy)):
+                    experience_brackets_lazy.append(experience_for_level[level_brackets_lazy[index]])
+                for index in range(len(level_brackets_lazy)):
+                    if current_level < level_brackets_lazy[index + 1]:
+                        experience_brackets_lazy.pop(0)
+                        experience_brackets_lazy.insert(index, experience_for_level[99] - missing_experience)
+                        remaining_brackets = len(level_brackets_lazy) - (index + 1)
+                        break
+                return (recursivecalc(activity_brackets_lazy, experience_brackets_lazy, experience_rate_brackets_lazy,
+                                      remaining_brackets, remaining_time, 0))
+            return str(missing_experience)
+
+        experience_for_level = [-1, 0]
+        skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
+                      "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
+                      "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:",
+                      "Runecraft:", "Hunter:", "Construction:"]
+        skill_level = ["Level"]
+        skill_experience = ["Experience"]
+        skill_missing_experience = ["Missing Experience", "Irrelevantlol"]
+        output = ""
+        exptotal = 0
+        output_list = []
+        for index in range(2, 100):
+            experience_for_level.append(
+                experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
+        for index in range(len(experience_for_level)):
+            experience_for_level[index] = math.floor(experience_for_level[index])
+        # Variables used in the code, each list is for a column of information.
         username = ' '.join([str(word) for word in name])
-        numSkills = 23
-        killcount_output = ""
-        killcount_outputList = []
-        async with ctx.typing():
-            try:
-                data = urllib.request.urlopen(
-                    "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
-                                                                                                                "%20"))
-            except:
-                await ctx.send(
-                    "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your username btw.")
-            # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience, and splits entries on newlines
-            killcount_dataHolder = data.read().decode().split("\n")
-            print(killcount_dataHolder)
-            for index in range(numSkills + 1, len(killcount_dataHolder) - 1):
-                holder = killcount_dataHolder[index].split(",")
-                kcCount.append(holder[1])
-            print(kcCount)
-            killcount_spacer_one = "═".ljust(len(max(kcName, key=len)), "═")
-            killcount_spacer_two = "═".ljust(len(max(kcCount, key=len)), "═")
-            killcount_tableWidth = 9 + len(killcount_spacer_one + killcount_spacer_two)
-            killcount_header = " ╔═" + killcount_spacer_one + "═══" + killcount_spacer_two + "═╗\n" + " ║ " + "KC for " + username + "║".rjust(
-                killcount_tableWidth - len(
-                    " ║ " + "KC for " + username) - 1) + "\n" + " ╠═" + killcount_spacer_one + "═╦═" + killcount_spacer_two + "═╣\n" + " ║ " + \
-                               kcName[0].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[0].rjust(
-                len(killcount_spacer_two)) + " ║\n" + " ╠═" + killcount_spacer_one + "═╬═" + killcount_spacer_two + "═╣\n"
-            killcount_footer = " ╚═" + killcount_spacer_one + "═╩═" + killcount_spacer_two + "═╝\n"
-            for index in range(len(kcName)):
-                if (index > 0 and int(kcCount[index]) > 0):
-                    killcount_outputList.append(
-                        " ║ " + kcName[index].ljust(len(killcount_spacer_one)) + " ║ " + kcCount[index].rjust(
-                            len(killcount_spacer_two)) + " ║\n")
-        await ctx.send("```" + killcount_header + "".join(killcount_outputList) + killcount_footer + "```")
+        # Combines and parses the url to access the OSRS highscores api page for given character name
+        try:
+            data = urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ", "%20"))
+        except:
+            await ctx.send(
+                "An error occurred, probably a 404, but what do I know? I just work here. "
+                "Check the spelling of your username btw.")
+        # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience,
+        # and splits entries on newlines
+        data_holder = data.read().decode().split("\n")
+        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
+        rs99_spacer_two_length = 0
+        for index in range(len(skill_name) - 1):
+            holder = data_holder[index].split(",")
+            skill_level.append(holder[1])
+            skill_experience.append(holder[2])
+            if index > 0:
+                skill_missing_experience.append(13034431 - min(13034431, int(holder[2])))
+        output_temp = []
+        calculated_holder = []
+        for index in range(len(skill_name)):
+            if index > 1 and skill_missing_experience[index] > 0:
+                calculated_holder.append("".join(expcalc(skill_missing_experience[index], index)))
+        try:
+            longest_skill_todo = max(calculated_holder, key=len)
+        except:
+            if username == "himtheguy":
+                await ctx.send("https://youtu.be/LDU_Txk06tM?t=75")
+        longest_skill = -1
+        for index in range(len(calculated_holder)):
+            if len(calculated_holder[index]) == len(longest_skill_todo):
+                longest_skill = index
+        rs99_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
+        rs99_spacer_two = "═".ljust(len(max(calculated_holder, key=len)), "═")
+        associated_skill = []
+        for index in range(len(skill_name)):
+            if index > 1 and skill_missing_experience[index] > 0:
+                holder = "".join(expcalc(skill_missing_experience[index], index))
+                associated_skill.append(skill_name[index])
+                output_temp.append(" ║ " + skill_name[index].ljust(len(rs99_spacer_one)) + " ║ " + holder.rjust(
+                    len(rs99_spacer_two)) + " ║\n")
+        print(associated_skill)
+        print(calculated_holder)
+        header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n" + " ║ " + "Skill Name".ljust(
+            len(rs99_spacer_one)) + " ║ " + "To Do:".ljust(
+            len(rs99_spacer_two)) + " ║\n" + " ╠═" + rs99_spacer_one + "═╬═" + rs99_spacer_two + "═╣\n"
+        footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
+    try:
+        await ctx.send("```" + header + "".join(output_temp) + footer + "```")
+    except:
+        await ctx.send(
+            "Error, to-do list too long, work on " + associated_skill[longest_skill][:-1] + ", requiring " +
+            calculated_holder[longest_skill])
+
+
+@bot.command(name="rskc", help='takes osrs username as a parameter and gives stats on kill counts')
+async def rskc(ctx, *name):
+    kc_name = ["Name", "Unknown1", "Bounty Hunter - Hunter", "Bounty Hunter - Rogue", "Clue Scrolls (Total)",
+               "Beginner Clues", "Easy Clues", "Medium Clues", "Hard Clues", "Elite Clues", "Master Clues",
+               "LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire", "Hydra", "Barrows", "Bryophyta",
+               "Callisto", "Cerberus", "CoX", "CoX CM", "Chaos Elemental", "Chaos Fanatic", "Zilyana",
+               "Corporeal Beast", "Crazy Archaeologist", "Dagganoth Prime", "Dagganoth Rex", "Dagganoth Supreme",
+               "Deranged Archaeologist", "Graardor", "Giant Mole", "Grotesque Guardians", "Hespori",
+               "Kalphite Queen",
+               "King Black Dragon", "Kraken", "Kree'Arra", "K'ril", "Mimic", "Nightmare", "Obor", "Sarachnis",
+               "Scorpia", "Skotizo", "Tempoross", "The Gauntlet", "The Corrupted Gauntlet",
+               "ToB", "Thermonuclear", "Zuk", "Jad", "Venenatis", "Vet'ion", "Vorkath", "Wintertodt", "Zalcano",
+               "Zulrah"]
+    kc_count = ["Kills"]
+    username = ' '.join([str(word) for word in name])
+    num_skills = 23
+    killcount_output = ""
+    killcount_output_list = []
+    async with ctx.typing():
+        try:
+            data = urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
+                                                                                                            "%20"))
+        except:
+            await ctx.send(
+                "An error occurred, probably a 404, but what do I know? I just work here. "
+                "Check the spelling of your username btw.")
+        # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience,
+        # and splits entries on newlines
+        killcount_data_holder = data.read().decode().split("\n")
+        print(killcount_data_holder)
+        for index in range(num_skills + 1, len(killcount_data_holder) - 1):
+            holder = killcount_data_holder[index].split(",")
+            kc_count.append(holder[1])
+        print(kc_count)
+        killcount_spacer_one = "═".ljust(len(max(kc_name, key=len)), "═")
+        killcount_spacer_two = "═".ljust(len(max(kc_count, key=len)), "═")
+        killcount_table_width = 9 + len(killcount_spacer_one + killcount_spacer_two)
+        killcount_header = " ╔═" + killcount_spacer_one + "═══" + killcount_spacer_two + "═╗\n" + " ║ " + "KC for " + username + "║".rjust(
+            killcount_table_width - len(
+                " ║ " + "KC for " + username) - 1) + "\n" + " ╠═" + killcount_spacer_one + "═╦═" + killcount_spacer_two + "═╣\n" + " ║ " + \
+                           kc_name[0].ljust(len(killcount_spacer_one)) + " ║ " + kc_count[0].rjust(
+            len(killcount_spacer_two)) + " ║\n" + " ╠═" + killcount_spacer_one + "═╬═" + killcount_spacer_two + "═╣\n"
+        killcount_footer = " ╚═" + killcount_spacer_one + "═╩═" + killcount_spacer_two + "═╝\n"
+        for index in range(len(kc_name)):
+            if index > 0 and int(kc_count[index]) > 0:
+                killcount_output_list.append(
+                    " ║ " + kc_name[index].ljust(len(killcount_spacer_one)) + " ║ " + kc_count[index].rjust(
+                        len(killcount_spacer_two)) + " ║\n")
+    await ctx.send("```" + killcount_header + "".join(killcount_output_list) + killcount_footer + "```")
 
 
 @bot.command(name='generate', help="takes a width and height parameter and generates a neat random thing")
-async def Generator(ctx, width, height):
+async def generator(ctx, width, height):
     # random.seed(1)
     charset = "╔╦╗╠╬╣╚╩╝═║"
     width = int(width)
     height = int(height)
     success = 0
     async with ctx.typing():
-        if (width < 2 or height < 2):
+        if width < 2 or height < 2:
             success = 1
             await ctx.send("Too small, lol.")
-        if (((height - 1) + width * height) > 1994):
+        if ((height - 1) + width * height) > 1994:
             success = 1
             await ctx.send("Message length limit says no. ((height-1)+width*height) must be less than 1994.")
-        while (success == 0):
-            outputArray = [["X" for column in range(width)] for row in range(height)]
+        while success == 0:
+            output_array = [["X" for column in range(width)] for row in range(height)]
             for row in range(height):
                 for column in range(width):
                     # top row
-                    if (row == 0):
+                    if row == 0:
                         # left side
-                        if (column == 0):
-                            outputArray[row][column] = random.choice("╔ ")
+                        if column == 0:
+                            output_array[row][column] = random.choice("╔ ")
                         # and left open
-                        elif (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
+                        elif output_array[row][column - 1] in "╔╦╠╬╚╩═":
                             # if not right side
-                            if (column < width - 1):
-                                outputArray[row][column] = random.choice("╦╗═")
+                            if column < width - 1:
+                                output_array[row][column] = random.choice("╦╗═")
                             # if right side
                             else:
-                                outputArray[row][column] = "╗"
+                                output_array[row][column] = "╗"
                         # and left closed
-                        elif (outputArray[row][column - 1] in " ╗╣╝║"):
+                        elif output_array[row][column - 1] in " ╗╣╝║":
                             # if not right side
-                            if (column < width - 1):
-                                outputArray[row][column] = random.choice(" ╔")
+                            if column < width - 1:
+                                output_array[row][column] = random.choice(" ╔")
                             # if right side
                             else:
                                 # if left of tile 1 to the left is open
-                                if (outputArray[row][column - 2] in "╔╦╠╬╚╩═"):
-                                    outputArray[row][column - 1] = "╦"
+                                if output_array[row][column - 2] in "╔╦╠╬╚╩═":
+                                    output_array[row][column - 1] = "╦"
                                 else:
-                                    outputArray[row][column - 1] = "╔"
-                                outputArray[row][column] = "╗"
+                                    output_array[row][column - 1] = "╔"
+                                output_array[row][column] = "╗"
                     # middle rows
-                    elif (row > 0 and row < height - 1):
+                    elif 0 < row < height - 1:
                         # left side
-                        if (column == 0):
+                        if column == 0:
                             # top open
-                            if (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
-                                outputArray[row][column] = random.choice("║╠╚")
+                            if output_array[row - 1][column] in "╔╦╗╠╬╣║":
+                                output_array[row][column] = random.choice("║╠╚")
                             # top closed
-                            elif (outputArray[row - 1][column] in "╚╩╝═ "):
-                                outputArray[row][column] = random.choice("╔ ")
+                            elif output_array[row - 1][column] in "╚╩╝═ ":
+                                output_array[row][column] = random.choice("╔ ")
                         # top open
-                        elif (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
+                        elif output_array[row - 1][column] in "╔╦╗╠╬╣║":
                             # left open
-                            if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                outputArray[row][column] = random.choice("╬╣╩╝")
+                            if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                output_array[row][column] = random.choice("╬╣╩╝")
                             # left closed
-                            elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                outputArray[row][column] = random.choice("╠╚║")
+                            elif output_array[row][column - 1] in "╗╣╝║ ":
+                                output_array[row][column] = random.choice("╠╚║")
                         # top closed
-                        elif (outputArray[row - 1][column] in "╚╩╝═ "):
+                        elif output_array[row - 1][column] in "╚╩╝═ ":
                             # left open
-                            if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                outputArray[row][column] = random.choice("╦╗═")
+                            if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                output_array[row][column] = random.choice("╦╗═")
                             # left closed
-                            elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                outputArray[row][column] = random.choice("╔")
+                            elif output_array[row][column - 1] in "╗╣╝║ ":
+                                output_array[row][column] = random.choice("╔")
                         # right side
-                        if (column == width - 1):
+                        if column == width - 1:
                             # top open
-                            if (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
+                            if output_array[row - 1][column] in "╔╦╗╠╬╣║":
                                 # left open
-                                if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                    outputArray[row][column] = random.choice("╣╝")
+                                if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                    output_array[row][column] = random.choice("╣╝")
                                 # left closed
-                                elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                    outputArray[row][column] = random.choice("║")
+                                elif output_array[row][column - 1] in "╗╣╝║ ":
+                                    output_array[row][column] = random.choice("║")
                             # top closed
-                            elif (outputArray[row - 1][column] in "╚╩╝═ "):
+                            elif output_array[row - 1][column] in "╚╩╝═ ":
                                 # left open
-                                if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                    outputArray[row][column] = random.choice("╗")
+                                if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                    output_array[row][column] = random.choice("╗")
                                 # left closed
-                                elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                    outputArray[row][column] = random.choice(" ")
+                                elif output_array[row][column - 1] in "╗╣╝║ ":
+                                    output_array[row][column] = random.choice(" ")
                     # bottom row
-                    if (row == height - 1):
+                    if row == height - 1:
                         # left side
-                        if (column == 0):
+                        if column == 0:
                             # top open
-                            if (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
-                                outputArray[row][column] = "╚"
+                            if output_array[row - 1][column] in "╔╦╗╠╬╣║":
+                                output_array[row][column] = "╚"
                             # top closed
-                            elif (outputArray[row - 1][column] in "╚╩╝═ "):
-                                outputArray[row][column] = " "
+                            elif output_array[row - 1][column] in "╚╩╝═ ":
+                                output_array[row][column] = " "
                         # top open
-                        if (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
+                        if output_array[row - 1][column] in "╔╦╗╠╬╣║":
                             # and left open
-                            if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                outputArray[row][column] = random.choice("╝╩")
+                            if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                output_array[row][column] = random.choice("╝╩")
                             # and left closed
-                            elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                outputArray[row][column] = random.choice("╚")
+                            elif output_array[row][column - 1] in "╗╣╝║ ":
+                                output_array[row][column] = random.choice("╚")
                         # top closed
-                        elif (outputArray[row - 1][column] in "╚╩╝═ "):
+                        elif output_array[row - 1][column] in "╚╩╝═ ":
                             # and left open
-                            if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
-                                outputArray[row][column] = random.choice("═")
+                            if output_array[row][column - 1] in "╔╦╠╬╚╩═":
+                                output_array[row][column] = random.choice("═")
                             # and left closed
-                            elif (outputArray[row][column - 1] in "╗╣╝║ "):
-                                outputArray[row][column] = random.choice(" ")
+                            elif output_array[row][column - 1] in "╗╣╝║ ":
+                                output_array[row][column] = random.choice(" ")
                         # right side
-                        if (column == width - 1):
+                        if column == width - 1:
                             # top open
-                            if (outputArray[row - 1][column] in "╔╦╗╠╬╣║"):
+                            if output_array[row - 1][column] in "╔╦╗╠╬╣║":
                                 # and left open
-                                if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
+                                if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                     # good case
-                                    outputArray[row][column] = random.choice("╝")
+                                    output_array[row][column] = random.choice("╝")
                                     success = 1
                                 # and left closed
-                                elif (outputArray[row][column - 1] in "╗╣╝║ "):
+                                elif output_array[row][column - 1] in "╗╣╝║ ":
                                     success = 0
                             # top closed
-                            elif (outputArray[row - 1][column] in "╚╩╝═ "):
+                            elif output_array[row - 1][column] in "╚╩╝═ ":
                                 # and left open
-                                if (outputArray[row][column - 1] in "╔╦╠╬╚╩═"):
+                                if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                     success = 0
                                 # and left closed
-                                elif (outputArray[row][column - 1] in "╗╣╝║ "):
+                                elif output_array[row][column - 1] in "╗╣╝║ ":
                                     # good case
-                                    outputArray[row][column] = random.choice(" ")
+                                    output_array[row][column] = random.choice(" ")
                                     success = 1
-        outputHolder = []
-        for row in outputArray:
-            outputHolder.append("".join(map(str, row)))
-            outputHolder.append("\n")
-        print("".join(outputHolder))
-    await ctx.send("```" + "".join(outputHolder) + "```")
+        output_holder = []
+        for row in output_array:
+            output_holder.append("".join(map(str, row)))
+            output_holder.append("\n")
+        print("".join(output_holder))
+    await ctx.send("```" + "".join(output_holder) + "```")
 
 
 bot.run(TOKEN)

@@ -150,51 +150,51 @@ async def rslevels(ctx, *name):
             total_experience[0] = int(urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" +
                 runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
-        except:
+        except urllib.error.HTTPError:
+            print("Not on normal hiscores")
             pass
         try:
             total_experience[1] = int(urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" +
                 runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
-        except:
+        except urllib.error.HTTPError:
+            print("Not on ironman hiscores")
             pass
         try:
             total_experience[2] = int(urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" +
                 runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
-        except:
+        except urllib.error.HTTPError:
+            print("Not on hardcore ironman hiscores")
             pass
         try:
             total_experience[3] = int(urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" +
                 runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
-        except:
+        except urllib.error.HTTPError:
+            print("Not on ultimate ironman hiscores")
             pass
         print(total_experience)
         print(max(total_experience))
         if total_experience[3] == max(total_experience):
             print("uim")
             return urllib.request.urlopen(
-                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" + runescape_username.replace(
-                    " ", "%20")).read().decode().split("\n")
+                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
         elif total_experience[2] == max(total_experience):
             print("hcim")
             return urllib.request.urlopen(
-                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" + runescape_username.replace(
-                    " ", "%20")).read().decode().split("\n")
+                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
         elif total_experience[1] == max(total_experience):
             print("im")
             return urllib.request.urlopen(
-                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" + runescape_username.replace(
-                    " ", "%20")).read().decode().split("\n")
+                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
         else:
             print("normie")
             return urllib.request.urlopen(
-                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + runescape_username.replace(
-                    " ",
-                    "%20")).read().decode().split(
-                "\n")
-
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + runescape_username.replace(" ", "%20")).read().decode().split("\n")
     experience_for_level = [-1, 0]
     skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
                   "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
@@ -216,7 +216,7 @@ async def rslevels(ctx, *name):
         # Combines and parses the url to access the OSRS highscores api page for given character name
         try:
             data_holder = get_hiscores(username)
-        except:
+        except urllib.error.HTTPError:
             await ctx.send(
                 "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your "
                 "username btw.")
@@ -243,17 +243,8 @@ async def rslevels(ctx, *name):
         # figures out the width of the entire table by adding length of the border stuff to len(spacers)
         table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
         # Assembling the header and footer, could be done programatically, but immutable strings
-        header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(
-            table_width - len(
-                " ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + \
-                 skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(
-            len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(
-            len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
-        footer = " ╠═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╣\n" + " ║ Adjusted total EXP = " + str(
-            exptotal) + "║".rjust(
-            table_width - len(" ║ Adjusted total EXP = " + str(exptotal)) - 1) + "\n" + " ║ " + str(
-            percent_to_99s) + "% of the way to all skills 99" + "║".rjust(table_width - len(" ║ " + str(
-            percent_to_99s) + "X of the way to all skills 99") - 1) + "\n" + " ╚═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╝\n"
+        header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(table_width - len(" ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
+        footer = " ╠═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╣\n" + " ║ Adjusted total EXP = " + str(exptotal) + "║".rjust(table_width - len(" ║ Adjusted total EXP = " + str(exptotal)) - 1) + "\n" + " ║ " + str(percent_to_99s) + "% of the way to all skills 99" + "║".rjust(table_width - len(" ║ " + str(percent_to_99s) + "X of the way to all skills 99") - 1) + "\n" + " ╚═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╝\n"
         for index in range(len(skill_name)):
             if index > 0:
                 # loops through adding one formatted row at a time to the output list
@@ -268,38 +259,29 @@ async def rslevels(ctx, *name):
 async def rs99(ctx, *name):
     async with ctx.typing():
         def expcalc(missing_experience, skill_id):
-            def recursivecalc(activity_brackets, experience_brackets, experience_rate_brackets, loops, remaining_time,
-                              total_remaining_time):
+            def recursivecalc(activity_brackets, experience_brackets, experience_rate_brackets, loops, remaining_time_recursive, total_remaining_time):
                 while loops > 0:
-                    remaining_time.append(str(round((experience_brackets[len(experience_brackets) - loops] -
-                                                     experience_brackets[len(experience_brackets) - (loops + 1)]) /
-                                                    experience_rate_brackets[len(experience_rate_brackets) - loops],
-                                                    2)) + activity_brackets[len(experience_brackets) - loops])
-                    total_remaining_time = total_remaining_time + round((experience_brackets[
-                                                                             len(experience_brackets) - loops] -
-                                                                         experience_brackets[
-                                                                             len(experience_brackets) - (loops + 1)]) /
-                                                                        experience_rate_brackets[
-                                                                            len(experience_rate_brackets) - loops], 2)
+                    remaining_time_recursive.append(str(round((experience_brackets[len(experience_brackets) - loops] - experience_brackets[len(experience_brackets) - (loops + 1)]) / experience_rate_brackets[len(experience_rate_brackets) - loops], 2)) + activity_brackets[len(experience_brackets) - loops])
+                    total_remaining_time = total_remaining_time + round((experience_brackets[len(experience_brackets) - loops] - experience_brackets[len(experience_brackets) - (loops + 1)]) / experience_rate_brackets[len(experience_rate_brackets) - loops], 2)
                     loops = loops - 1
-                return remaining_time
+                return remaining_time_recursive
 
-            skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:",
-                          "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:",
-                          "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:",
-                          "Farming:", "Runecraft:", "Hunter:", "Construction:"]
-            for index in range(2, 100):
+            skill_name_temp = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:", "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:", "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:", "Hunter:", "Construction:"]
+            for level_number in range(2, 100):
                 experience_for_level.append(
-                    experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
-            for index in range(len(experience_for_level)):
-                experience_for_level[index] = math.floor(experience_for_level[index])
+                    experience_for_level[level_number - 1] + (math.floor(level_number - 1 + 300 * 2 ** ((level_number - 1) / 7)) / 4))
+            for level_number in range(len(experience_for_level)):
+                experience_for_level[level_number] = math.floor(experience_for_level[level_number])
             current_level = 0
             remaining_brackets = 0
-            for index in range(len(experience_for_level)):
-                if experience_for_level[index + 1] > experience_for_level[99] - missing_experience:
-                    current_level = index
+            for level_number in range(len(experience_for_level)):
+                if experience_for_level[level_number + 1] > experience_for_level[99] - missing_experience:
+                    current_level = level_number
                     break
             experience_brackets_lazy = []
+            level_brackets_lazy = []
+            activity_brackets_lazy = []
+            experience_rate_brackets_lazy = []
             if skill_id < 7:
                 activity_brackets_lazy = [" ", " ammonite crab kills."]
                 level_brackets_lazy = [1, 99]
@@ -431,13 +413,13 @@ async def rs99(ctx, *name):
                 experience_rate_brackets_lazy = [29, 60]
             remaining_time = []
             if "activity_brackets_lazy" in locals():
-                for index in range(len(level_brackets_lazy)):
-                    experience_brackets_lazy.append(experience_for_level[level_brackets_lazy[index]])
-                for index in range(len(level_brackets_lazy)):
-                    if current_level < level_brackets_lazy[index + 1]:
+                for level_number in range(len(level_brackets_lazy)):
+                    experience_brackets_lazy.append(experience_for_level[level_brackets_lazy[level_number]])
+                for level_number in range(len(level_brackets_lazy)):
+                    if current_level < level_brackets_lazy[level_number + 1]:
                         experience_brackets_lazy.pop(0)
-                        experience_brackets_lazy.insert(index, experience_for_level[99] - missing_experience)
-                        remaining_brackets = len(level_brackets_lazy) - (index + 1)
+                        experience_brackets_lazy.insert(level_number, experience_for_level[99] - missing_experience)
+                        remaining_brackets = len(level_brackets_lazy) - (level_number + 1)
                         break
                 return (recursivecalc(activity_brackets_lazy, experience_brackets_lazy, experience_rate_brackets_lazy,
                                       remaining_brackets, remaining_time, 0))
@@ -451,9 +433,6 @@ async def rs99(ctx, *name):
         skill_level = ["Level"]
         skill_experience = ["Experience"]
         skill_missing_experience = ["Missing Experience", "Irrelevantlol"]
-        output = ""
-        exptotal = 0
-        output_list = []
         for index in range(2, 100):
             experience_for_level.append(
                 experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
@@ -465,7 +444,7 @@ async def rs99(ctx, *name):
         try:
             data = urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ", "%20"))
-        except:
+        except urllib.error.HTTPError:
             await ctx.send(
                 "An error occurred, probably a 404, but what do I know? I just work here. "
                 "Check the spelling of your username btw.")
@@ -473,7 +452,6 @@ async def rs99(ctx, *name):
         # and splits entries on newlines
         data_holder = data.read().decode().split("\n")
         # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
-        rs99_spacer_two_length = 0
         for index in range(len(skill_name) - 1):
             holder = data_holder[index].split(",")
             skill_level.append(holder[1])
@@ -487,7 +465,7 @@ async def rs99(ctx, *name):
                 calculated_holder.append("".join(expcalc(skill_missing_experience[index], index)))
         try:
             longest_skill_todo = max(calculated_holder, key=len)
-        except:
+        except urllib.error.HTTPError:
             if username == "himtheguy":
                 await ctx.send("https://youtu.be/LDU_Txk06tM?t=75")
         longest_skill = -1
@@ -511,10 +489,9 @@ async def rs99(ctx, *name):
         footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
     try:
         await ctx.send("```" + header + "".join(output_temp) + footer + "```")
-    except:
+    except discord.errors.HTTPException:
         await ctx.send(
-            "Error, to-do list too long, work on " + associated_skill[longest_skill][:-1] + ", requiring " +
-            calculated_holder[longest_skill])
+            "Error, to-do list too long, work on " + associated_skill[longest_skill][:-1] + ", requiring " + calculated_holder[longest_skill])
 
 
 @bot.command(name="rskc", help='takes osrs username as a parameter and gives stats on kill counts')
@@ -533,14 +510,12 @@ async def rskc(ctx, *name):
     kc_count = ["Kills"]
     username = ' '.join([str(word) for word in name])
     num_skills = 23
-    killcount_output = ""
     killcount_output_list = []
     async with ctx.typing():
         try:
             data = urllib.request.urlopen(
-                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ",
-                                                                                                            "%20"))
-        except:
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ", "%20"))
+        except urllib.error.HTTPError:
             await ctx.send(
                 "An error occurred, probably a 404, but what do I know? I just work here. "
                 "Check the spelling of your username btw.")
@@ -557,8 +532,7 @@ async def rskc(ctx, *name):
         killcount_table_width = 9 + len(killcount_spacer_one + killcount_spacer_two)
         killcount_header = " ╔═" + killcount_spacer_one + "═══" + killcount_spacer_two + "═╗\n" + " ║ " + "KC for " + username + "║".rjust(
             killcount_table_width - len(
-                " ║ " + "KC for " + username) - 1) + "\n" + " ╠═" + killcount_spacer_one + "═╦═" + killcount_spacer_two + "═╣\n" + " ║ " + \
-                           kc_name[0].ljust(len(killcount_spacer_one)) + " ║ " + kc_count[0].rjust(
+                " ║ " + "KC for " + username) - 1) + "\n" + " ╠═" + killcount_spacer_one + "═╦═" + killcount_spacer_two + "═╣\n" + " ║ " + kc_name[0].ljust(len(killcount_spacer_one)) + " ║ " + kc_count[0].rjust(
             len(killcount_spacer_two)) + " ║\n" + " ╠═" + killcount_spacer_one + "═╬═" + killcount_spacer_two + "═╣\n"
         killcount_footer = " ╚═" + killcount_spacer_one + "═╩═" + killcount_spacer_two + "═╝\n"
         for index in range(len(kc_name)):
@@ -571,8 +545,6 @@ async def rskc(ctx, *name):
 
 @bot.command(name='generate', help="takes a width and height parameter and generates a neat random thing")
 async def generator(ctx, width, height):
-    # random.seed(1)
-    charset = "╔╦╗╠╬╣╚╩╝═║"
     width = int(width)
     height = int(height)
     success = 0
@@ -584,7 +556,7 @@ async def generator(ctx, width, height):
             success = 1
             await ctx.send("Message length limit says no. ((height-1)+width*height) must be less than 1994.")
         while success == 0:
-            output_array = [["X" for column in range(width)] for row in range(height)]
+            output_array = [["X" * width] * height]
             for row in range(height):
                 for column in range(width):
                     # top row

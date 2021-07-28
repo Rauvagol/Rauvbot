@@ -4,7 +4,6 @@ import discord
 import urllib
 import random
 import math
-import time
 import string
 
 from discord.ext import commands
@@ -48,14 +47,11 @@ last_niced = 0
 @bot.event
 async def on_message(message):
     if "lmao" in message.content.lower():
-        await message.channel.send("You mean lamo.")
+        emojis = ["🇱", "🇦", "🇲", "🇴"]
+        for emoji in emojis:
+            await message.add_reaction(emoji)
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "nice":
-        global last_niced
-        if time.time() > last_niced + 120:
-            print(str(time.time()) + ">" + str(last_niced + 5))
-            if not message.author.bot:
-                last_niced = time.time()
-                await message.channel.send('Nice.')
+        await message.add_reaction(bot.get_emoji(870075966142185562))
     if (message.content.lower().translate(
             str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
         await message.channel.send('lamo')

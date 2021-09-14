@@ -108,14 +108,19 @@ async def modabuse(ctx, victim_id: int, newname):
     await ctx.send("Done")
 
 
-@bot.command(name='rockgolem', help='makes htg sad')
+@bot.command(name='rockgolem', help='makes htg happy')
 async def rockgolem(ctx):
-    amethyst_droprate = (1 / (46350 - (99 * 25)))
+    await ctx.send("he done it with 27,758,267 exp!")
+
+
+@bot.command(name='beaver', help='makes htg sad')
+async def beaver(ctx):
+    droprate = (1 / (72321 - (99 * 25)))
     htgexp = math.floor(int(urllib.request.urlopen(
         "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=himtheguy").read().decode().split(
-        "\n")[15].split(",")[2]) / 240)
-    percentile = str(round((1 - ((1 - amethyst_droprate) ** htgexp)) * 100, 9))
-    barpercent = int(math.floor((1 - ((1 - amethyst_droprate) ** htgexp)) * 100))
+        "\n")[9].split(",")[2]) / 350)
+    percentile = str(round((1 - ((1 - droprate) ** htgexp)) * 100, 9))
+    barpercent = int(math.floor((1 - ((1 - droprate) ** htgexp)) * 100))
     sadness = ["░"] * 100
     for num in range(barpercent):
         sadness[num] = "█"
@@ -134,8 +139,8 @@ async def rockgolem(ctx):
         percentile_color = "Blue parse! You can officialy be sad!"
     elif barpercent >= 25:
         percentile_color = "Green parse, dont complain"
-    await(ctx.send("Rock Golem Bar™ " + "".join(sadness) + "\nYou have mining experience equivalent to " + str(
-        htgexp) + " amethysts!\n" + percentile + "% of people would have the drop by now! :)\n" + percentile_color))
+    await(ctx.send("Beaver Bar™ " + "".join(sadness) + "\nYou have woodcutting experience equivalent to " + str(
+        htgexp) + " redwood logs!\n" + percentile + "% of people would have the drop by now! :)\n" + percentile_color))
 
 
 @bot.command(name='rslevels', help='takes osrs username as a parameter and gives stats on levels')

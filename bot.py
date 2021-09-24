@@ -13,13 +13,12 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
-# bot = discord.Client(intents=intents)
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 
 @bot.event
 async def on_ready():
-    print("logged in")
+    print("logged in2")
 
 
 @bot.command(name='test', help='for testing')
@@ -27,6 +26,13 @@ async def test_command(ctx):
     print("running")
     await ctx.send("Running2")
 
+
+@bot.event
+async def on_typing(channel, user, when):
+    if user.id != 682781357331578901:
+        async with channel.typing():
+            print(f"{user} is typing message in {channel} {when}")
+            await channel.send()
 
 @bot.event
 async def on_raw_reaction_add(payload):
@@ -41,9 +47,6 @@ async def on_raw_reaction_add(payload):
             await payload.member.add_roles(role)
 
 
-last_niced = 0
-
-
 @bot.event
 async def on_message(message):
     if "lmao" in message.content.lower():
@@ -56,7 +59,7 @@ async def on_message(message):
             str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
         await message.channel.send('lamo')
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
-        print("yes")
+        print("yes, that says test (line 65 ish)")
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
     if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
@@ -196,6 +199,7 @@ async def rslevels(ctx, *name):
             print("normie")
             return urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + runescape_username.replace(" ", "%20")).read().decode().split("\n")
+
     experience_for_level = [-1, 0]
     skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
                   "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",

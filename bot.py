@@ -29,7 +29,7 @@ async def test_command(ctx):
 
 @bot.event
 async def on_typing(channel, user, when):
-    if user.id != 682781357331578901:
+    if user.id == 124664055251075072:
         async with channel.typing():
             print(f"{user} is typing message in {channel} {when}")
             await channel.send()

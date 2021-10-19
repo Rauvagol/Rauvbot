@@ -259,6 +259,120 @@ async def rslevels(ctx, *name):
                         len(level_spacer_three)) + " ║\n")
     await ctx.send("```" + header + "".join(output_list) + footer + "```")
 
+@bot.command(name='hiscores', help='takes osrs username as a parameter and gives stats on hiscore ranks')
+async def rslevels(ctx, *name):
+    def get_hiscores(runescape_username):
+        total_experience = [0, 0, 0, 0]
+        try:
+            total_experience[0] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except urllib.error.HTTPError:
+            print("Not on normal hiscores")
+            pass
+        try:
+            total_experience[1] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except urllib.error.HTTPError:
+            print("Not on ironman hiscores")
+            pass
+        try:
+            total_experience[2] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except urllib.error.HTTPError:
+            print("Not on hardcore ironman hiscores")
+            pass
+        try:
+            total_experience[3] = int(urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")[0].split(",")[2])
+        except urllib.error.HTTPError:
+            print("Not on ultimate ironman hiscores")
+            pass
+        print(total_experience)
+        print(max(total_experience))
+        if total_experience[3] == max(total_experience):
+            print("uim")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
+        elif total_experience[2] == max(total_experience):
+            print("hcim")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_hardcore_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
+        elif total_experience[1] == max(total_experience):
+            print("im")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool_ironman/index_lite.ws?player=" +
+                runescape_username.replace(" ", "%20")).read().decode().split("\n")
+        else:
+            print("normie")
+            return urllib.request.urlopen(
+                "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + runescape_username.replace(" ", "%20")).read().decode().split("\n")
+
+    experience_for_level = [-1, 0]
+    skill_name = ["Skill Name", "Total:", "Attack:", "Defence:", "Strength:", "Hitpoints:", "Ranged:", "Prayer:",
+                  "Magic:", "Cooking:", "Woodcutting:", "Fletching:", "Fishing:", "Firemaking:", "Crafting:",
+                  "Smithing:", "Mining:", "Herblore:", "Agility:", "Thieving:", "Slayer:", "Farming:", "Runecraft:",
+                  "Hunter:", "Construction:"]
+    skill_level = ["Rank"]
+    skill_experience = ["Experience"]
+    skill_missing_experience = ["Missing Experience", "Irrelevantlol"]
+    exptotal = 0
+    output_list = []
+    async with ctx.typing():
+        for index in range(2, 100):
+            experience_for_level.append(
+                experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
+        for index in range(len(experience_for_level)):
+            experience_for_level[index] = math.floor(experience_for_level[index])
+        # Variables used in the code, each list is for a column of information.
+        username = ' '.join([str(word) for word in name])
+        # Combines and parses the url to access the OSRS highscores api page for given character name
+        try:
+            data_holder = get_hiscores(username)
+        except urllib.error.HTTPError:
+            await ctx.send(
+                "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your "
+                "username btw.")
+            return
+        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
+        for index in range(len(skill_name) - 1):
+            holder = data_holder[index].split(",")
+            print(holder)
+            skill_level.append(holder[0])
+            skill_experience.append(holder[2])
+            if index > 0:
+                # Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
+                exptotal += min(13034431, int(holder[2]))
+                skill_missing_experience.append(13034431 - min(13034431, int(holder[2])))
+        for index in range(len(skill_level)):
+            if skill_level[index] == "69":
+                skill_level[index] = "Nice."
+        # Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
+        level_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
+        level_spacer_two = "═".ljust(len(max(skill_level, key=len)), "═")
+        level_spacer_three = "═".ljust(len(max(skill_experience, key=len)), "═")
+        exptotal = int(exptotal)
+        # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
+        percent_to_99s = round(100 * exptotal / 299791913, 2)
+        # figures out the width of the entire table by adding length of the border stuff to len(spacers)
+        table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
+        # Assembling the header and footer, could be done programatically, but immutable strings
+        header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(table_width - len(" ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
+        footer = " ╚═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╝\n"
+        for index in range(len(skill_name)):
+            if index > 0:
+                # loops through adding one formatted row at a time to the output list
+                output_list.append(
+                    " ║ " + skill_name[index].ljust(len(level_spacer_one)) + " ║ " + skill_level[index].rjust(
+                        len(level_spacer_two)) + " ║ " + skill_experience[index].rjust(
+                        len(level_spacer_three)) + " ║\n")
+    await ctx.send("```" + header + "".join(output_list) + footer + "```")
+
 
 @bot.command(name='rs99', help='takes osrs username as a parameter and gives stats on levels')
 async def rs99(ctx, *name):

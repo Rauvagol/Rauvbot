@@ -120,32 +120,7 @@ async def rockgolem(ctx):
 
 @bot.command(name='beaver', help='makes htg sad')
 async def beaver(ctx):
-    droprate = (1 / (72321 - (99 * 25)))
-    htgexp = math.floor(int(urllib.request.urlopen(
-        "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=himtheguy").read().decode().split(
-        "\n")[9].split(",")[2]) / 350)
-    percentile = str(round((1 - ((1 - droprate) ** htgexp)) * 100, 9))
-    barpercent = int(math.floor((1 - ((1 - droprate) ** htgexp)) * 100))
-    sadness = ["░"] * 100
-    for num in range(barpercent):
-        sadness[num] = "█"
-    percentile_color = "Not spooned yet."
-    if barpercent >= 100:
-        percentile_color = "Literally maximum unlucky wtf bruh."
-    elif barpercent >= 99:
-        percentile_color = "Pink parsing! \n The universe is trying to tell you something."
-    elif barpercent >= 95:
-        percentile_color = "Orange Parse! \n Help is available!\n Speak with someone today\n National Suicide " \
-                           "Prevention Lifeline Hours: Available 24 hours. Languages: English, Spanish. Learn more " \
-                           "800-273-8255 "
-    elif barpercent >= 75:
-        percentile_color = "Nice purple parse! Have you tried just getting the drop?"
-    elif barpercent >= 50:
-        percentile_color = "Blue parse! You can officialy be sad!"
-    elif barpercent >= 25:
-        percentile_color = "Green parse, dont complain"
-    await(ctx.send("Beaver Bar™ " + "".join(sadness) + "\nYou have woodcutting experience equivalent to " + str(
-        htgexp) + " redwood logs!\n" + percentile + "% of people would have the drop by now! :)\n" + percentile_color))
+    await ctx.send("he done it with 60,052,138  exp!")
 
 
 @bot.command(name='rslevels', help='takes osrs username as a parameter and gives stats on levels')

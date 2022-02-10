@@ -34,6 +34,7 @@ async def on_typing(channel, user, when):
             print(f"{user} is typing message in {channel} {when}")
             await channel.send()
 
+
 @bot.event
 async def on_raw_reaction_add(payload):
     if payload.message_id == 773416052796555264 and payload.emoji.name == "nice":
@@ -45,7 +46,6 @@ async def on_raw_reaction_add(payload):
             await payload.member.remove_roles(role)
         else:
             await payload.member.add_roles(role)
-
 
 @bot.event
 async def on_message(message):
@@ -103,6 +103,25 @@ async def breakup(ctx):
         ":calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa "
         ":stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
 
+@bot.command(name='lastorigin', help='degen')
+async def lastorigin(ctx):
+    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari","https://lastorigin.fandom.com/wiki/Dutch_Girl"]
+    holder=urllib.request.urlopen("https://lastorigin.fandom.com/wiki/Category:Characters").read().decode('UTF-8').split("\n")
+    holder.pop()
+    output = []
+    for line in holder:
+        if "alt=\"" in str(line):
+            temp = line.strip()[5:-1]
+            output.append(temp)
+    del output[1::2]
+    del output[:1]
+    outputnames = output.copy()
+    outputlinks = output.copy()
+    for index in range(0,len(outputlinks)):
+        outputlinks[index] = "https://lastorigin.fandom.com/wiki/" + outputlinks[index].replace(" ", "_")
+    for child in exclusions:
+        outputlinks.remove(child)
+    await ctx.send(random.choice(outputlinks))
 
 @bot.command(name='modabuse', help="change user's nickname given id and new nickname")
 async def modabuse(ctx, victim_id: int, newname):

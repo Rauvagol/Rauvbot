@@ -47,6 +47,7 @@ async def on_raw_reaction_add(payload):
         else:
             await payload.member.add_roles(role)
 
+
 @bot.event
 async def on_message(message):
     if "lmao" in message.content.lower():
@@ -64,8 +65,8 @@ async def on_message(message):
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
-    if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
-        await message.channel.send("This is a christian server, please call it a \"mister boopsy\"")
+    # if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
+    #     await message.channel.send("This is a christian server, please call it a \"mister boopsy\"")
     else:
         await bot.process_commands(message)
 
@@ -103,10 +104,11 @@ async def breakup(ctx):
         ":calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa "
         ":stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
 
+
 @bot.command(name='lastorigin', help='degen')
 async def lastorigin(ctx):
-    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari","https://lastorigin.fandom.com/wiki/Dutch_Girl"]
-    holder=urllib.request.urlopen("https://lastorigin.fandom.com/wiki/Category:Characters").read().decode('UTF-8').split("\n")
+    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari", "https://lastorigin.fandom.com/wiki/Dutch_Girl"]
+    holder = urllib.request.urlopen("https://lastorigin.fandom.com/wiki/Category:Characters").read().decode('UTF-8').split("\n")
     holder.pop()
     output = []
     for line in holder:
@@ -115,13 +117,13 @@ async def lastorigin(ctx):
             output.append(temp)
     del output[1::2]
     del output[:1]
-    outputnames = output.copy()
     outputlinks = output.copy()
-    for index in range(0,len(outputlinks)):
+    for index in range(0, len(outputlinks)):
         outputlinks[index] = "https://lastorigin.fandom.com/wiki/" + outputlinks[index].replace(" ", "_")
     for child in exclusions:
         outputlinks.remove(child)
     await ctx.send(random.choice(outputlinks))
+
 
 @bot.command(name='modabuse', help="change user's nickname given id and new nickname")
 async def modabuse(ctx, victim_id: int, newname):
@@ -255,6 +257,7 @@ async def rslevels(ctx, *name):
                         len(level_spacer_three)) + " ║\n")
     await ctx.send("```" + header + "".join(output_list) + footer + "```")
 
+
 @bot.command(name='hiscores', help='takes osrs username as a parameter and gives stats on hiscore ranks')
 async def rslevels(ctx, *name):
     def get_hiscores(runescape_username):
@@ -352,9 +355,9 @@ async def rslevels(ctx, *name):
         level_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
         level_spacer_two = "═".ljust(len(max(skill_level, key=len)), "═")
         level_spacer_three = "═".ljust(len(max(skill_experience, key=len)), "═")
-        exptotal = int(exptotal)
+        # exptotal = int(exptotal)(currently commented out because I dont know why I made it, but I am sure deleting it breaks things)
         # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
-        percent_to_99s = round(100 * exptotal / 299791913, 2)
+        # percent_to_99s = round(100 * exptotal / 299791913, 2) (currently commented out because I dont know why I made it, but I am sure deleting it breaks things)
         # figures out the width of the entire table by adding length of the border stuff to len(spacers)
         table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
         # Assembling the header and footer, could be done programatically, but immutable strings

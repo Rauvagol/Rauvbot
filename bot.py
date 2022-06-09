@@ -107,7 +107,7 @@ async def breakup(ctx):
 
 @bot.command(name='lastorigin', help='degen')
 async def lastorigin(ctx):
-    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari", "https://lastorigin.fandom.com/wiki/Dutch_Girl"]
+    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari", "https://lastorigin.fandom.com/wiki/Dutch_Girl", "https://lastorigin.fandom.com/wiki/Ellie_Quickhand"]
     holder = urllib.request.urlopen("https://lastorigin.fandom.com/wiki/Category:Characters").read().decode('UTF-8').split("\n")
     holder.pop()
     output = []

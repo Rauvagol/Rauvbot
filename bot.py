@@ -66,7 +66,7 @@ async def on_message(message):
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
     if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
-        await message.channel.send("This is a christian server, please call it a \"mister boopsy\"")
+        await message.channel.send("This is a christian server, please call it a mister boopsy")
     else:
         await bot.process_commands(message)
 

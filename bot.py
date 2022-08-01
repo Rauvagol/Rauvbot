@@ -47,6 +47,7 @@ async def on_raw_reaction_add(payload):
         else:
             await payload.member.add_roles(role)
     if payload.message_id == 1003780204583473202 and payload.emoji.name == "synthwave":
+        print(payload)
         message = await bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
         role = discord.utils.get(bot.get_guild(payload.guild_id).roles, name='Synthwave Enjoyer')
         await message.remove_reaction(payload.emoji, payload.member)

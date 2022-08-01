@@ -54,6 +54,8 @@ async def on_message(message):
         emojis = ["🇱", "🇦", "🇲", "🇴"]
         for emoji in emojis:
             await message.add_reaction(emoji)
+    if "samsung" in message.content.lower():
+        await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "nice":
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if (message.content.lower().translate(

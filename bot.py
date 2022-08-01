@@ -50,11 +50,14 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_message(message):
+    if message.author.bot:
+        return
     if "lmao" in message.content.lower():
         emojis = ["🇱", "🇦", "🇲", "🇴"]
         for emoji in emojis:
             await message.add_reaction(emoji)
     if "samsung" in message.content.lower():
+        print(message.author.bot)
         await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "nice":
         await message.add_reaction(bot.get_emoji(870075966142185562))

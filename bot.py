@@ -629,7 +629,7 @@ async def rs99(ctx, *name):
 
 @bot.command(name="rskc", help='takes osrs username as a parameter and gives stats on kill counts')
 async def rskc(ctx, *name):
-    kc_name = ["Naame", "", "", "BH - Hunter", "BH - Rogue", "BH (Legacy) - Hunter", "BH (Legacy) - Rogue",
+    kc_name = ["Name", "", "", "BH - Hunter", "BH - Rogue", "BH (Legacy) - Hunter", "BH (Legacy) - Rogue",
                "Clue Scrolls (Total)", "Beginner Clues", "Easy Clues", "Medium Clues", "Hard Clues", "Elite Clues", "Master Clues",
                "LMS - Rank", "PVP Arena - Rank", "Soul Wars - Zeal", "Rifts Closed", "Colosseum Glory",
                "Abyssal Sire", "Alchemical Hydra", "Artio", "Barrows", "Bryophyta",

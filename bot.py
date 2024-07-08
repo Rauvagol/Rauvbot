@@ -629,16 +629,19 @@ async def rs99(ctx, *name):
 
 @bot.command(name="rskc", help='takes osrs username as a parameter and gives stats on kill counts')
 async def rskc(ctx, *name):
-    kc_name = ["Name", "Unknown1", "Bounty Hunter - Hunter", "Bounty Hunter - Rogue", "Clue Scrolls (Total)",
-               "Beginner Clues", "Easy Clues", "Medium Clues", "Hard Clues", "Elite Clues", "Master Clues",
-               "LMS", "SPACER, IF YOU SEE THIS YELL AT ADAM", "Abyssal Sire", "Hydra", "Barrows", "Bryophyta",
-               "Callisto", "Cerberus", "CoX", "CoX CM", "Chaos Elemental", "Chaos Fanatic", "Zilyana",
+    kc_name = ["Naame", "", "", "BH - Hunter", "BH - Rogue", "BH (Legacy) - Hunter", "BH (Legacy) - Rogue",
+               "Clue Scrolls (Total)", "Beginner Clues", "Easy Clues", "Medium Clues", "Hard Clues", "Elite Clues", "Master Clues",
+               "LMS - Rank", "PVP Arena - Rank", "Soul Wars - Zeal", "Rifts Closed", "Colosseum Glory",
+               "Abyssal Sire", "Alchemical Hydra", "Artio", "Barrows", "Bryophyta",
+               "Callisto", "Calvar'ion", "Cerberus", "CoX", "CoX CM", "Chaos Elemental", "Chaos Fanatic", "Zilyana",
                "Corporeal Beast", "Crazy Archaeologist", "Dagganoth Prime", "Dagganoth Rex", "Dagganoth Supreme",
-               "Deranged Archaeologist", "Graardor", "Giant Mole", "Grotesque Guardians", "Hespori",
+               "Deranged Archaeologist", "Duke Sucellus", "Graardor", "Giant Mole", "Grotesque Guardians", "Hespori",
                "Kalphite Queen",
-               "King Black Dragon", "Kraken", "Kree'Arra", "K'ril", "Mimic", "Nightmare", "Obor", "Sarachnis",
-               "Scorpia", "Skotizo", "Tempoross", "The Gauntlet", "The Corrupted Gauntlet",
-               "ToB", "Thermonuclear", "Zuk", "Jad", "Venenatis", "Vet'ion", "Vorkath", "Wintertodt", "Zalcano",
+               "King Black Dragon", "Kraken", "Kree'Arra", "K'ril", "Lunar Chests", "Mimic", "Nex", "Nightmare", "Phosani's Nightmare", "Obor",
+               "Phantom Muspah", "Sarachnis",
+               "Scorpia", "Scurrius", "Skotizo", "Sol Heredit", "Spindel", "Tempoross", "The Gauntlet", "The Corrupted Gauntlet",
+               "The Leviathan", "The Whisperer",
+               "ToB", "ToB - Hard Mode", "Thermonuclear", "ToA", "ToA - Expert Mode", "Zuk", "Jad", "Vardorvis", "Venenatis", "Vet'ion", "Vorkath", "Wintertodt", "Zalcano",
                "Zulrah"]
     kc_count = ["Kills"]
     username = ' '.join([str(word) for word in name])
@@ -673,7 +676,19 @@ async def rskc(ctx, *name):
                 killcount_output_list.append(
                     " ║ " + kc_name[index].ljust(len(killcount_spacer_one)) + " ║ " + kc_count[index].rjust(
                         len(killcount_spacer_two)) + " ║\n")
-    await ctx.send("```" + killcount_header + "".join(killcount_output_list) + killcount_footer + "```")
+    stringtosend = killcount_header + "".join(killcount_output_list) + killcount_footer
+    outputtest = "```" + stringtosend + "```"
+    print(stringtosend)
+    arraytosend = stringtosend.splitlines(True)
+    print(arraytosend)
+    finalstring = "```"
+    for line in arraytosend:
+        finalstring += line
+        print(finalstring)
+        if len(finalstring) > 1800:
+            await ctx.send(finalstring + "```")
+            finalstring = "```"
+    await ctx.send(finalstring + "```")
 
 
 @bot.command(name='generate', help="takes a width and height parameter and generates a neat random thing")

@@ -24,7 +24,7 @@ async def on_ready():
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.send("Running3")
+    await ctx.reply("Running3")
 
 
 @bot.event
@@ -64,7 +64,7 @@ async def on_message(message):
         return
     if "dstronghold" in message.author.name:
         if random.random() < 0.01:
-            await message.channel.send("https://images-ext-1.discordapp.net/external/gNMFaz1xwgeX4KOxEO3fR-IYU5sswqSwzRsjpGWGO6w/https/media.tenor.com/tPDdc5tBiaEAAAPo/spray-bottle-cat-spray-bottle.mp4")
+            await message.reply("https://images-ext-1.discordapp.net/external/gNMFaz1xwgeX4KOxEO3fR-IYU5sswqSwzRsjpGWGO6w/https/media.tenor.com/tPDdc5tBiaEAAAPo/spray-bottle-cat-spray-bottle.mp4")
         else:
             print("False")
     if "lmao" in message.content.lower():

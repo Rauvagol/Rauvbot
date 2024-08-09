@@ -24,7 +24,7 @@ async def on_ready():
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.reply("Running4")
+    await ctx.reply("Running5")
 
 
 @bot.event
@@ -63,7 +63,7 @@ async def on_message(message):
     if message.author.bot:
         return
     if "dstronghold" in message.author.name:
-        if random.random() < 0.01:
+        if random.random() < 0.003:
             await message.reply("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
             print("False")

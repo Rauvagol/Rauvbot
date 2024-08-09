@@ -64,7 +64,7 @@ async def on_message(message):
         return
     if "dstronghold" in message.author.name:
         if random.random() < 0.01:
-            await message.reply("https://images-ext-1.discordapp.net/external/gNMFaz1xwgeX4KOxEO3fR-IYU5sswqSwzRsjpGWGO6w/https/media.tenor.com/tPDdc5tBiaEAAAPo/spray-bottle-cat-spray-bottle.mp4")
+            await message.reply("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
             print("False")
     if "lmao" in message.content.lower():

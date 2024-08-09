@@ -62,6 +62,11 @@ async def on_raw_reaction_add(payload):
 async def on_message(message):
     if message.author.bot:
         return
+    if "dstronghold" in message.author.name:
+        if random.random() < 0.01:
+            await message.channel.send("https://images-ext-1.discordapp.net/external/gNMFaz1xwgeX4KOxEO3fR-IYU5sswqSwzRsjpGWGO6w/https/media.tenor.com/tPDdc5tBiaEAAAPo/spray-bottle-cat-spray-bottle.mp4")
+        else:
+            print("False")
     if "lmao" in message.content.lower():
         emojis = ["🇱", "🇦", "🇲", "🇴"]
         for emoji in emojis:
@@ -75,7 +80,7 @@ async def on_message(message):
             str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
         await message.channel.send('lamo')
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
-        print("yes, that says test (line 65 ish)")
+        print("yes, that says test (line 79 ish)")
     if " 69 " in " "+message.content.lower()+" ":
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if "kate beckinsale" in message.content.lower():

@@ -24,7 +24,7 @@ async def on_ready():
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.reply("Running5")
+    await ctx.reply("Running6")
 
 
 @bot.event
@@ -62,6 +62,22 @@ async def on_raw_reaction_add(payload):
 async def on_message(message):
     if message.author.bot:
         return
+        # Check if the message is from a bot or not a code block message
+    if message.content.startswith('```') and message.content.endswith('```'):
+        lines = message.content.split('\n')
+        if len(lines) > 3:
+            file_path = 'code_block.txt'
+            with open(file_path, 'w') as file:
+                if message.content[3] == '\n':
+                    file.write(message.content[4:-3])
+                else:
+                    file.write(message.content[3:-3])
+            with open(file_path, 'rb') as file:
+                await message.channel.send(file=discord.File(file, file_path))
+            await message.delete()
+            os.remove(file_path)
+        return
+
     if "dstronghold" in message.author.name:
         if random.random() < 0.003:
             await message.reply("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")

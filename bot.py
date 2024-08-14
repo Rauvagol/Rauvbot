@@ -73,9 +73,9 @@ async def on_message(message):
                 else:
                     file.write(message.content[3:-3])
             with open(file_path, 'rb') as file:
-                await message.channel.send(file=discord.File(file, file_path))
-            await message.delete()
+                await message.channel.send(content=f"{message.author.mention} posted a code block:", file=discord.File(file, file_path))
             os.remove(file_path)
+            await message.delete()
         return
 
     if "dstronghold" in message.author.name:

@@ -80,7 +80,7 @@ async def on_message(message):
 
     if "dstronghold" in message.author.name:
         if random.random() < 0.003:
-            await message.reply("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
+            await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
             print("False")
     if "lmao" in message.content.lower():
@@ -94,7 +94,12 @@ async def on_message(message):
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if (message.content.lower().translate(
             str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
-        await message.channel.send('lamo')
+        if random.randint(1, 10) == 1:
+            await message.channel.send('lamo')
+    if (message.content.lower().translate(
+            str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 217788070068617216):
+        if random.randint(1, 10) == 1:
+            await message.channel.send('lamo')
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
         print("yes, that says test (line 79 ish)")
     if " 69 " in " "+message.content.lower()+" ":

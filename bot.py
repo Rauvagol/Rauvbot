@@ -5,16 +5,17 @@ import urllib
 import random
 import math
 import string
+import datetime
 
 from discord.ext import commands
 from dotenv import load_dotenv
 
+last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
-
 
 @bot.event
 async def on_ready():
@@ -24,7 +25,7 @@ async def on_ready():
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.reply("Running7")
+    await ctx.reply("Running8")
 
 
 @bot.event
@@ -107,9 +108,13 @@ async def on_message(message):
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
     if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
+        global last_boopsy
+        last_boopsy = datetime.datetime.now()
+        print(last_boopsy)
         await message.channel.send("This is a christian server, please call it a mister boopsy")
     if "mister boopsy" in message.content.lower():
-        await message.channel.send("Thank you for using polite language in this christian server.")
+        if ('last_boopsy' in globals()) and (datetime.datetime.now() - last_boopsy < datetime.timedelta(seconds=30)):
+            await message.channel.send("Thank you for using polite language in this christian server.")
     else:
         await bot.process_commands(message)
 

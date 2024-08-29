@@ -11,6 +11,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 last_boopsy = None
+vc = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
@@ -18,6 +19,7 @@ intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 sound_file_path = './objection.mp3'
+
 
 @bot.event
 async def on_ready():
@@ -123,17 +125,19 @@ async def on_message(message):
     else:
         await bot.process_commands(message)
 
+
 @bot.event
 async def on_voice_state_update(member, before, after):
     global vc
     if member.id == 219305656333631489:
-        if after.channel is not None and before.channel != after.channel
-        voice_channel = after.channel
+        if after.channel is not None and before.channel != after.channel:
+            voice_channel = after.channel
         vc = await voice_channel.connect()
     elif after.channel is None:
         if vc:
             await vc.disconnect()
             vc = None
+
 
 @bot.event
 async def on_speaking(user, speaking, channel):

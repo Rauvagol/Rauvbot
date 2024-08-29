@@ -11,15 +11,11 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 last_boopsy = None
-vc = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
-
-sound_file_path = './objection.mp3'
-
 
 @bot.event
 async def on_ready():
@@ -124,31 +120,6 @@ async def on_message(message):
             await message.channel.send("Thank you for using polite language in this christian server.")
     else:
         await bot.process_commands(message)
-
-
-@bot.event
-async def on_voice_state_update(member, before, after):
-    global vc
-    if member.id == 219305656333631489:
-        if after.channel is not None and before.channel != after.channel:
-            voice_channel = after.channel
-        vc = await voice_channel.connect()
-    elif after.channel is None:
-        if vc:
-            await vc.disconnect()
-            vc = None
-
-
-@bot.event
-async def on_speaking(user, speaking, channel):
-    global vc
-    if user.id == 219305656333631489 and vc and vc.is_connected():
-        if speaking:
-            if os.path.exists(sound_file_path):
-                vc.play(discord.FFmpegPCMAudio(sound_file_path))
-        else:
-            if vc.is_playing(sound_file_path):
-                vc.stop(sound_file_path)
 
 @bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
 async def ten_seconds(ctx):

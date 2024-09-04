@@ -17,7 +17,6 @@ PASTEBIN = urllib.request.urlopen(os.getenv('PASTEBIN_URL')).read()
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
-command_dict = {}
 
 
 @bot.event
@@ -28,11 +27,6 @@ async def on_ready():
 
 @bot.command(name='commands')
 async def commands_command(ctx):
-    await ctx.reply('\n'.join(command_dict.keys()))
-
-
-@bot.command(name='rauvbot', help='the new pastebin command storage system')
-async def pastebin_command(ctx):
     def stringdecode(input_str):
         decoded_str = input_str.decode('utf-8')
         sections = decoded_str.split('\r\n\r\n')
@@ -43,9 +37,23 @@ async def pastebin_command(ctx):
             values = lines[1:]
             result_dict[key] = values
         return result_dict
-    global command_dict
-    command_dict = stringdecode(PASTEBIN)
-    await ctx.reply(random.choice(command_dict.get(ctx.message.content.split()[-1])))
+    await ctx.reply('\n'.join(stringdecode(PASTEBIN).keys()))
+
+
+@bot.command(name='rauvbot', help='the new pastebin command storage system')
+async def pastebin_command(ctx):
+
+    def stringdecode(input_str):
+        decoded_str = input_str.decode('utf-8')
+        sections = decoded_str.split('\r\n\r\n')
+        result_dict = {}
+        for section in sections:
+            lines = section.strip().split('\r\n')
+            key = lines[0]
+            values = lines[1:]
+            result_dict[key] = values
+        return result_dict
+    await ctx.reply(random.choice(stringdecode(PASTEBIN).get(ctx.message.content.split()[-1])))
 
 
 @bot.command(name='test', help='for testing')

@@ -36,7 +36,6 @@ async def commands_command(ctx):
             key = lines[0]
             values = lines[1:]
             result_dict[key] = values
-        urllib.urlcleanup()
         return result_dict
     await ctx.reply('\n'.join(stringdecode(urllib.request.urlopen(PASTEBIN).read()).keys()))
 
@@ -52,7 +51,6 @@ async def pastebin_command(ctx):
             key = lines[0]
             values = lines[1:]
             result_dict[key] = values
-        urllib.urlcleanup()
         return result_dict
     await ctx.reply(random.choice(stringdecode(urllib.request.urlopen(PASTEBIN).read()).get(ctx.message.content.split()[-1])))
 

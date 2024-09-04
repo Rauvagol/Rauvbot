@@ -59,7 +59,7 @@ async def pastebin_command(ctx):
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.reply("Running8")
+    await ctx.reply("Running9")
 
 
 @bot.event

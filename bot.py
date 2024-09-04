@@ -25,6 +25,14 @@ async def on_ready():
     print("logged in2")
     print()
 
+
+@bot.command(name='commands')
+async def commands_command(ctx):
+    await ctx.reply('\n'.join(command_dict.keys()))
+
+
+@bot.command(name='rauvbot', help='the new pastebin command storage system')
+async def pastebin_command(ctx):
     def stringdecode(input_str):
         decoded_str = input_str.decode('utf-8')
         sections = decoded_str.split('\r\n\r\n')
@@ -37,16 +45,6 @@ async def on_ready():
         return result_dict
     global command_dict
     command_dict = stringdecode(PASTEBIN)
-    print(command_dict)
-
-
-@bot.command(name='commands')
-async def commands_command(ctx):
-    await ctx.reply('\n'.join(command_dict.keys()))
-
-
-@bot.command(name='rauvbot', help='the new pastebin command storage system')
-async def pastebin_command(ctx):
     await ctx.reply(random.choice(command_dict.get(ctx.message.content.split()[-1])))
 
 

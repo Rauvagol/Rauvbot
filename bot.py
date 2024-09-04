@@ -14,6 +14,7 @@ last_boopsy = None
 vc = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+PASTEBIN = os.getenv('PASTEBIN_URL')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)

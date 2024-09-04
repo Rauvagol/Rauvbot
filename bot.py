@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
-PASTEBIN = urllib.request.urlopen(os.getenv('PASTEBIN_URL')).read()
+PASTEBIN = os.getenv('PASTEBIN_URL')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -27,8 +27,6 @@ async def on_ready():
 
 @bot.command(name='commands')
 async def commands_command(ctx):
-    urllib.urlcleanup()
-
     def stringdecode(input_str):
         decoded_str = input_str.decode('utf-8')
         sections = decoded_str.split('\r\n\r\n')
@@ -38,14 +36,13 @@ async def commands_command(ctx):
             key = lines[0]
             values = lines[1:]
             result_dict[key] = values
+        urllib.urlcleanup()
         return result_dict
-    await ctx.reply('\n'.join(stringdecode(PASTEBIN).keys()))
+    await ctx.reply('\n'.join(stringdecode(urllib.request.urlopen(PASTEBIN).read()).keys()))
 
 
 @bot.command(name='rauvbot', help='the new pastebin command storage system')
 async def pastebin_command(ctx):
-    urllib.urlcleanup()
-
     def stringdecode(input_str):
         decoded_str = input_str.decode('utf-8')
         sections = decoded_str.split('\r\n\r\n')
@@ -55,8 +52,9 @@ async def pastebin_command(ctx):
             key = lines[0]
             values = lines[1:]
             result_dict[key] = values
+        urllib.urlcleanup()
         return result_dict
-    await ctx.reply(random.choice(stringdecode(PASTEBIN).get(ctx.message.content.split()[-1])))
+    await ctx.reply(random.choice(stringdecode(urllib.request.urlopen(PASTEBIN).read()).get(ctx.message.content.split()[-1])))
 
 
 @bot.command(name='test', help='for testing')

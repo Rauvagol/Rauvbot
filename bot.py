@@ -113,7 +113,7 @@ async def on_message(message):
         return
 
     if "harmlessbug" in message.author.name:
-        if "u" in message.content.lower():
+        if "w" in message.content.lower():
             await message.delete()
             await message.channel.send("Error: banned letter detected from " + message.author.mention + "\n\n Here is the edited, Rauvbot approved™ message\n\n```" + message.content.replace('u', '').replace('U', '')+"```")
 

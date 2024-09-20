@@ -58,7 +58,7 @@ async def pastebin_command(ctx):
 @bot.command(name='test', help='for testing')
 async def test_command(ctx):
     print("running")
-    await ctx.reply("Running2")
+    await ctx.reply("Running3")
 
 
 @bot.event
@@ -111,6 +111,11 @@ async def on_message(message):
             os.remove(file_path)
             await message.delete()
         return
+
+    if "harmlessbug" in message.author.name:
+        if "u" in message.content.lower():
+            await message.delete()
+            await message.channel.send("Error: banned letter detected from " + message.author.mention + "\n\n Here is the edited, Rauvbot approved™ message\n\n```" + message.content.replace('u', '').replace('U', '')+"```")
 
     if "dstronghold" in message.author.name:
         if random.random() < 0.003:

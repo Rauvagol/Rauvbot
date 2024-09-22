@@ -113,9 +113,14 @@ async def on_message(message):
         return
 
     if "harmlessbug" in message.author.name:
-        if "x" in message.content.lower():
+        banned_letter = random.choice(['j', 'x', 'q', 'z'])
+        if banned_letter in message.content.lower():
             await message.delete()
-            await message.channel.send("Error: banned letter detected from " + message.author.mention + "\n\n Here is the edited, Rauvbot approved™ message\n\n```" + message.content.replace('u', '').replace('U', '')+"```")
+            await message.channel.send(
+                "Error: banned letter '" + banned_letter + "' detected from " + message.author.mention +
+                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
+                message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
+            )
 
     if "dstronghold" in message.author.name:
         if random.random() < 0.003:

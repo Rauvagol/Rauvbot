@@ -117,7 +117,7 @@ async def on_message(message):
         if banned_letter in message.content.lower():
             await message.delete()
             await message.channel.send(
-                "Error: banned letter '" + banned_letter + "' detected from " + message.author.mention +
+                "Error: banned letter detected from " + message.author.mention +
                 "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
                 message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
             )

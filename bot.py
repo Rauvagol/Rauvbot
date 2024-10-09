@@ -90,7 +90,44 @@ async def on_raw_reaction_add(payload):
             await payload.member.remove_roles(role)
         else:
             await payload.member.add_roles(role)
+import discord
+import random
+from datetime import datetime, timedelta
 
+soundboard_disabled_until = None
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+    # Check if user has joined/left the channel
+    if after.channel is not None:
+        channel = after.channel
+        # If the channel has more than 10 members
+        if len(channel.members) > 7:
+            if bot.user not in channel.members:
+                await channel.connect()
+
+@bot.event
+async def on_soundboard_play(ctx):
+    global soundboard_disabled_until
+    # 1% chance to disable soundboard
+    if random.random() < 0.01:
+        soundboard_disabled_until = datetime.now() + timedelta(days=1)
+        # Disable soundboard permission
+        overwrite = ctx.channel.overwrites_for(ctx.guild.default_role)
+        overwrite.use_soundboard = False
+        await ctx.channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
+        await ctx.send("Soundboard disabled until tomorrow.")
+
+@bot.event
+async def on_message(message):
+    global soundboard_disabled_until
+    # Reset soundboard permission next day
+    if soundboard_disabled_until and datetime.now() > soundboard_disabled_until:
+        overwrite = message.channel.overwrites_for(message.guild.default_role)
+        overwrite.use_soundboard = None  # Reset to default permission
+        await message.channel.set_permissions(message.guild.default_role, overwrite=overwrite)
+        soundboard_disabled_until = None
+        await message.channel.send("Soundboard permissions have been restored.")
 
 @bot.event
 async def on_message(message):

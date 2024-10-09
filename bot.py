@@ -7,6 +7,7 @@ import math
 import string
 import datetime
 
+from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
 
@@ -90,21 +91,25 @@ async def on_raw_reaction_add(payload):
             await payload.member.remove_roles(role)
         else:
             await payload.member.add_roles(role)
-import discord
-import random
-from datetime import datetime, timedelta
 
 soundboard_disabled_until = None
 
+
 @bot.event
 async def on_voice_state_update(member, before, after):
-    # Check if user has joined/left the channel
-    if after.channel is not None:
-        channel = after.channel
-        # If the channel has more than 10 members
-        if len(channel.members) > 7:
-            if bot.user not in channel.members:
-                await channel.connect()
+    # Check if user joins or leaves a voice channel
+    channel = after.channel or before.channel  # Consider both join and leave events
+
+    if channel is not None:
+        # Bot joins the channel if more than 10 members are in the voice channel
+        if len(channel.members) > 10 and bot.user not in channel.members:
+            await channel.connect()
+
+        # Bot leaves the channel if there are fewer than 10 members and it's already in the channel
+        elif len(channel.members) < 10 and bot.user in channel.members:
+            voice_client = bot.voice_clients[0]  # Assuming the bot is only connected to one voice channel
+            await voice_client.disconnect()
+
 
 @bot.event
 async def on_soundboard_play(ctx):
@@ -118,6 +123,7 @@ async def on_soundboard_play(ctx):
         await ctx.channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
         await ctx.send("Soundboard disabled until tomorrow.")
 
+
 @bot.event
 async def on_message(message):
     global soundboard_disabled_until
@@ -128,6 +134,9 @@ async def on_message(message):
         await message.channel.set_permissions(message.guild.default_role, overwrite=overwrite)
         soundboard_disabled_until = None
         await message.channel.send("Soundboard permissions have been restored.")
+    else:
+        await bot.process_commands(message)
+
 
 @bot.event
 async def on_message(message):

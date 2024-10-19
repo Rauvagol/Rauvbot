@@ -12,6 +12,11 @@ from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
 
+
+from collections import defaultdict
+from discord import Member
+
+
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -19,6 +24,9 @@ PASTEBIN = os.getenv('PASTEBIN_URL')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
+trigger_counts = defaultdict(list)
+MAX_TRIGGERS = 2
+TIME_LIMIT = 60
 
 
 @bot.event
@@ -170,14 +178,32 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
+        banned_letter = 'm'
+        user_id = message.author.id  # Get the user's ID to track their activity
+
+        # Remove old timestamps beyond the time limit (60 seconds)
+        trigger_counts[user_id] = [timestamp for timestamp in trigger_counts[user_id] if time.time() - timestamp < TIME_LIMIT]
+
+        # If the user has triggered the limit more than MAX_TRIGGERS in the last minute, timeout the user
+        if len(trigger_counts[user_id]) >= MAX_TRIGGERS:
+            # Timeout the user for 1 minute (using Discord's built-in timeout system)
+            member: Member = message.author
+            await member.timeout(duration=60)  # 60 seconds timeout
+            await message.channel.send(f"{message.author.mention} has been timed out for 1 minute due to excessive banned letter usage.")
+            return
+
+        # Find all occurrences of consecutive 'm's and treat them as one
         m_matches = re.findall(r'm+', message.content.lower())
         m_count = len(m_matches)
 
         if m_count >= 1:  # Trigger if there's at least one sequence of 'm'
+            # Track the current timestamp when this is triggered
+            trigger_counts[user_id].append(time.time())
+
             replacement_chance = random.random()
 
             if m_count == 1:
-                replacement = '_'  # Always replace a single 'm' or sequence with a blank string
+                replacement = ''  # Always replace a single 'm' or sequence with a blank string
             elif replacement_chance < 0.02:
                 replacement = random.choice(['n', ','])
             elif replacement_chance < 0.01:

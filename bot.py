@@ -166,6 +166,11 @@ async def on_message(message):
                 await message.channel.send(content=f"{message.author.mention} posted a code block:", file=discord.File(file, file_path))
             os.remove(file_path)
             await message.delete()
+            await message.channel.send(
+                "Error: banned letter detected from " + message.author.mention +
+                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
+                edited_message + "```"
+            )
         return
 
     if "harmlessbug" in message.author.name:
@@ -220,9 +225,9 @@ async def on_message(message):
 
             await message.delete()
             await message.channel.send(
-                "Error: banned letter detected from " + message.author.mention +
-                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
-                edited_message + "```"
+                message.author.mention +
+                ":```" +
+                message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
             )
 
     if random.random() < 0.003:

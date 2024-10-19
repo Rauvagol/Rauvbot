@@ -7,6 +7,7 @@ import math
 import string
 import datetime
 import re
+import time
 
 from datetime import datetime, timedelta
 from discord.ext import commands
@@ -25,7 +26,7 @@ PASTEBIN = os.getenv('PASTEBIN_URL')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 trigger_counts = defaultdict(list)
-MAX_TRIGGERS = 2
+MAX_TRIGGERS = 4
 TIME_LIMIT = 60
 
 
@@ -172,8 +173,8 @@ async def on_message(message):
         if banned_letter in message.content.lower():
             await message.delete()
             await message.channel.send(
-                "Error: banned letter detected from " + message.author.mention +
-                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
+                message.author.mention +
+                ":```" +
                 message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
             )
 

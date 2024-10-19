@@ -169,16 +169,29 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
-        banned_letter = random.choice(['m'])
-        if banned_letter in message.content.lower():
+        banned_letter = 'm'
+        m_count = message.content.lower().count(banned_letter)
+
+        if m_count > 1:
+            replacement_chance = random.random()
+            if replacement_chance < 0.02:
+                replacement = random.choice(['n', ','])
+            elif replacement_chance < 0.01:
+                replacement = ''
+                m_count -= 1
+            else:
+                replacement = '_'
+
+            edited_message = message.content
+            edited_message = edited_message.replace(banned_letter, replacement, m_count)
+            edited_message = edited_message.replace(banned_letter.upper(), replacement, m_count)
+
             await message.delete()
             await message.channel.send(
                 "Error: banned letter detected from " + message.author.mention +
                 "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
-                message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
+                edited_message + "```"
             )
-
-    if "dstronghold" in message.author.name:
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:

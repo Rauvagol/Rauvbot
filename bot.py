@@ -220,8 +220,8 @@ async def on_message(message):
 
             await message.delete()
             await message.channel.send(
-                message.author.mention +
-                "Grom: ```" +
+                "Error: banned letter detected from " + message.author.mention +
+                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
                 edited_message + "```"
             )
 

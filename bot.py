@@ -172,9 +172,12 @@ async def on_message(message):
         banned_letter = 'm'
         m_count = message.content.lower().count(banned_letter)
 
-        if m_count > 1:
+        if m_count >= 1:
             replacement_chance = random.random()
-            if replacement_chance < 0.02:
+
+            if m_count == 1:
+                replacement = ''
+            elif replacement_chance < 0.02:
                 replacement = random.choice(['n', ','])
             elif replacement_chance < 0.01:
                 replacement = ''
@@ -192,10 +195,11 @@ async def on_message(message):
                 "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
                 edited_message + "```"
             )
-        if random.random() < 0.003:
-            await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
-        else:
-            print("False")
+
+    if random.random() < 0.003:
+        await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
+    else:
+        print("False")
     if "lmao" in message.content.lower():
         emojis = ["🇱", "🇦", "🇲", "🇴"]
         for emoji in emojis:

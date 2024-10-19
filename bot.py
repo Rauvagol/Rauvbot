@@ -6,6 +6,7 @@ import random
 import math
 import string
 import datetime
+import re
 
 from datetime import datetime, timedelta
 from discord.ext import commands
@@ -169,14 +170,14 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
-        banned_letter = 'm'
-        m_count = message.content.lower().count(banned_letter)
+        m_matches = re.findall(r'm+', message.content.lower())
+        m_count = len(m_matches)
 
-        if m_count >= 1:
+        if m_count >= 1:  # Trigger if there's at least one sequence of 'm'
             replacement_chance = random.random()
 
             if m_count == 1:
-                replacement = ''
+                replacement = '_'  # Always replace a single 'm' or sequence with a blank string
             elif replacement_chance < 0.02:
                 replacement = random.choice(['n', ','])
             elif replacement_chance < 0.01:
@@ -186,8 +187,9 @@ async def on_message(message):
                 replacement = '_'
 
             edited_message = message.content
-            edited_message = edited_message.replace(banned_letter, replacement, m_count)
-            edited_message = edited_message.replace(banned_letter.upper(), replacement, m_count)
+            # Replace consecutive 'm's in both lowercase and uppercase with the chosen replacement
+            edited_message = re.sub(r'm+', replacement, edited_message, m_count)
+            edited_message = re.sub(r'M+', replacement, edited_message, m_count)
 
             await message.delete()
             await message.channel.send(

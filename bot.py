@@ -191,6 +191,19 @@ async def on_message(message):
                 message.author.mention + "says: ```" +
                 edited_message + "```"
             )
+
+        if m_count == 1:
+            replacement = '_'
+
+            edited_message = message.content
+            edited_message = edited_message.replace(banned_letter, replacement, m_count)
+            edited_message = edited_message.replace(banned_letter.upper(), replacement, m_count)
+
+            await message.delete()
+            await message.channel.send(
+                message.author.mention + "says: ```" +
+                edited_message + "```"
+            )
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:

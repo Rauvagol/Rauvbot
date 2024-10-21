@@ -6,6 +6,7 @@ import random
 import math
 import string
 import datetime
+import unicodedata
 
 from datetime import datetime, timedelta
 from discord.ext import commands
@@ -169,41 +170,62 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
-        banned_letter = 'm'
-        m_count = message.content.lower().count(banned_letter)
+        banned_letters = ['m']  # Add all banned letters here
 
-        if m_count > 1:
+        # Normalize function to remove accents/diacritics
+        def normalize_char(c):
+            return unicodedata.normalize('NFD', c).encode('ascii', 'ignore').decode('utf-8')
+
+        # Normalize the message content
+        normalized_message = unicodedata.normalize('NFD', message.content.lower())
+
+        # Count occurrences of all banned letters and their variants
+        total_banned_count = 0
+        letter_counts = {}
+        for banned_letter in banned_letters:
+            m_count = normalized_message.count(normalize_char(banned_letter))
+            letter_counts[banned_letter] = m_count
+            total_banned_count += m_count
+
+        if total_banned_count > 1:
             replacement_chance = random.random()
-            if replacement_chance < 0.02:
+
+            if replacement_chance < 0.01:
+                replacement = ''  # 1% chance to replace with blank
+                total_banned_count -= 1
+            elif replacement_chance < 0.03:  # 2% chance to replace with 'n' or ','
                 replacement = random.choice(['n', ','])
-            elif replacement_chance < 0.01:
-                replacement = ''
-                m_count -= 1
             else:
                 replacement = '_'
 
             edited_message = message.content
-            edited_message = edited_message.replace(banned_letter, replacement, m_count)
-            edited_message = edited_message.replace(banned_letter.upper(), replacement, m_count)
+            for banned_letter in banned_letters:
+                # Replace one occurrence of each banned letter and its variants
+                if letter_counts[banned_letter] > 0:
+                    edited_message = edited_message.replace(banned_letter, replacement, 1)
+                    edited_message = edited_message.replace(banned_letter.upper(), replacement, 1)
 
             await message.delete()
             await message.channel.send(
-                message.author.mention + "says: ```" +
+                message.author.mention + " says: ```" +
                 edited_message + "```"
             )
 
-        if m_count == 1:
+        elif total_banned_count == 1:
             replacement = '_'
 
             edited_message = message.content
-            edited_message = edited_message.replace(banned_letter, replacement, m_count)
-            edited_message = edited_message.replace(banned_letter.upper(), replacement, m_count)
+            for banned_letter in banned_letters:
+                if letter_counts[banned_letter] == 1:
+                    edited_message = edited_message.replace(banned_letter, replacement, 1)
+                    edited_message = edited_message.replace(banned_letter.upper(), replacement, 1)
 
             await message.delete()
             await message.channel.send(
-                message.author.mention + "says: ```" +
+                message.author.mention + " says: ```" +
                 edited_message + "```"
             )
+
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:

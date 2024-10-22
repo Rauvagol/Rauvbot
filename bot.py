@@ -183,7 +183,8 @@ async def on_message(message):
         total_banned_count = 0
         letter_counts = {}
         for banned_letter in banned_letters:
-            m_count = normalized_message.count(normalize_char(banned_letter))
+            normalized_banned_letter = normalize_char(banned_letter)
+            m_count = normalized_message.count(normalized_banned_letter)
             letter_counts[banned_letter] = m_count
             total_banned_count += m_count
 
@@ -198,12 +199,15 @@ async def on_message(message):
             else:
                 replacement = '_'
 
-            edited_message = message.content
+            edited_message = normalized_message
             for banned_letter in banned_letters:
-                # Replace one occurrence of each banned letter and its variants
+                # Replace one occurrence of each banned letter and its variants in the normalized message
+                normalized_banned_letter = normalize_char(banned_letter)
                 if letter_counts[banned_letter] > 0:
-                    edited_message = edited_message.replace(banned_letter, replacement, 1)
-                    edited_message = edited_message.replace(banned_letter.upper(), replacement, 1)
+                    edited_message = edited_message.replace(normalized_banned_letter, replacement, 1)
+
+            # Optionally convert back to original form (re-apply accents/diacritics) if needed
+            edited_message = unicodedata.normalize('NFC', edited_message)
 
             await message.delete()
             await message.channel.send(
@@ -214,11 +218,14 @@ async def on_message(message):
         elif total_banned_count == 1:
             replacement = '_'
 
-            edited_message = message.content
+            edited_message = normalized_message
             for banned_letter in banned_letters:
+                normalized_banned_letter = normalize_char(banned_letter)
                 if letter_counts[banned_letter] == 1:
-                    edited_message = edited_message.replace(banned_letter, replacement, 1)
-                    edited_message = edited_message.replace(banned_letter.upper(), replacement, 1)
+                    edited_message = edited_message.replace(normalized_banned_letter, replacement, 1)
+
+            # Optionally convert back to original form if needed
+            edited_message = unicodedata.normalize('NFC', edited_message)
 
             await message.delete()
             await message.channel.send(

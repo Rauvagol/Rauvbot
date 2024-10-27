@@ -171,7 +171,7 @@ async def on_message(message):
 
     if "dstronghold" in message.author.name:
         messagetest = message
-        banned_letters = ['f']  # Add all banned letters here
+        banned_letters = ['f', 'ph']  # Add all banned letters here
         if random.random() < 0.005:
             banned_letters = random.choice(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
         # Normalize function to remove accents/diacritics

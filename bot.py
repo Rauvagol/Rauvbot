@@ -13,7 +13,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from discord import app_commands, Interaction
 
-banned_letters = ["a"]  # Start with one banned letter
+banned_letters = ["x"]  # Start with one banned letter
 activation_count = 0  # Counter for activations
 activations_until_next = 10
 last_boopsy = None

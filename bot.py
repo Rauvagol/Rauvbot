@@ -11,7 +11,11 @@ import unicodedata
 from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
+from discord import app_commands, Interaction
 
+banned_letters = ["a"]  # Start with one banned letter
+activation_count = 0  # Counter for activations
+activations_until_next = 10
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -39,6 +43,7 @@ async def commands_command(ctx):
             values = lines[1:]
             result_dict[key] = values
         return result_dict
+
     await ctx.reply('\n'.join(stringdecode(urllib.request.urlopen(PASTEBIN).read()).keys()))
 
 
@@ -54,6 +59,7 @@ async def pastebin_command(ctx):
             values = lines[1:]
             result_dict[key] = values
         return result_dict
+
     await ctx.reply(random.choice(stringdecode(urllib.request.urlopen(PASTEBIN).read()).get(ctx.message.content.split()[-1])))
 
 
@@ -92,6 +98,7 @@ async def on_raw_reaction_add(payload):
             await payload.member.remove_roles(role)
         else:
             await payload.member.add_roles(role)
+
 
 soundboard_disabled_until = None
 
@@ -141,6 +148,7 @@ async def on_message(message):
 
 @bot.event
 async def on_message(message):
+    global activation_count, banned_letters
     if message.author.bot:
         return
         # Check if the message is from a bot or not a code block message
@@ -170,62 +178,40 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
-        messagetest = message
-        banned_letters = ['f', 'ph']  # Add all banned letters here
-        if random.random() < 0.005:
-            banned_letters = random.choice(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'])
-        # Normalize function to remove accents/diacritics
-        def normalize_char(c):
-            return unicodedata.normalize('NFD', c).encode('ascii', 'ignore').decode('utf-8')
+        # Print the current list of banned letters to the console
+        print(f"Current banned letters: {banned_letters}")
 
-        # Normalize the message content
-        normalized_message = unicodedata.normalize('NFD', message.content.lower())
+        # Normalize the message content to remove accents
+        normalized_message = unicodedata.normalize('NFKD', message.content)
 
-        # Count occurrences of all banned letters and their variants
-        total_banned_count = 0
-        letter_counts = {}
+        # Generate corrected message by removing all banned letters
+        corrected_message = normalized_message
         for banned_letter in banned_letters:
-            m_count = normalized_message.count(normalize_char(banned_letter))
-            letter_counts[banned_letter] = m_count
-            total_banned_count += m_count
+            corrected_message = corrected_message.replace(banned_letter, "")
 
-        if total_banned_count > 1:
-            replacement_chance = random.random()
+        # Remove extra spaces
+        corrected_message = ' '.join(corrected_message.split())
 
-            if replacement_chance < 0.01:
-                replacement = ''  # 1% chance to replace with blank
-            elif replacement_chance < 0.03:  # 2% chance to replace with 'n' or ','
-                replacement = random.choice(['n', ','])
-            else:
-                replacement = '_'
-
-            edited_message = message.content
-            for banned_letter in banned_letters:
-                # Replace all occurrences of each banned letter and its variants
-                edited_message = edited_message.replace(banned_letter, replacement)
-                edited_message = edited_message.replace(banned_letter.upper(), replacement)
-
+        # Check if there are banned letters in the original message
+        if normalized_message != corrected_message:  # Only proceed if there were banned letters
+            # Delete the original message
             await message.delete()
-            await message.channel.send(
-                message.author.mention + " says: ```" +
-                edited_message + "```"
+
+            # Calculate remaining activations until the next banned letter
+            remaining_activations = activations_until_next - (activation_count % activations_until_next)
+
+            # Send a private message to the user
+            await message.author.send(
+                f"Yuw made a mistawke by using the banned lettuws 🥺💔 {', '.join(banned_letters)}! \n"
+                f"Hewe's yuwor cowwected message, fwiend! ✨💕:\n\n```\n{corrected_message}\n```\n"
+                f"Yuw have {remaining_activations} activations weft untiw yuw unlock a new banned lettuw! 🎉"
             )
 
-        elif total_banned_count == 1:
-            replacement = '_'
-
-            edited_message = message.content
-            for banned_letter in banned_letters:
-                # Replace all occurrences of the banned letter
-                edited_message = edited_message.replace(banned_letter, replacement)
-                edited_message = edited_message.replace(banned_letter.upper(), replacement)
-
-            await message.delete()
-            await message.channel.send(
-                message.author.mention + " says: ```" +
-                edited_message + "```"
-            )
-
+            # Check if activation count reached 10 to add another banned letter
+            if activation_count % activations_until_next == 0:
+                # Generate a random letter from 'a' to 'z'
+                new_banned_letter = random.choice([chr(i) for i in range(97, 123)])  # 'a' is 97, 'z' is 122
+                banned_letters.append(new_banned_letter)
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
@@ -249,7 +235,7 @@ async def on_message(message):
             await message.channel.send('lamo')
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
         print("yes, that says test (line 79 ish)")
-    if " 69 " in " "+message.content.lower()+" ":
+    if " 69 " in " " + message.content.lower() + " ":
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")

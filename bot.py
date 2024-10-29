@@ -13,9 +13,9 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from discord import app_commands, Interaction
 
-banned_letters = ["x"]  # Start with one banned letter
+[random.choice([chr(i) for i in range(97, 123)])]
 activation_count = 0  # Counter for activations
-activations_until_next = 10
+activations_until_next = 20
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')

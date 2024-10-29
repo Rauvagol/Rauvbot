@@ -196,7 +196,7 @@ async def on_message(message):
         if normalized_message != corrected_message:  # Only proceed if there were banned letters
             # Delete the original message
             await message.delete()
-
+            activation_count += 1
             # Calculate remaining activations until the next banned letter
             remaining_activations = activations_until_next - (activation_count % activations_until_next)
 

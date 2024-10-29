@@ -29,6 +29,9 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print("logged in2")
     print()
+    channel = bot.get_channel(687125196708380692)
+    if channel:
+        await channel.send("Bot is now online!")
 
 
 @bot.command(name='commands')

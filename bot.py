@@ -15,7 +15,7 @@ from discord import app_commands, Interaction
 
 [random.choice([chr(i) for i in range(97, 123)])]
 activation_count = 0  # Counter for activations
-activations_until_next = 20
+activations_until_next = 10
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')

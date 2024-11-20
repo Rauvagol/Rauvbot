@@ -17,7 +17,6 @@ from discord import app_commands, Interaction
 activation_count = 0  # Counter for activations
 activations_until_next = 10
 last_boopsy = None
-last_samsung = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 PASTEBIN = os.getenv('PASTEBIN_URL')
@@ -220,17 +219,13 @@ async def on_message(message):
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
             print("False")
-
-    global last_samsung
-    print(last_samsung)
-    if "samsung" message.content.lower():
-        if ('last_samsung' in globals()) and (datetime.datetime.now() - last_samsung < datetime.timedelta(seconds=180)):
-            print(message.author.bot)
-            await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
     if "lmao" in message.content.lower():
         emojis = ["🇱", "🇦", "🇲", "🇴"]
         for emoji in emojis:
             await message.add_reaction(emoji)
+    if "samsung" in message.content.lower():
+        print(message.author.bot)
+        await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "nice":
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if (message.content.lower().translate(

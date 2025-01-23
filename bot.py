@@ -199,8 +199,8 @@ async def on_message(message):
         print("yes, that says test (line 79 ish)")
     if " 69 " in " "+message.content.lower()+" ":
         await message.add_reaction(bot.get_emoji(870075966142185562))
-    if "kate beckinsale" in message.content.lower():
-        await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")
+    if WORDS[3] in message.content.lower():
+        await message.channel.send(WORDS[4])
     if "horde" in message.content.lower():
         if random.randint(1, 10) == 1:
             await message.reply("I'm sorry for the interruption, but I have to ask if you meant to say horse.")

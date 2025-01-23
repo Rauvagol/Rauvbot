@@ -15,6 +15,7 @@ last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 PASTEBIN = os.getenv('PASTEBIN_URL')
+WORDS = os.getenv('WORDS').split(',')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -24,6 +25,10 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print("logged in2")
     print()
+    print(PASTEBIN)
+    print(WORDS[0])
+    print(WORDS[1])
+    print(WORDS[2])
 
 
 @bot.command(name='commands')
@@ -199,7 +204,7 @@ async def on_message(message):
     if "horde" in message.content.lower():
         if random.randint(1, 10) == 1:
             await message.reply("I'm sorry for the interruption, but I have to ask if you meant to say horse.")
-    if "cock" in message.content.lower() or "dick" in message.content.lower() or "penis" in message.content.lower():
+    if WORDS[0] in message.content.lower() or WORDS[1] in message.content.lower() or WORDS[2] in message.content.lower():
         global last_boopsy
         last_boopsy = datetime.datetime.now()
         print(last_boopsy)
@@ -215,24 +220,6 @@ async def on_message(message):
 async def ten_seconds(ctx):
     await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
-
-@bot.command(name='cunt', help='for when you need to express yourself in song')
-async def cunt_song(ctx):
-    await ctx.send("https://www.youtube.com/watch?v=VFh8WubLzYY")
-
-
-@bot.command(name='christmas', help='for the holiday spirit')
-async def christmas(ctx):
-    await ctx.send(
-        "Christmas is coming up lads and lasses and i've got a serious skoadon (skoda rod on ha ha). everyone knows"
-        " me as a half time bible basher and full time beer lover. if you don't know me... get to know me 😉 as you "
-        "know i have a girlfriend and she is BEAUTFul... woof woof. So sorry to all the single girls who were "
-        "expected me as a stocking filler (if you're picking up what i'm putting down).. LOL. Any who let me "
-        "explain what i'm offering here. GIVEAWAY TIME!!!! I'm giving away a set of sweet sweet Marbles. All you "
-        "have to do is send me a picture of your bare feet (business never pleasure). the winner will be announced "
-        "on my Clash of Clans blog.\n\nAlways a pleasure never a chore.\n\np.s. GOD LOVES YOU!")
-
-
 @bot.command(name='breakup', help='for serious conversations')
 async def breakup(ctx):
     await ctx.send(
@@ -243,26 +230,6 @@ async def breakup(ctx):
         "feeling :grin: pepega and our relationship :couple: has been weirdchamp :scream_cat: for months "
         ":calendar_spiral:, it's time :clock1: to end :end: it, no :persevere: kappa "
         ":stuck_out_tongue_closed_eyes::zany_face::kissing_heart:")
-
-
-@bot.command(name='lastorigin', help='degen')
-async def lastorigin(ctx):
-    exclusions = ["https://lastorigin.fandom.com/wiki/Andvari", "https://lastorigin.fandom.com/wiki/Dutch_Girl", "https://lastorigin.fandom.com/wiki/Ellie_Quickhand"]
-    holder = urllib.request.urlopen("https://lastorigin.fandom.com/wiki/Category:Characters").read().decode('UTF-8').split("\n")
-    holder.pop()
-    output = []
-    for line in holder:
-        if "alt=\"" in str(line):
-            temp = line.strip()[5:-1]
-            output.append(temp)
-    del output[1::2]
-    del output[:1]
-    outputlinks = output.copy()
-    for index in range(0, len(outputlinks)):
-        outputlinks[index] = "https://lastorigin.fandom.com/wiki/" + outputlinks[index].replace(" ", "_")
-    for child in exclusions:
-        outputlinks.remove(child)
-    await ctx.send(random.choice(outputlinks))
 
 
 @bot.command(name='modabuse', help="change user's nickname given id and new nickname")

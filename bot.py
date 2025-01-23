@@ -6,11 +6,16 @@ import random
 import math
 import string
 import datetime
+import unicodedata
 
 from datetime import datetime, timedelta
 from discord.ext import commands
 from dotenv import load_dotenv
+from discord import app_commands, Interaction
 
+#banned_letters = [random.choice([chr(i) for i in range(97, 123)])]
+activation_count = 0  # Counter for activations
+activations_until_next = 10
 last_boopsy = None
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -24,6 +29,9 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 async def on_ready():
     print("logged in2")
     print()
+    channel = bot.get_channel(687125196708380692)
+    if channel:
+        await channel.send("Bot is now online!")
 
 
 @bot.command(name='commands')
@@ -38,6 +46,7 @@ async def commands_command(ctx):
             values = lines[1:]
             result_dict[key] = values
         return result_dict
+
     await ctx.reply('\n'.join(stringdecode(urllib.request.urlopen(PASTEBIN).read()).keys()))
 
 
@@ -53,6 +62,7 @@ async def pastebin_command(ctx):
             values = lines[1:]
             result_dict[key] = values
         return result_dict
+
     await ctx.reply(random.choice(stringdecode(urllib.request.urlopen(PASTEBIN).read()).get(ctx.message.content.split()[-1])))
 
 
@@ -91,6 +101,7 @@ async def on_raw_reaction_add(payload):
             await payload.member.remove_roles(role)
         else:
             await payload.member.add_roles(role)
+
 
 soundboard_disabled_until = None
 
@@ -140,6 +151,7 @@ async def on_message(message):
 
 @bot.event
 async def on_message(message):
+    global activation_count, banned_letters
     if message.author.bot:
         return
         # Check if the message is from a bot or not a code block message
@@ -169,6 +181,40 @@ async def on_message(message):
             )
 
     if "dstronghold" in message.author.name:
+        # Print the current list of banned letters to the console
+        print(f"Current banned letters: {banned_letters}")
+
+        # Normalize the message content to remove accents
+        normalized_message = unicodedata.normalize('NFKD', message.content)
+
+        # Generate corrected message by removing all banned letters
+        corrected_message = normalized_message
+        for banned_letter in banned_letters:
+            corrected_message = corrected_message.replace(banned_letter, "")
+
+        # Remove extra spaces
+        corrected_message = ' '.join(corrected_message.split())
+
+        # Check if there are banned letters in the original message
+        if normalized_message != corrected_message:  # Only proceed if there were banned letters
+            # Delete the original message
+            await message.delete()
+            activation_count += 1
+            # Calculate remaining activations until the next banned letter
+            remaining_activations = activations_until_next - (activation_count % activations_until_next)
+
+            # Send a private message to the user
+            await message.author.send(
+                f"Yuw made a mistawke by using the banned lettuws 🥺💔 {', '.join(banned_letters)}! \n"
+                f"Hewe's yuwor cowwected message, fwiend! ✨💕:\n\n```\n{corrected_message}\n```\n"
+                f"Yuw have {remaining_activations} activations weft untiw yuw unlock a new banned lettuw! 🎉"
+            )
+
+            # Check if activation count reached 10 to add another banned letter
+            if activation_count % activations_until_next == 0:
+                # Generate a random letter from 'a' to 'z'
+                new_banned_letter = random.choice([chr(i) for i in range(97, 123)])  # 'a' is 97, 'z' is 122
+                banned_letters.append(new_banned_letter)
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
         else:
@@ -192,7 +238,7 @@ async def on_message(message):
             await message.channel.send('lamo')
     if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
         print("yes, that says test (line 79 ish)")
-    if " 69 " in " "+message.content.lower()+" ":
+    if " 69 " in " " + message.content.lower() + " ":
         await message.add_reaction(bot.get_emoji(870075966142185562))
     if "kate beckinsale" in message.content.lower():
         await message.channel.send("https://tenor.com/view/smiling-hehehe-how-you-doin-kate-beckinsale-gif-15386322")

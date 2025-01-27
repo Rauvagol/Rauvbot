@@ -220,6 +220,42 @@ async def on_message(message):
 async def ten_seconds(ctx):
     await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
+@bot.command(name='bfa', help='for the BFA meta WQ')
+async def bfa(ctx):
+    url = 'https://www.wowhead.com/world-quests/bfa/na'
+    # Strings to search for (case insensitive)
+    search_strings = [
+        "Swab This", "Whiplash", "Chag's Challenge", "Getting Out of Hand",
+        "Revenge of Krag'wa", "Cancel the Blood Troll Apocalypse",
+        "Sandfishing", "Vulpera for a Day"
+    ]
+    try:
+        # Fetch the webpage content
+        with urllib.request.urlopen(url) as response:
+            # Decode the bytes content into a string
+            webpage_content = response.read().decode('utf-8')
+
+        # Convert content to lowercase for case-insensitive search
+        lower_content = webpage_content.lower()
+
+        # Find available quests
+        available_quests = [
+            quest for quest in search_strings if quest.lower() in lower_content
+        ]
+
+        # Generate the final message
+        if available_quests:
+            message = "Available today for the BFA meta:\n" + "\n".join(available_quests)
+        else:
+            message = "No quests for the BFA meta achievement are available today."
+
+    except urllib.error.URLError as e:
+        message = f"Failed to retrieve the webpage. Error: {e}"
+
+    # Send the message to the Discord channel
+    await ctx.send(message)
+
+
 @bot.command(name='breakup', help='for serious conversations')
 async def breakup(ctx):
     await ctx.send(

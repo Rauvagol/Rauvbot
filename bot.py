@@ -8,7 +8,7 @@ import string
 import datetime
 
 from datetime import datetime, timedelta
-from discord.ext import commands
+from discord.ext import tasks, commands
 from dotenv import load_dotenv
 
 last_boopsy = None
@@ -16,6 +16,7 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 PASTEBIN = os.getenv('PASTEBIN_URL')
 WORDS = os.getenv('WORDS').split(',')
+last_results = set()  # To store the previous results for comparison
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -30,6 +31,45 @@ async def on_ready():
     print(WORDS[1])
     print(WORDS[2])
 
+@tasks.loop(minutes=15)
+async def check_bfa_quests():
+    global last_results
+    url = 'https://www.wowhead.com/world-quests/bfa/na'
+    search_strings = [
+        "Swab This", "Whiplash", "Chag's Challenge", "Getting Out of Hand",
+        "Revenge of Krag'wa", "Cancel the Blood Troll Apocalypse",
+        "Sandfishing", "Vulpera for a Day"
+    ]
+
+    try:
+        # Fetch the webpage content
+        with urllib.request.urlopen(url) as response:
+            webpage_content = response.read().decode('utf-8')
+
+        # Convert content to lowercase for case-insensitive search
+        lower_content = webpage_content.lower()
+
+        # Find available quests
+        current_results = {
+            quest for quest in search_strings if quest.lower() in lower_content
+        }
+
+        # Check if the results have changed
+        if current_results != last_results:
+            last_results = current_results  # Update the last results
+            if current_results:
+                # Generate the message
+                message = "Available today for the BFA meta:\n" + "\n".join(current_results)
+            else:
+                message = "No quests for the BFA meta achievement are available today."
+
+            # Send the message to the specified channel
+            channel = bot.get_channel(522866140146434051)
+            if channel:
+                await channel.send(message)
+
+    except urllib.error.URLError as e:
+        print(f"Failed to retrieve the webpage. Error: {e}")
 
 @bot.command(name='commands')
 async def commands_command(ctx):
@@ -252,8 +292,12 @@ async def bfa(ctx):
     except urllib.error.URLError as e:
         message = f"Failed to retrieve the webpage. Error: {e}"
 
-    # Send the message to the Discord channel
-    await ctx.send(message)
+    # Send the message to the specified channel
+    channel = bot.get_channel(522866140146434051)
+    if channel:
+        await channel.send(message)
+    else:
+        await ctx.send("Failed to find the specified channel.")
 
 
 @bot.command(name='breakup', help='for serious conversations')

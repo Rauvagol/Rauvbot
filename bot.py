@@ -6,6 +6,8 @@ import random
 import math
 import string
 import datetime
+import requests
+import asyncio
 
 from datetime import datetime, timedelta
 from discord.ext import tasks, commands
@@ -260,6 +262,7 @@ async def on_message(message):
 async def ten_seconds(ctx):
     await ctx.send("https://i.imgur.com/tnJtepM.jpg")
 
+
 @bot.command(name='bfa', help='for the BFA meta WQ')
 async def bfa(ctx):
     url = 'https://www.wowhead.com/world-quests/bfa/na'
@@ -298,6 +301,73 @@ async def bfa(ctx):
         await channel.send(message)
     else:
         await ctx.send("Failed to find the specified channel.")
+
+
+@bot.command(name='checkgames', help='Check if Steam games are good')
+async def checkgames(ctx):
+    game_ids = [216150, 1056640, 1599340, 582660]
+    summary = ""
+
+    async with ctx.typing():
+        for game_id in game_ids:
+            try:
+                # Get game name from store
+                details_url = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
+                details_response = requests.get(details_url)
+
+                if details_response.status_code == 200:
+                    game_data = details_response.json()
+                    if game_data and game_data.get(str(game_id), {}).get('success', False):
+                        game_name = game_data[str(game_id)]['data']['name']
+                    else:
+                        game_name = f"Game {game_id}"
+                else:
+                    game_name = f"Game {game_id}"
+
+                # Get overall reviews
+                reviews_url = f"https://store.steampowered.com/appreviews/{game_id}?json=1&language=all&purchase_type=all&num_per_page=0"
+                overall_data = requests.get(reviews_url).json()
+
+                # Get recent reviews from histogram
+                histogram_url = f"https://store.steampowered.com/appreviewhistogram/{game_id}?l=english"
+                histogram_data = requests.get(histogram_url).json()
+
+                if 'query_summary' in overall_data and 'results' in histogram_data:
+                    # Calculate recent from histogram data
+                    recent_data = histogram_data['results']['recent']
+                    recent_positive = sum(day['recommendations_up'] for day in recent_data)
+                    recent_negative = sum(day['recommendations_down'] for day in recent_data)
+                    recent_total = recent_positive + recent_negative
+                    recent_percent = (recent_positive / recent_total * 100) if recent_total > 0 else 0
+
+                    # Get overall from review data
+                    overall_summary = overall_data['query_summary']
+                    overall_positive = overall_summary['total_positive']
+                    overall_total = overall_summary['total_reviews']
+                    overall_percent = (overall_positive / overall_total * 100) if overall_total > 0 else 0
+
+                    # Calculate difference and determine emoji count
+                    difference = recent_percent - overall_percent
+                    emoji = ""
+                    if difference > 0:
+                        check_count = (difference // 5)
+                        emoji = "✅" * int(check_count)
+                    elif difference < 0:
+                        x_count = (abs(difference) // 5)
+                        emoji = "❌" * int(x_count)
+
+                    summary += f"**{game_name}** {emoji}\n"
+                    summary += f"Recent: {recent_percent:.1f}% positive ({recent_total:,} reviews)\n"
+                    summary += f"Overall: {overall_percent:.1f}% positive ({overall_total:,} reviews)\n\n"
+                else:
+                    summary += f"**{game_name}**: No review data available\n\n"
+
+            except Exception as e:
+                summary += f"**{game_name}**: Error fetching review data ({str(e)})\n\n"
+
+            await asyncio.sleep(1)
+
+        await ctx.send(summary)
 
 
 @bot.command(name='breakup', help='for serious conversations')

@@ -352,13 +352,13 @@ async def checkgames(ctx):
 
                     if difference > 0:
                         if difference < 5:
-                            emoji = "👀"
+                            emoji = "🔼"
                         else:
                             check_count = (difference // 5)
                             emoji = "✅" * int(check_count)
                     elif difference < 0:
                         if abs(difference) < 5:
-                            emoji = "⚠"
+                            emoji = "🔽"
                         else:
                             x_count = (abs(difference) // 5)
                             emoji = "❌" * int(x_count)

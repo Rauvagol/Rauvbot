@@ -402,7 +402,8 @@ async def checkgames(ctx):
 
                 summary += f"**{game['name']}** {emoji}\n"
                 summary += f"Recent: {game['recent_percent']:.1f}% positive ({game['recent_total']:,} reviews)\n"
-                summary += f"Overall: {game['overall_percent']:.1f}% positive ({game['overall_total']:,} reviews)\n\n"
+                summary += f"Overall: {game['overall_percent']:.1f}% positive ({game['overall_total']:,} reviews)\n"
+                summary += f"Difference: {difference:+.1f}%\n\n"
 
         await ctx.send(summary)
 

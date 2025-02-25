@@ -349,12 +349,19 @@ async def checkgames(ctx):
                     # Calculate difference and determine emoji count
                     difference = recent_percent - overall_percent
                     emoji = ""
+
                     if difference > 0:
-                        check_count = (difference // 5)
-                        emoji = "✅" * int(check_count)
+                        if difference < 5:
+                            emoji = "👀"
+                        else:
+                            check_count = (difference // 5)
+                            emoji = "✅" * int(check_count)
                     elif difference < 0:
-                        x_count = (abs(difference) // 5)
-                        emoji = "❌" * int(x_count)
+                        if abs(difference) < 5:
+                            emoji = "⚠"
+                        else:
+                            x_count = (abs(difference) // 5)
+                            emoji = "❌" * int(x_count)
 
                     summary += f"**{game_name}** {emoji}\n"
                     summary += f"Recent: {recent_percent:.1f}% positive ({recent_total:,} reviews)\n"

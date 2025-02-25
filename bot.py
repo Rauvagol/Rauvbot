@@ -306,7 +306,7 @@ async def bfa(ctx):
 @bot.command(name='checkgames', help='Check if Steam games are good')
 async def checkgames(ctx):
     game_ids = [216150, 1056640, 1599340, 582660]
-    summary = ""
+    game_data_list = []
 
     async with ctx.typing():
         for game_id in game_ids:
@@ -346,33 +346,63 @@ async def checkgames(ctx):
                     overall_total = overall_summary['total_reviews']
                     overall_percent = (overall_positive / overall_total * 100) if overall_total > 0 else 0
 
-                    # Calculate difference and determine emoji count
+                    # Calculate difference
                     difference = recent_percent - overall_percent
-                    emoji = ""
 
-                    if difference > 0:
-                        if difference < 5:
-                            emoji = "🔼"
-                        else:
-                            check_count = (difference // 5)
-                            emoji = "✅" * int(check_count)
-                    elif difference < 0:
-                        if abs(difference) < 5:
-                            emoji = "🔽"
-                        else:
-                            x_count = (abs(difference) // 5)
-                            emoji = "❌" * int(x_count)
-
-                    summary += f"**{game_name}** {emoji}\n"
-                    summary += f"Recent: {recent_percent:.1f}% positive ({recent_total:,} reviews)\n"
-                    summary += f"Overall: {overall_percent:.1f}% positive ({overall_total:,} reviews)\n\n"
+                    # Store all data for sorting
+                    game_data_list.append({
+                        'name': game_name,
+                        'difference': difference,
+                        'recent_percent': recent_percent,
+                        'recent_total': recent_total,
+                        'overall_percent': overall_percent,
+                        'overall_total': overall_total
+                    })
                 else:
-                    summary += f"**{game_name}**: No review data available\n\n"
+                    game_data_list.append({
+                        'name': game_name,
+                        'difference': float('-inf'),  # Place errors at bottom
+                        'error': 'No review data available'
+                    })
 
             except Exception as e:
-                summary += f"**{game_name}**: Error fetching review data ({str(e)})\n\n"
+                game_data_list.append({
+                    'name': game_name,
+                    'difference': float('-inf'),  # Place errors at bottom
+                    'error': str(e)
+                })
 
             await asyncio.sleep(1)
+
+        # Sort games by difference (descending)
+        game_data_list.sort(key=lambda x: x['difference'], reverse=True)
+
+        # Generate summary
+        summary = ""
+        for game in game_data_list:
+            if 'error' in game:
+                summary += f"**{game['name']}**: {game['error']}\n\n"
+            else:
+                # Determine emoji based on difference
+                difference = game['difference']
+                if difference > 0:
+                    if difference < 5:
+                        emoji = "🔼"
+                    else:
+                        check_count = (difference // 5)
+                        emoji = "✅" * int(check_count)
+                elif difference < 0:
+                    if abs(difference) < 5:
+                        emoji = "🔽"
+                    else:
+                        x_count = (abs(difference) // 5)
+                        emoji = "❌" * int(x_count)
+                else:
+                    emoji = ""
+
+                summary += f"**{game['name']}** {emoji}\n"
+                summary += f"Recent: {game['recent_percent']:.1f}% positive ({game['recent_total']:,} reviews)\n"
+                summary += f"Overall: {game['overall_percent']:.1f}% positive ({game['overall_total']:,} reviews)\n\n"
 
         await ctx.send(summary)
 

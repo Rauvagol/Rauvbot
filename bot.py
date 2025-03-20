@@ -192,7 +192,7 @@ async def on_message(message):
         # Check if the message is from a bot or not a code block message
     if message.content.startswith('```') and message.content.endswith('```'):
         lines = message.content.split('\n')
-        if len(lines) > 3:
+        if len(lines) > 13:
             file_path = 'code_block.txt'
             with open(file_path, 'w') as file:
                 if message.content[3] == '\n':

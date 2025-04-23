@@ -9,7 +9,7 @@ import datetime
 import requests
 import asyncio
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from discord.ext import tasks, commands
 from dotenv import load_dotenv
 
@@ -19,15 +19,18 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 PASTEBIN = os.getenv('PASTEBIN_URL')
 WORDS = os.getenv('WORDS').split(',')
 last_results = set()  # To store the previous results for comparison
+soundboard_disabled_until = None
 
 intents = discord.Intents.all()
+intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 
 @bot.event
 async def on_ready():
     print("logged in2")
-    print()
+    #check_bfa_quests.start()
+    print("BFA quest check task started.")
     print(PASTEBIN)
     print(WORDS[0])
     print(WORDS[1])
@@ -44,34 +47,34 @@ async def check_bfa_quests():
     ]
 
     try:
-        # Fetch the webpage content
-        with urllib.request.urlopen(url) as response:
-            webpage_content = response.read().decode('utf-8')
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        webpage_content = response.text
 
-        # Convert content to lowercase for case-insensitive search
         lower_content = webpage_content.lower()
 
-        # Find available quests
         current_results = {
             quest for quest in search_strings if quest.lower() in lower_content
         }
 
-        # Check if the results have changed
         if current_results != last_results:
-            last_results = current_results  # Update the last results
+            last_results = current_results
             if current_results:
-                # Generate the message
                 message = "Available today for the BFA meta:\n" + "\n".join(current_results)
             else:
                 message = "No quests for the BFA meta achievement are available today."
 
-            # Send the message to the specified channel
-            channel = bot.get_channel(522866140146434051)
+            channel_id = 522866140146434051
+            channel = bot.get_channel(channel_id)
             if channel:
                 await channel.send(message)
+            else:
+                print(f"Could not find channel with ID {channel_id}")
 
-    except urllib.error.URLError as e:
-        print(f"Failed to retrieve the webpage. Error: {e}")
+    except requests.exceptions.RequestException as e:
+        print(f"Failed to retrieve the webpage or process request. Error: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred in check_bfa_quests: {e}")
 
 @bot.command(name='commands')
 async def commands_command(ctx):
@@ -139,32 +142,24 @@ async def on_raw_reaction_add(payload):
         else:
             await payload.member.add_roles(role)
 
-soundboard_disabled_until = None
-
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    # Check if user joins or leaves a voice channel
-    channel = after.channel or before.channel  # Consider both join and leave events
+    channel = after.channel or before.channel
 
     if channel is not None:
-        # Bot joins the channel if more than 10 members are in the voice channel
         if len(channel.members) > 10 and bot.user not in channel.members:
             await channel.connect()
-
-        # Bot leaves the channel if there are fewer than 10 members and it's already in the channel
         elif len(channel.members) < 10 and bot.user in channel.members:
-            voice_client = bot.voice_clients[0]  # Assuming the bot is only connected to one voice channel
+            voice_client = bot.voice_clients[0]
             await voice_client.disconnect()
 
 
 @bot.event
 async def on_soundboard_play(ctx):
     global soundboard_disabled_until
-    # 1% chance to disable soundboard
     if random.random() < 0.01:
-        soundboard_disabled_until = datetime.now() + timedelta(days=1)
-        # Disable soundboard permission
+        soundboard_disabled_until = datetime.now(timezone.utc) + timedelta(days=1)
         overwrite = ctx.channel.overwrites_for(ctx.guild.default_role)
         overwrite.use_soundboard = False
         await ctx.channel.set_permissions(ctx.guild.default_role, overwrite=overwrite)
@@ -174,88 +169,216 @@ async def on_soundboard_play(ctx):
 @bot.event
 async def on_message(message):
     global soundboard_disabled_until
-    # Reset soundboard permission next day
-    if soundboard_disabled_until and datetime.now() > soundboard_disabled_until:
-        overwrite = message.channel.overwrites_for(message.guild.default_role)
-        overwrite.use_soundboard = None  # Reset to default permission
-        await message.channel.set_permissions(message.guild.default_role, overwrite=overwrite)
-        soundboard_disabled_until = None
-        await message.channel.send("Soundboard permissions have been restored.")
-    else:
-        await bot.process_commands(message)
+    global last_boopsy
 
+    if soundboard_disabled_until and datetime.now(timezone.utc) > soundboard_disabled_until:
+        try:
+            overwrite = message.channel.overwrites_for(message.guild.default_role)
+            overwrite.use_soundboard = None
+            await message.channel.set_permissions(message.guild.default_role, overwrite=overwrite)
+            soundboard_disabled_until = None
+            await message.channel.send("Soundboard permissions have been restored.")
+        except discord.Forbidden:
+            print(f"Missing permissions to change soundboard settings in channel {message.channel.id}")
+        except Exception as e:
+            print(f"Error resetting soundboard permissions: {e}")
 
-@bot.event
-async def on_message(message):
     if message.author.bot:
         return
-        # Check if the message is from a bot or not a code block message
+
+    target_user_id = 178624853874704384
+    if message.author.id == target_user_id:
+        most_recent_message = None
+        now = datetime.now(timezone.utc)
+        one_week_ago = now - timedelta(minutes=10080)
+        
+        try:
+            print(f"Fetching history for user {target_user_id}...")
+            print(f"Current time (UTC): {now}")
+            
+            # Search through channels for the most recent message before the triggering message
+            for channel in message.guild.text_channels:
+                if channel.permissions_for(message.guild.me).read_message_history:
+                    try:
+                        async for msg in channel.history(
+                            limit=50,  # Lower limit since we only need the most recent message
+                            oldest_first=False
+                        ):
+                            # Skip the triggering message
+                            if msg.id == message.id:
+                                continue
+                                
+                            if msg.author.id == target_user_id:
+                                # Found the most recent message before the trigger
+                                if most_recent_message is None or msg.created_at > most_recent_message[0]:
+                                    most_recent_message = (msg.created_at, msg.content, channel.name)
+                                break  # Exit after finding the first message in this channel
+                                
+                    except discord.Forbidden:
+                        print(f"No permission to read history in {channel.name} (ID: {channel.id})")
+                    except Exception as e:
+                        print(f"Error fetching history from {channel.name} (ID: {channel.id}): {e}")
+
+            if most_recent_message:
+                timestamp, content, channel_name = most_recent_message
+                print(f"Found message from {timestamp} (UTC)")
+                
+                # Format and send the message to the user
+                ts_unix = int(timestamp.timestamp())
+                safe_content = content.replace('`', '\\`')
+                if len(safe_content) > 150:
+                    safe_content = safe_content[:147] + "..."
+                
+                formatted_message = f"Your most recent message:\n<t:{ts_unix}:F> in #{channel_name}:\n`{safe_content}`"
+                #await message.author.send(formatted_message)
+                
+                # Check if the message is older than 1 minute
+                if timestamp < one_week_ago:
+                    print(f"Message is older than 1 minute ({now - timestamp}), sending 'response'")
+                    await message.reply("response")
+            else:
+                print("No previous messages found")
+                await message.reply("response")
+
+        except discord.Forbidden:
+            print(f"Cannot send DM to user {message.author.id}. DMs might be disabled or bot is blocked.")
+        except Exception as e:
+            print(f"Error processing message history for user {message.author.id}: {e}")
+
     if message.content.startswith('```') and message.content.endswith('```'):
         lines = message.content.split('\n')
-        if len(lines) > 3:
-            file_path = 'code_block.txt'
-            with open(file_path, 'w') as file:
-                if message.content[3] == '\n':
-                    file.write(message.content[4:-3])
-                else:
-                    file.write(message.content[3:-3])
-            with open(file_path, 'rb') as file:
-                await message.channel.send(content=f"{message.author.mention} posted a code block:", file=discord.File(file, file_path))
-            os.remove(file_path)
-            await message.delete()
-        return
+        if len(lines) > 2 or (len(lines) == 2 and lines[1].strip()):
+            file_path = f'code_block_{message.id}.txt'
+            try:
+                code_content = message.content[3:-3]
+                if lines[0].strip() != '```':
+                    code_content = '\n'.join(lines[1:-1])
+
+                with open(file_path, 'w', encoding='utf-8') as file:
+                    file.write(code_content)
+
+                with open(file_path, 'rb') as file:
+                    await message.channel.send(
+                        content=f"{message.author.mention} posted a code block:",
+                        file=discord.File(file, filename='code_block.txt')
+                    )
+                await message.delete()
+            except discord.Forbidden:
+                print(f"Missing permissions to send files or delete messages in {message.channel.id}")
+            except Exception as e:
+                print(f"Error processing code block: {e}")
+            finally:
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+            return
 
     if "harmlessbug" in message.author.name:
-        banned_letter = random.choice(['ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ẋ', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'ö', 'j', 'x', 'q', 'z'])
+        banned_letter = random.choice(['x', 'j', 'q', 'z'] * 5 + ['ö'] * 5)
         if banned_letter in message.content.lower():
-            await message.delete()
-            await message.channel.send(
-                "Error: banned letter detected from " + message.author.mention +
-                "\n\nHere is the edited, Rauvbot approved™ message\n\n```" +
-                message.content.replace(banned_letter, '').replace(banned_letter.upper(), '') + "```"
-            )
+            try:
+                original_content = message.content
+                edited_content = original_content.replace(banned_letter, '').replace(banned_letter.upper(), '')
+                await message.delete()
+                await message.channel.send(
+                    f"Error: banned letter detected from {message.author.mention}\n\n"
+                    f"Here is the edited, Rauvbot approved™ message\n\n"
+                    f"```\n{edited_content}\n```"
+                )
+            except discord.Forbidden:
+                print(f"Missing permissions to delete/send messages in {message.channel.id} for harmlessbug logic.")
+            except Exception as e:
+                print(f"Error in harmlessbug logic: {e}")
 
     if "dstronghold" in message.author.name:
         if random.random() < 0.003:
             await message.channel.send("https://tenor.com/view/spray-bottle-cat-spray-bottle-spray-bottle-meme-loop-gif-25594440")
-        else:
-            print("False")
+
     if "lmao" in message.content.lower():
         emojis = ["🇱", "🇦", "🇲", "🇴"]
-        for emoji in emojis:
-            await message.add_reaction(emoji)
+        try:
+            for emoji in emojis:
+                await message.add_reaction(emoji)
+        except discord.Forbidden:
+            print(f"Missing permissions to add reactions in {message.channel.id}")
+            pass
+
     if "samsung" in message.content.lower():
-        print(message.author.bot)
-        await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
-    if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "nice":
-        await message.add_reaction(bot.get_emoji(870075966142185562))
-    if (message.content.lower().translate(
-            str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 124664055251075072):
+        try:
+            await message.channel.send("Don't order from Samsung Direct , remember what happened to Exo and Happy.")
+        except discord.Forbidden:
+            print(f"Missing permissions to send messages in {message.channel.id} for samsung logic.")
+            pass
+
+    cleaned_content_nice = message.content.lower().translate(str.maketrans('', '', string.punctuation)).strip()
+    if cleaned_content_nice == "nice":
+        try:
+            nice_emoji = bot.get_emoji(870075966142185562)
+            if nice_emoji:
+                await message.add_reaction(nice_emoji)
+            else:
+                print("Could not find nice emoji (870075966142185562)")
+        except discord.Forbidden:
+            print(f"Missing permissions to add reactions in {message.channel.id} for nice logic.")
+            pass
+
+    cleaned_content_shutup = message.content.lower().translate(str.maketrans('', '', string.punctuation)).strip()
+    if cleaned_content_shutup == "shut up" and message.author.id in [124664055251075072, 217788070068617216]:
         if random.randint(1, 10) == 1:
-            await message.channel.send('lamo')
-    if (message.content.lower().translate(
-            str.maketrans('', '', string.punctuation)) == "shut up" and message.author.id == 217788070068617216):
-        if random.randint(1, 10) == 1:
-            await message.channel.send('lamo')
-    if message.content.lower().translate(str.maketrans('', '', string.punctuation)) == "test":
-        print("yes, that says test (line 79 ish)")
-    if " 69 " in " "+message.content.lower()+" ":
-        await message.add_reaction(bot.get_emoji(870075966142185562))
-    if WORDS[3] in message.content.lower():
-        await message.channel.send(WORDS[4])
+            try:
+                await message.channel.send('lamo')
+            except discord.Forbidden:
+                print(f"Missing permissions to send messages in {message.channel.id} for shut up logic.")
+            except Exception as e:
+                print(f"Error sending lamo reply: {e}")
+
+    if " 69 " in f" {message.content.lower()} ":
+        try:
+            nice_emoji = bot.get_emoji(870075966142185562)
+            if nice_emoji:
+                await message.add_reaction(nice_emoji)
+            else:
+                print("Could not find nice emoji (870075966142185562)")
+        except discord.Forbidden:
+            print(f"Missing permissions to add reactions in {message.channel.id} for 69 logic.")
+            pass
+
+    if len(WORDS) > 4 and WORDS[3] in message.content.lower():
+        try:
+            await message.channel.send(WORDS[4])
+        except discord.Forbidden:
+            print(f"Missing permissions to send messages in {message.channel.id} for WORDS[3]/[4] logic.")
+            pass
+
     if "horde" in message.content.lower():
         if random.randint(1, 10) == 1:
-            await message.reply("I'm sorry for the interruption, but I have to ask if you meant to say horse.")
-    if WORDS[0] in message.content.lower() or WORDS[1] in message.content.lower() or WORDS[2] in message.content.lower():
-        global last_boopsy
-        last_boopsy = datetime.datetime.now()
-        print(last_boopsy)
-        await message.channel.send("This is a christian server, please call it a mister boopsy")
-    if "mister boopsy" in message.content.lower():
-        if ('last_boopsy' in globals()) and (datetime.datetime.now() - last_boopsy < datetime.timedelta(seconds=30)):
-            await message.channel.send("Thank you for using polite language in this christian server.")
-    else:
-        await bot.process_commands(message)
+            try:
+                await message.reply("I'm sorry for the interruption, but I have to ask if you meant to say horse.", mention_author=False)
+            except discord.Forbidden:
+                print(f"Missing permissions to send messages in {message.channel.id} for horde logic.")
+            except Exception as e:
+                print(f"Error sending horde reply: {e}")
+
+    if len(WORDS) > 2 and (WORDS[0] in message.content.lower() or WORDS[1] in message.content.lower() or WORDS[2] in message.content.lower()):
+        last_boopsy = datetime.now(timezone.utc)
+        print(f"Boopsy detected, last_boopsy set to: {last_boopsy}")
+        try:
+            await message.channel.send("This is a christian server, please call it a mister boopsy")
+        except discord.Forbidden:
+            print(f"Missing permissions to send messages in {message.channel.id} for boopsy logic.")
+            pass
+
+    elif "mister boopsy" in message.content.lower():
+        if last_boopsy is not None and (datetime.now(timezone.utc) - last_boopsy < timedelta(seconds=30)):
+            try:
+                await message.channel.send("Thank you for using polite language in this christian server.")
+            except discord.Forbidden:
+                print(f"Missing permissions to send messages in {message.channel.id} for mister boopsy logic.")
+            except Exception as e:
+                print(f"Error sending mister boopsy message: {e}")
+        else:
+            print("Mister boopsy detected, but last_boopsy is None or too old.")
+
+    await bot.process_commands(message)
 
 
 @bot.command(name='10seconds', help='for when you envy the you of 10 seconds ago')
@@ -266,36 +389,27 @@ async def ten_seconds(ctx):
 @bot.command(name='bfa', help='for the BFA meta WQ')
 async def bfa(ctx):
     url = 'https://www.wowhead.com/world-quests/bfa/na'
-    # Strings to search for (case insensitive)
     search_strings = [
         "Swab This", "Whiplash", "Chag's Challenge", "Getting Out of Hand",
         "Revenge of Krag'wa", "Cancel the Blood Troll Apocalypse",
         "Sandfishing", "Vulpera for a Day"
     ]
     try:
-        # Fetch the webpage content
-        with urllib.request.urlopen(url) as response:
-            # Decode the bytes content into a string
-            webpage_content = response.read().decode('utf-8')
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        webpage_content = response.text
 
-        # Convert content to lowercase for case-insensitive search
         lower_content = webpage_content.lower()
 
-        # Find available quests
         available_quests = [
             quest for quest in search_strings if quest.lower() in lower_content
         ]
 
-        # Generate the final message
-        if available_quests:
-            message = "Available today for the BFA meta:\n" + "\n".join(available_quests)
-        else:
-            message = "No quests for the BFA meta achievement are available today."
+        message = "Available today for the BFA meta:\n" + "\n".join(available_quests)
 
-    except urllib.error.URLError as e:
+    except requests.exceptions.RequestException as e:
         message = f"Failed to retrieve the webpage. Error: {e}"
 
-    # Send the message to the specified channel
     channel = bot.get_channel(522866140146434051)
     if channel:
         await channel.send(message)
@@ -311,7 +425,6 @@ async def checkgames(ctx):
     async with ctx.typing():
         for game_id in game_ids:
             try:
-                # Get game name from store
                 details_url = f"https://store.steampowered.com/api/appdetails?appids={game_id}"
                 details_response = requests.get(details_url)
 
@@ -324,32 +437,26 @@ async def checkgames(ctx):
                 else:
                     game_name = f"Game {game_id}"
 
-                # Get overall reviews
                 reviews_url = f"https://store.steampowered.com/appreviews/{game_id}?json=1&language=all&purchase_type=all&num_per_page=0"
                 overall_data = requests.get(reviews_url).json()
 
-                # Get recent reviews from histogram
                 histogram_url = f"https://store.steampowered.com/appreviewhistogram/{game_id}?l=english"
                 histogram_data = requests.get(histogram_url).json()
 
                 if 'query_summary' in overall_data and 'results' in histogram_data:
-                    # Calculate recent from histogram data
                     recent_data = histogram_data['results']['recent']
                     recent_positive = sum(day['recommendations_up'] for day in recent_data)
                     recent_negative = sum(day['recommendations_down'] for day in recent_data)
                     recent_total = recent_positive + recent_negative
                     recent_percent = (recent_positive / recent_total * 100) if recent_total > 0 else 0
 
-                    # Get overall from review data
                     overall_summary = overall_data['query_summary']
                     overall_positive = overall_summary['total_positive']
                     overall_total = overall_summary['total_reviews']
                     overall_percent = (overall_positive / overall_total * 100) if overall_total > 0 else 0
 
-                    # Calculate difference
                     difference = recent_percent - overall_percent
 
-                    # Store all data for sorting
                     game_data_list.append({
                         'name': game_name,
                         'difference': difference,
@@ -361,29 +468,26 @@ async def checkgames(ctx):
                 else:
                     game_data_list.append({
                         'name': game_name,
-                        'difference': float('-inf'),  # Place errors at bottom
+                        'difference': float('-inf'),
                         'error': 'No review data available'
                     })
 
             except Exception as e:
                 game_data_list.append({
                     'name': game_name,
-                    'difference': float('-inf'),  # Place errors at bottom
+                    'difference': float('-inf'),
                     'error': str(e)
                 })
 
             await asyncio.sleep(1)
 
-        # Sort games by difference (descending)
         game_data_list.sort(key=lambda x: x['difference'], reverse=True)
 
-        # Generate summary
         summary = ""
         for game in game_data_list:
             if 'error' in game:
                 summary += f"**{game['name']}**: {game['error']}\n\n"
             else:
-                # Determine emoji based on difference
                 difference = game['difference']
                 if difference > 0:
                     if difference < 5:
@@ -509,9 +613,7 @@ async def rslevels(ctx, *name):
                 experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
         for index in range(len(experience_for_level)):
             experience_for_level[index] = math.floor(experience_for_level[index])
-        # Variables used in the code, each list is for a column of information.
         username = ' '.join([str(word) for word in name])
-        # Combines and parses the url to access the OSRS highscores api page for given character name
         try:
             data_holder = get_hiscores(username)
         except urllib.error.HTTPError:
@@ -519,33 +621,26 @@ async def rslevels(ctx, *name):
                 "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your "
                 "username btw.")
             return
-        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
         for index in range(len(skill_name) - 1):
             holder = data_holder[index].split(",")
             skill_level.append(holder[1])
             skill_experience.append(holder[2])
             if index > 0:
-                # Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
                 exptotal += min(13034431, int(holder[2]))
                 skill_missing_experience.append(13034431 - min(13034431, int(holder[2])))
         for index in range(len(skill_level)):
             if skill_level[index] == "69":
                 skill_level[index] = "Nice."
-        # Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
         level_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
         level_spacer_two = "═".ljust(len(max(skill_level, key=len)), "═")
         level_spacer_three = "═".ljust(len(max(skill_experience, key=len)), "═")
         exptotal = int(exptotal)
-        # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
         percent_to_99s = round(100 * exptotal / 299791913, 2)
-        # figures out the width of the entire table by adding length of the border stuff to len(spacers)
         table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
-        # Assembling the header and footer, could be done programatically, but immutable strings
         header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(table_width - len(" ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
         footer = " ╠═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╣\n" + " ║ Adjusted total EXP = " + str(exptotal) + "║".rjust(table_width - len(" ║ Adjusted total EXP = " + str(exptotal)) - 1) + "\n" + " ║ " + str(percent_to_99s) + "% of the way to all skills 99" + "║".rjust(table_width - len(" ║ " + str(percent_to_99s) + "X of the way to all skills 99") - 1) + "\n" + " ╚═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╝\n"
         for index in range(len(skill_name)):
             if index > 0:
-                # loops through adding one formatted row at a time to the output list
                 output_list.append(
                     " ║ " + skill_name[index].ljust(len(level_spacer_one)) + " ║ " + skill_level[index].rjust(
                         len(level_spacer_two)) + " ║ " + skill_experience[index].rjust(
@@ -554,7 +649,7 @@ async def rslevels(ctx, *name):
 
 
 @bot.command(name='hiscores', help='takes osrs username as a parameter and gives stats on hiscore ranks')
-async def rslevels(ctx, *name):
+async def hiscores(ctx, *name):
     def get_hiscores(runescape_username):
         total_experience = [0, 0, 0, 0]
         try:
@@ -623,9 +718,7 @@ async def rslevels(ctx, *name):
                 experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
         for index in range(len(experience_for_level)):
             experience_for_level[index] = math.floor(experience_for_level[index])
-        # Variables used in the code, each list is for a column of information.
         username = ' '.join([str(word) for word in name])
-        # Combines and parses the url to access the OSRS highscores api page for given character name
         try:
             data_holder = get_hiscores(username)
         except urllib.error.HTTPError:
@@ -633,39 +726,48 @@ async def rslevels(ctx, *name):
                 "An error occurred, probably a 404, but what do I know? I just work here. Check the spelling of your "
                 "username btw.")
             return
-        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
         for index in range(len(skill_name) - 1):
             holder = data_holder[index].split(",")
             print(holder)
             skill_level.append(holder[0])
             skill_experience.append(holder[2])
             if index > 0:
-                # Adds either the exp for level 99 or the skills total exp to exptotal, to get an adjusted total value
                 exptotal += min(13034431, int(holder[2]))
                 skill_missing_experience.append(13034431 - min(13034431, int(holder[2])))
-        for index in range(len(skill_level)):
-            if skill_level[index] == "69":
-                skill_level[index] = "Nice."
-        # Calculates lengths of horizontal spacers between entries based on the longest entry in the corresponding list
-        level_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
-        level_spacer_two = "═".ljust(len(max(skill_level, key=len)), "═")
-        level_spacer_three = "═".ljust(len(max(skill_experience, key=len)), "═")
-        # exptotal = int(exptotal)(currently commented out because I don't know why I made it, but I am sure deleting it breaks things)
-        # Divides adjusted total by the amount of exp needed to 99 all skills, then parses to a percent
-        # percent_to_99s = round(100 * exptotal / 299791913, 2) (currently commented out because I don't know why I made it, but I am sure deleting it breaks things)
-        # figures out the width of the entire table by adding length of the border stuff to len(spacers)
-        table_width = 12 + len(level_spacer_one + level_spacer_two + level_spacer_three)
-        # Assembling the header and footer, could be done programatically, but immutable strings
-        header = " ╔═" + level_spacer_one + "═══" + level_spacer_two + "═══" + level_spacer_three + "═╗\n" + " ║ " + "Stats for " + username + "║".rjust(table_width - len(" ║ " + "Stats for " + username) - 1) + "\n" + " ╠═" + level_spacer_one + "═╦═" + level_spacer_two + "═╦═" + level_spacer_three + "═╣\n" + " ║ " + skill_name[0].ljust(len(level_spacer_one)) + " ║ " + skill_level[0].rjust(len(level_spacer_two)) + " ║ " + skill_experience[0].rjust(len(level_spacer_three)) + " ║\n" + " ╠═" + level_spacer_one + "═╬═" + level_spacer_two + "═╬═" + level_spacer_three + "═╣\n"
-        footer = " ╚═" + level_spacer_one + "═╩═" + level_spacer_two + "═╩═" + level_spacer_three + "═╝\n"
+        output_temp = []
+        calculated_holder = []
         for index in range(len(skill_name)):
-            if index > 0:
-                # loops through adding one formatted row at a time to the output list
-                output_list.append(
-                    " ║ " + skill_name[index].ljust(len(level_spacer_one)) + " ║ " + skill_level[index].rjust(
-                        len(level_spacer_two)) + " ║ " + skill_experience[index].rjust(
-                        len(level_spacer_three)) + " ║\n")
-    await ctx.send("```" + header + "".join(output_list) + footer + "```")
+            if index > 1 and skill_missing_experience[index] > 0:
+                calculated_holder.append("".join(expcalc(skill_missing_experience[index], index)))
+        try:
+            longest_skill_todo = max(calculated_holder, key=len)
+        except urllib.error.HTTPError:
+            if username == "himtheguy":
+                await ctx.send("https://youtu.be/LDU_Txk06tM?t=75")
+        longest_skill = -1
+        for index in range(len(calculated_holder)):
+            if len(calculated_holder[index]) == len(longest_skill_todo):
+                longest_skill = index
+        rs99_spacer_one = "═".ljust(len(max(skill_name, key=len)), "═")
+        rs99_spacer_two = "═".ljust(len(max(calculated_holder, key=len)), "═")
+        associated_skill = []
+        for index in range(len(skill_name)):
+            if index > 1 and skill_missing_experience[index] > 0:
+                holder = "".join(expcalc(skill_missing_experience[index], index))
+                associated_skill.append(skill_name[index])
+                output_temp.append(" ║ " + skill_name[index].ljust(len(rs99_spacer_one)) + " ║ " + holder.rjust(
+                    len(rs99_spacer_two)) + " ║\n")
+        print(associated_skill)
+        print(calculated_holder)
+        header = " ╔═" + rs99_spacer_one + "═╦═" + rs99_spacer_two + "═╗\n" + " ║ " + "Skill Name".ljust(
+            len(rs99_spacer_one)) + " ║ " + "To Do:".ljust(
+            len(rs99_spacer_two)) + " ║\n" + " ╠═" + rs99_spacer_one + "═╬═" + rs99_spacer_two + "═╣\n"
+        footer = " ╚═" + rs99_spacer_one + "═╩═" + rs99_spacer_two + "═╝\n"
+    try:
+        await ctx.send("```" + header + "".join(output_temp) + footer + "```")
+    except discord.errors.HTTPException:
+        await ctx.send(
+            "Error, to-do list too long, work on " + associated_skill[longest_skill][:-1] + ", requiring " + calculated_holder[longest_skill])
 
 
 @bot.command(name='rs99', help='takes osrs username as a parameter and gives stats on levels')
@@ -821,7 +923,7 @@ async def rs99(ctx, *name):
                 level_brackets_lazy = [5, 14, 24, 34, 44, 49, 59, 74, 89, 99]
                 experience_rate_brackets_lazy = [280, 420, 560, 700, 820, 960, 1020, 1140, 1200]
             elif skill_id == 24:
-                activity_brackets_lazy = [" ", " regular planks and ", " oak planks."]
+                activity_brackets_lazy = [" ", " hours of regular planks and ", " hours of oak planks."]
                 level_brackets_lazy = [1, 15, 99]
                 experience_rate_brackets_lazy = [29, 60]
             remaining_time = []
@@ -851,9 +953,7 @@ async def rs99(ctx, *name):
                 experience_for_level[index - 1] + (math.floor(index - 1 + 300 * 2 ** ((index - 1) / 7)) / 4))
         for index in range(len(experience_for_level)):
             experience_for_level[index] = math.floor(experience_for_level[index])
-        # Variables used in the code, each list is for a column of information.
         username = ' '.join([str(word) for word in name])
-        # Combines and parses the url to access the OSRS highscores api page for given character name
         try:
             data = urllib.request.urlopen(
                 "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=" + username.replace(" ", "%20"))
@@ -861,12 +961,9 @@ async def rs99(ctx, *name):
             await ctx.send(
                 "An error occurred, probably a 404, but what do I know? I just work here. "
                 "Check the spelling of your username btw.")
-        # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience,
-        # and splits entries on newlines
-        data_holder = data.read().decode().split("\n")
-        # Takes each entry in the previous list, splits into the 3 parts, and assigns each to the appropriate column
+            return
         for index in range(len(skill_name) - 1):
-            holder = data_holder[index].split(",")
+            holder = data.read().decode().split("\n")[index].split(",")
             skill_level.append(holder[1])
             skill_experience.append(holder[2])
             if index > 0:
@@ -935,8 +1032,7 @@ async def rskc(ctx, *name):
             await ctx.send(
                 "An error occurred, probably a 404, but what do I know? I just work here. "
                 "Check the spelling of your username btw.")
-        # Takes the JSON data from the url, decodes it using utf-8, throws away all information after the experience,
-        # and splits entries on newlines
+            return
         killcount_data_holder = data.read().decode().split("\n")
         print(killcount_data_holder)
         for index in range(num_skills + 1, len(killcount_data_holder) - 1):
@@ -986,122 +1082,79 @@ async def generator(ctx, width, height):
             output_array = [["X" * width] * height]
             for row in range(height):
                 for column in range(width):
-                    # top row
                     if row == 0:
-                        # left side
                         if column == 0:
                             output_array[row][column] = random.choice("╔ ")
-                        # and left open
                         elif output_array[row][column - 1] in "╔╦╠╬╚╩═":
-                            # if not right side
                             if column < width - 1:
                                 output_array[row][column] = random.choice("╦╗═")
-                            # if right side
                             else:
                                 output_array[row][column] = "╗"
-                        # and left closed
                         elif output_array[row][column - 1] in " ╗╣╝║":
-                            # if not right side
                             if column < width - 1:
                                 output_array[row][column] = random.choice(" ╔")
-                            # if right side
                             else:
-                                # if left of tile 1 to the left is open
                                 if output_array[row][column - 2] in "╔╦╠╬╚╩═":
                                     output_array[row][column - 1] = "╦"
                                 else:
                                     output_array[row][column - 1] = "╔"
                                 output_array[row][column] = "╗"
-                    # middle rows
                     elif 0 < row < height - 1:
-                        # left side
                         if column == 0:
-                            # top open
                             if output_array[row - 1][column] in "╔╦╗╠╬╣║":
                                 output_array[row][column] = random.choice("║╠╚")
-                            # top closed
                             elif output_array[row - 1][column] in "╚╩╝═ ":
                                 output_array[row][column] = random.choice("╔ ")
-                        # top open
                         elif output_array[row - 1][column] in "╔╦╗╠╬╣║":
-                            # left open
                             if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                 output_array[row][column] = random.choice("╬╣╩╝")
-                            # left closed
                             elif output_array[row][column - 1] in "╗╣╝║ ":
                                 output_array[row][column] = random.choice("╠╚║")
-                        # top closed
                         elif output_array[row - 1][column] in "╚╩╝═ ":
-                            # left open
                             if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                 output_array[row][column] = random.choice("╦╗═")
-                            # left closed
                             elif output_array[row][column - 1] in "╗╣╝║ ":
                                 output_array[row][column] = random.choice("╔")
-                        # right side
                         if column == width - 1:
-                            # top open
                             if output_array[row - 1][column] in "╔╦╗╠╬╣║":
-                                # left open
                                 if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                     output_array[row][column] = random.choice("╣╝")
-                                # left closed
+                                    success = 1
                                 elif output_array[row][column - 1] in "╗╣╝║ ":
-                                    output_array[row][column] = random.choice("║")
-                            # top closed
+                                    success = 0
                             elif output_array[row - 1][column] in "╚╩╝═ ":
-                                # left open
                                 if output_array[row][column - 1] in "╔╦╠╬╚╩═":
-                                    output_array[row][column] = random.choice("╗")
-                                # left closed
+                                    success = 0
                                 elif output_array[row][column - 1] in "╗╣╝║ ":
                                     output_array[row][column] = random.choice(" ")
-                    # bottom row
-                    if row == height - 1:
-                        # left side
+                                    success = 1
+                    elif row == height - 1:
                         if column == 0:
-                            # top open
                             if output_array[row - 1][column] in "╔╦╗╠╬╣║":
                                 output_array[row][column] = "╚"
-                            # top closed
                             elif output_array[row - 1][column] in "╚╩╝═ ":
                                 output_array[row][column] = " "
-                        # top open
-                        if output_array[row - 1][column] in "╔╦╗╠╬╣║":
-                            # and left open
+                        elif output_array[row - 1][column] in "╔╦╗╠╬╣║":
                             if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                 output_array[row][column] = random.choice("╝╩")
-                            # and left closed
                             elif output_array[row][column - 1] in "╗╣╝║ ":
                                 output_array[row][column] = random.choice("╚")
-                        # top closed
                         elif output_array[row - 1][column] in "╚╩╝═ ":
-                            # and left open
                             if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                 output_array[row][column] = random.choice("═")
-                            # and left closed
                             elif output_array[row][column - 1] in "╗╣╝║ ":
                                 output_array[row][column] = random.choice(" ")
-                        # right side
                         if column == width - 1:
-                            # top open
                             if output_array[row - 1][column] in "╔╦╗╠╬╣║":
-                                # and left open
                                 if output_array[row][column - 1] in "╔╦╠╬╚╩═":
-                                    # good case
                                     output_array[row][column] = random.choice("╝")
                                     success = 1
-                                # and left closed
                                 elif output_array[row][column - 1] in "╗╣╝║ ":
                                     success = 0
-                            # top closed
                             elif output_array[row - 1][column] in "╚╩╝═ ":
-                                # and left open
                                 if output_array[row][column - 1] in "╔╦╠╬╚╩═":
                                     success = 0
-                                # and left closed
                                 elif output_array[row][column - 1] in "╗╣╝║ ":
-                                    # good case
                                     output_array[row][column] = random.choice(" ")
                                     success = 1
         output_holder = []

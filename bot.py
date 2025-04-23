@@ -247,30 +247,18 @@ async def on_message(message):
 
     if message.content.startswith('```') and message.content.endswith('```'):
         lines = message.content.split('\n')
-        if len(lines) > 2 or (len(lines) == 2 and lines[1].strip()):
-            file_path = f'code_block_{message.id}.txt'
-            try:
-                code_content = message.content[3:-3]
-                if lines[0].strip() != '```':
-                    code_content = '\n'.join(lines[1:-1])
-
-                with open(file_path, 'w', encoding='utf-8') as file:
-                    file.write(code_content)
-
-                with open(file_path, 'rb') as file:
-                    await message.channel.send(
-                        content=f"{message.author.mention} posted a code block:",
-                        file=discord.File(file, filename='code_block.txt')
-                    )
-                await message.delete()
-            except discord.Forbidden:
-                print(f"Missing permissions to send files or delete messages in {message.channel.id}")
-            except Exception as e:
-                print(f"Error processing code block: {e}")
-            finally:
-                if os.path.exists(file_path):
-                    os.remove(file_path)
-            return
+        if len(lines) > 13:
+            file_path = 'code_block.txt'
+            with open(file_path, 'w') as file:
+                if message.content[3] == '\n':
+                    file.write(message.content[4:-3])
+                else:
+                    file.write(message.content[3:-3])
+            with open(file_path, 'rb') as file:
+                await message.channel.send(content=f"{message.author.mention} posted a code block:", file=discord.File(file, file_path))
+            os.remove(file_path)
+            await message.delete()
+        return
 
     if "harmlessbug" in message.author.name:
         banned_letter = random.choice(['x', 'j', 'q', 'z'] * 5 + ['ö'] * 5)

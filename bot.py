@@ -261,7 +261,7 @@ async def on_message(message):
         return
 
     if "harmlessbug" in message.author.name:
-        banned_letter = random.choice(['x', 'j', 'q', 'z'] * 5 + ['ö'] * 5)
+        banned_letter = random.choice(['x', 'j', 'q', 'z'] + ['ö'] * 25)
         if banned_letter in message.content.lower():
             try:
                 original_content = message.content

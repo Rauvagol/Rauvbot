@@ -330,6 +330,13 @@ async def on_message(message):
             print(f"Missing permissions to add reactions in {message.channel.id} for 69 logic.")
             pass
 
+    if "legion remix" in message.content.lower():
+        try:
+            await message.reply("they told us everything we need to know about legion remix\nwhen it starts\nwhen it ends \nhow leveling works\nwow tokens for killing mythic argussy\nyou can use the one button to play the entire thing\nwhich is why it was created\n(i am joking they literally said almost nothing besides it exists and small changes)")
+        except discord.Forbidden:
+            print(f"Missing permissions to send messages in {message.channel.id} for legion remix logic.")
+            pass
+
     if len(WORDS) > 4 and WORDS[3] in message.content.lower():
         try:
             await message.channel.send(WORDS[4])

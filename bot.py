@@ -414,7 +414,7 @@ async def bfa(ctx):
 
 @bot.command(name='checkgames', help='Check if Steam games are good')
 async def checkgames(ctx):
-    game_ids = [216150, 1056640, 1599340, 582660]
+    game_ids = [216150, 1056640, 1599340, 582660, 2074920]
     game_data_list = []
 
     async with ctx.typing():
@@ -453,6 +453,7 @@ async def checkgames(ctx):
                     difference = recent_percent - overall_percent
 
                     game_data_list.append({
+                        'id': game_id,
                         'name': game_name,
                         'difference': difference,
                         'recent_percent': recent_percent,
@@ -499,7 +500,7 @@ async def checkgames(ctx):
                 else:
                     emoji = ""
 
-                summary += f"**{game['name']}** {emoji}\n"
+                summary += f"[**{game['name']}**](<https://store.steampowered.com/app/{game['id']}>) {emoji}\n"
                 summary += f"Recent: {game['recent_percent']:.1f}% positive ({game['recent_total']:,} reviews)\n"
                 summary += f"Overall: {game['overall_percent']:.1f}% positive ({game['overall_total']:,} reviews)\n"
                 summary += f"Difference: {difference:+.1f}%\n\n"

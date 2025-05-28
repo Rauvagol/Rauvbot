@@ -238,7 +238,7 @@ async def on_message(message):
                     await message.reply("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXloejV3ZTZjODFxYnZ2ZG5ocGE5Ynl1NHlldmd5NG1mYTJhNmJmcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6nWhy3ulBL7GSCvKw6/giphy.gif")
             else:
                 print("No previous messages found")
-                await message.reply("response")
+                await message.reply("https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExMXloejV3ZTZjODFxYnZ2ZG5ocGE5Ynl1NHlldmd5NG1mYTJhNmJmcyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6nWhy3ulBL7GSCvKw6/giphy.gif")
 
         except discord.Forbidden:
             print(f"Cannot send DM to user {message.author.id}. DMs might be disabled or bot is blocked.")

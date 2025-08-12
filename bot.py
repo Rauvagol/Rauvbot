@@ -144,14 +144,28 @@ async def on_raw_reaction_add(payload):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    channel = after.channel or before.channel
-
-    if channel is not None:
-        if len(channel.members) > 10 and bot.user not in channel.members:
-            await channel.connect()
-        elif len(channel.members) < 10 and bot.user in channel.members:
-            voice_client = bot.voice_clients[0]
-            await voice_client.disconnect()
+    # Get the channel that had a change (either the one they joined or left)
+    changed_channel = after.channel or before.channel
+    
+    if changed_channel is not None:
+        current_member_count = len(changed_channel.members)
+        bot_is_in_channel = bot.user in changed_channel.members
+        
+        # Only act if the bot isn't already in the channel and count is above threshold
+        if current_member_count > 10 and not bot_is_in_channel:
+            # Check if we're already connected to a voice channel
+            if not bot.voice_clients:
+                await changed_channel.connect()
+                print(f"Bot joined {changed_channel.name} (members: {current_member_count})")
+        
+        # Only disconnect if we're in this specific channel and count drops below threshold
+        elif current_member_count < 10 and bot_is_in_channel:
+            # Find the voice client for this specific channel
+            for voice_client in bot.voice_clients:
+                if voice_client.channel == changed_channel:
+                    await voice_client.disconnect()
+                    print(f"Bot left {changed_channel.name} (members: {current_member_count})")
+                    break
 
 
 @bot.event

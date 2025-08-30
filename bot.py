@@ -367,25 +367,25 @@ async def on_message(message):
             except Exception as e:
                 print(f"Error sending horde reply: {e}")
 
-    if len(WORDS) > 2 and (WORDS[0] in message.content.lower() or WORDS[1] in message.content.lower() or WORDS[2] in message.content.lower()):
-        last_boopsy = datetime.now(timezone.utc)
-        print(f"Boopsy detected, last_boopsy set to: {last_boopsy}")
-        try:
-            await message.channel.send("This is a christian server, please call it a mister boopsy")
-        except discord.Forbidden:
-            print(f"Missing permissions to send messages in {message.channel.id} for boopsy logic.")
-            pass
+    # if len(WORDS) > 2 and (WORDS[0] in message.content.lower() or WORDS[1] in message.content.lower() or WORDS[2] in message.content.lower()):
+    #     last_boopsy = datetime.now(timezone.utc)
+    #     print(f"Boopsy detected, last_boopsy set to: {last_boopsy}")
+    #     try:
+    #         await message.channel.send("This is a christian server, please call it a mister boopsy")
+    #     except discord.Forbidden:
+    #         print(f"Missing permissions to send messages in {message.channel.id} for boopsy logic.")
+    #         pass
 
-    elif "mister boopsy" in message.content.lower():
-        if last_boopsy is not None and (datetime.now(timezone.utc) - last_boopsy < timedelta(seconds=30)):
-            try:
-                await message.channel.send("Thank you for using polite language in this christian server.")
-            except discord.Forbidden:
-                print(f"Missing permissions to send messages in {message.channel.id} for mister boopsy logic.")
-            except Exception as e:
-                print(f"Error sending mister boopsy message: {e}")
-        else:
-            print("Mister boopsy detected, but last_boopsy is None or too old.")
+    # elif "mister boopsy" in message.content.lower():
+    #     if last_boopsy is not None and (datetime.now(timezone.utc) - last_boopsy < timedelta(seconds=30)):
+    #         try:
+    #             await message.channel.send("Thank you for using polite language in this christian server.")
+    #         except discord.Forbidden:
+    #             print(f"Missing permissions to send messages in {message.channel.id} for mister boopsy logic.")
+    #         except Exception as e:
+    #             print(f"Error sending mister boopsy message: {e}")
+    #     else:
+    #         print("Mister boopsy detected, but last_boopsy is None or too old.")
 
     await bot.process_commands(message)
 
